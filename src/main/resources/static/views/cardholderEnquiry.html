@@ -1,0 +1,323 @@
+<div class="header-bg" id="stt">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                            <!--<label class="ml-5" for="show-records-select">Show</label>-->
+                            <select class="" ng-change="refreshReport('getUsers')" id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" data-ng-init="checkCms('cardenquiry'); initializeSettings('Cms', 'branches', 'branchList', 'all');">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>Card Management System</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form ng-submit="getRecords('CmsRecs', 'Cms', 'cms', 1);"  id="cms">
+                                    <table class="table borderless">
+
+                                        <tr>
+                                            <td><label for="card_number">Account &#x02116;</label></td>
+                                            <td><input class="form-control form-control-sm" name="card_number" ng-model="card_number" id="card_number" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="mobile_number">Mobile &#x02116;</label></td>
+                                            <td><input class="form-control form-control-sm" name="mobile_number" ng-model="mobile_number" id="mobile_number" /></td>
+                                        </tr>
+
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="search" />
+                                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">CARD NUMBER</th> 
+                                            <th class="text-center">LAST NAME</th> 
+                                            <th class="text-center">FIRST NAME</th>  
+                                            <th class="text-center">EMAIL</th>
+                                            <th class="text-center">PHONE</th>  
+                                            <th class="text-center">NATIONAL ID</th>
+                                            <th class="text-center">CITY</th> 
+                                            <th class="text-center">STREET</th> 
+                                            <th class="text-center">EXPIRATION</th>
+                                            <th class="text-center">ONLINE BALANCE</th>
+                                            <th class="text-center">STATUS</th>
+                                            <!--<th class="text-center" ng-if="testInitiateCMS()">ACTION</th>--> 
+                                            <th class="text-center">USER HOTLIST</th>
+                                            <th class="text-center">USER LOCKED</th>   
+                                            <th class="text-center">PIN MISSED</th>                    
+                                            <th class="text-center">CHANGE PIN</th>
+                                            <th class="text-center">CONTROL ID</th>
+                                            <th class="text-center">BOUND WORK</th> 
+                                            <th class="text-center">BOUND VALUE</th> 
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-font">
+                                        <tr ng-hide="filteredCmsRecs.length">
+                                            <td colspan="19" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+
+                                        <tr ng-hide="filteredCmsRecs.length">
+                                            <td colspan="19" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr ng-repeat="f in filteredCmsRecs" id ="{{$index}}" class="cursor-pointer animate-repeat" ng-class="{'card-record': checkCms('card-enquiry')}" title="{{(checkCms('card-enquiry') ? 'right-click for options' : '')}}">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td>{{f.card2}}</td>
+                                            <td>{{f.Lastname}}</td>                                       
+                                            <td class="">{{f.Firstname}}</td>
+                                            <td class="text-left">{{f.Email}}</td>
+                                            <td class="">{{f.Phone}}</td>
+                                            <td class="">{{f.fax}}</td>
+                                            <td class="text-uppercase">{{f.city}}</td>
+                                            <td class="">{{f.Street}}</td>
+                                            <td class="">{{f.card_expiration}}</td>
+                                            <td class="">{{f.Online_Balance}}</td>
+                                            <td class="">{{f.active}}</td> 
+                                            <!--                                            <td class="" ng-if="testInitiateCMS()"><span class="badge badge-primary update-btn py-2 px-3 cursor-pointer"  ng-click="updateForm($index)">UPDATE</span></td>
+                                                                                        <td class="" ng-if="!testInitiateCMS()">{{f.User_Hotlist}}</td>
+                                                                                        <td class="" ng-if="testInitiateCMS()"><button class="btn btn-sm font07 cursor-pointer"  id="{{f.card_num}}"  ng-click="hotlistCardView($index, checkHotlist(f.User_Hotlist, f.card_num))">{{checkHotlist(f.User_Hotlist, f.card_num)}}</button></td>-->
+                                            <td class="text-center" >{{f.User_Hotlist}}</td>
+                                            <td class="text-center">{{f.User_Locked}}</td>
+                                            <td class="text-center">{{f.Pin_Missed}}</td>  
+                                            <td class="text-center">{{f.Change_Pin}}</td> 
+                                            <td class="text-center">{{f.control_id}}</td> 
+                                            <td class="text-uppercase">{{f.bound_work}}</td>
+                                            <td class="text-uppercase">{{f.bound_value}}</td>  
+                                        </tr>      
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+
+<form id="cms_form" class="card-user-form draggable_item">
+    <div id="wizard">
+        <div class="draggable_item_header"></div>
+        <a class="boxclose"  id="boxclose" ng-click="hideCardUserForm();"></a>
+        <div class="user-content">
+            <div class="form-header">
+                <div class="avartar">
+                    <a >
+                        <img id="verifyIDimage" style="border-style: double;height: auto; width: 110px; border-radius: 50%;" src="../assets/img/avatar_2x.png" alt="">
+                    </a>
+
+                </div>
+                <div class="form-group">
+                    <div class="form-holder" style="display: flex; flex-direction: row-reverse;">
+                        <label for="account" style="padding: 0px; font-size:12px;">Account:</label>
+
+                        <span readonly style="font-size: smaller;" id="account_number" >&nbsp; {{account_number}}</span>
+                    </div>
+                    <div class="form-holder" >
+                        <input type="text" placeholder="" class="form-control" name="firstname" ng-model="firstname" id="firstname" ng-disabled ="(card_service !== 'update' && card_service !== 'addaccount')">
+                        <label for="firstname">First Name</label>
+                    </div>
+                    <div class="form-holder">
+                        <input type="text" placeholder="" class="form-control" name="lastname" ng-model="lastname" id="lastname" ng-disabled ="card_service !== 'update' && card_service !== 'addaccount'">
+                        <label for="lastname">Last Name</label>
+                    </div>
+                    <div class="form-holder" ng-if="card_service === 'update' || card_service === 'addaccount'">
+                        <input type="text" placeholder="" class="form-control" id="mobile_no" name="mobile_no" ng-model="mobile_no" ng-disabled ="card_service !== 'update'">
+                        <label for="mobile_no">Mobile No</label>
+                    </div>
+                    <div class="form-holder" ng-if="card_service === 'update' || card_service === 'addaccount'">
+                        <input type="text" placeholder="" class="form-control" id="email" name="email" ng-model="email" ng-disabled ="card_service !== 'update'">
+                        <label for="email">Email</label>
+                    </div>
+                    <div class="form-holder" >
+                        <select class="form-control" style="height: 35px; padding: 0px 0px 0px 10px;" name="action"  ng-model="card_service" id="action">
+
+                            <option value="addaccount">Add Account</option>
+                            <option value="dehotlist" ng-if="hotlist">Dehotlist</option>
+                            <option value="hotlist" ng-if="!hotlist">Hotlist</option>
+                            <option value="enhancement">Enhancement</option>
+                            <option value="pinreset">Pin Reset</option>
+                            <!--                            <option value="other">Other</option>-->
+                            <option value="update">Update Account</option>
+                        </select>
+                        <label>Action</label>
+                    </div>
+                    <div class="form-holder" id ="branchList">
+
+                        <select class="form-control form-control-sm" name="branch" ng-model="branch" id="branch">
+                            <option value="" disabled>Select Branch</option>
+                            <option ng-repeat="option in branchList" value="{{option.id}}">{{option.name}}</option>
+                        </select> 
+                        <label>Branch</label>
+                    </div>
+                    <div class="form-holder" id="enhancementType">
+                        <select class="form-control" style="height: 35px; padding: 0px 0px 0px 10px;" name="enhancement_type" ng-model="enhancement_type" id="enhancement_type" ng-init="enhancement_type = 'medium'">
+                            <option value="enhanced">Enhanced</option>
+                            <option value="medium">Medium</option>
+                        </select>
+                        <label>Enhancement Type</label>
+                    </div>
+                    <div class="form-holder" style="display: flex; flex-direction: row-reverse;" ng-if="card_service !== 'update'">
+                        <textarea   rows="2"  class="form-control" style="resize: none;" id="reason" name="reason" ng-model="reason"></textarea>
+                        <label>Reason</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-holder" style="display: flex; flex-direction: row-reverse;" ng-if="card_service === 'update'">
+                <textarea   rows="2"  class="form-control" style="resize: none;" id="street" name="street" ng-model="street"></textarea>
+                <label for="street">Street</label>
+            </div>
+            <div class="form-holder">
+                <input type="text" placeholder="" class="form-control" id="city" name="city" ng-model="city" ng-if="card_service === 'update'">
+                <label>City</label>
+            </div>
+            <div class="IdField">
+                <div class="form-holder">
+                    <select class="form-control" style="height: 35px; padding: 0px 0px 0px 10px;" name="id_type" ng-model="id_type" id="id_type" ng-init="id_type = (id_type ? id_type : '')" >
+                        <option value="" disabled>Select Id Type</option>
+                        <!--<option value="Drivers">Drivers License</option>-->
+                        <option value="Passport">Passport</option>
+                        <option value="Voters">Voters</option>
+                    </select>
+                    <label>Id Type</label>
+                </div>
+                <div class="form-holder" style="display:flex;">
+                    <i class="fa fa-times" style="position: absolute;top: 35%;  right: 20%; color: red;" ng-if="id_verified === 'false'"></i>
+                    <i class="fa fa-check-double" style="position: absolute;top: 35%;  right: 20%; color: green;" ng-if="id_verified === 'true'"></i>
+                    <i class="fa fa-exclamation-triangle" style="position: absolute;top: 35%;  right: 20%; color: orange;" ng-if="id_verified === 'error'"></i>
+                    <input type="text" placeholder="" class="form-control" id="id_number" name="id_number" style="padding-right: 0px;" >
+                    <label>Id &#x02116;</label>
+                    <button type="button" ng-if="!searching_id" style="padding-left: 10px;" title="click to verify"  ng-click="CheckId();"><i class="fab fa-searchengin" style="font-size: 20px;margin-bottom:5px;color: #4dbbeb;"></i></button>
+                    <!--<button type="button"><img src="../assets/img/loupe.svg" style="font-size: 20px;margin-bottom"></i></button>-->
+                    <!--<input type="button" style="background-image:url('../assets/img/loupe.svg')"/>-->
+                    <div class="search-loading" ng-if="searching_id">
+                        <div class="search-loading-icon">
+                            <div>
+                                <div>
+                                    <div></div>
+                                    <div></div>   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--                <button type="button" ng-if="!searching_id"><i class="fab fa-searchengin" style="font-size: 20px;margin-bottom:5px;color: cadetblue;"></i></button>
+                                <button type="button"><img src="../assets/img/loupe.svg" style="font-size: 20px;margin-bottom"></i></button>
+                                <input type="button" style="background-image:url('../assets/img/loupe.svg')"/>
+                                <div class="search-loading" ng-if="searching_id">
+                                    <div class="search-loading-icon">
+                                        <div>
+                                            <div>
+                                                <div></div>
+                                                <div></div>   
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+            </div>
+
+        </div>
+        <div class="btn btn-primary ld-ext-right process_state" style="margin: 10px;" ng-click="processCms()" >
+            {{process_state}}
+            <div class="ld ld-ring ld-spin"></div>
+        </div>
+    </div>
+    <input type="hidden" name="service"  value="modify" />
+    <input type="hidden" value="{{account_number}}" name="card_number" />
+</form>
+
+<div class="sticky-container">
+    <ul class="sticky">
+        <!--        <li class="download">
+                    <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(MerchantTrxs)"></i>
+                </li>-->
+        <li  ng-click="refreshReport2('CmsRecs', 'Cms', 'cms', 1, 0);">
+            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+
+    </ul>
+</div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('CmsRecs', 'Cms', 'cms', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;
+            </div>
+            <div class="col-sm-6">
+                <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                <select class="" id="show-records-select" ng-model="rowsPerPage">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>               
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                </select>   
+                &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });
+</script>

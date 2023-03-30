@@ -1,0 +1,45 @@
+<div class="top-header-offset"></div>
+
+<div class="container-fluid card-outline-secondary col-sm-4">
+    <!--filter query box-->
+    <div class="card password-box ml-2 card-outline-secondary" ng-show="showFilterBox">
+        <div class="card-header text-center">
+            CREATE APPLICATION USER
+            <!--<span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>-->
+        </div>
+        <div class="card-block font08">
+            <div class="pwd-loader create-user" ng-show="pwdLoader">
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hidePwdLoader()" title="close window"></span>
+                <div class="mt-4"><i class="fa  fa-3x load-icon"></i></div>
+                <div class="rsp"><span class="text-primary"> in progress...</span></div>
+            </div>
+            <form ng-submit="createUser();">
+                <table class="table borderless">
+                    <!--                    <tr>
+                                            <td><label for="name">FULL NAME:</label></td>
+                                            <td><input class="form-control form-control-sm" name="name" ng-model="name" id="name" ng-required="true" /></td>
+                                        </tr>-->
+                    <tr>
+                        <td><label for="username">USER NAME:</label></td>
+                        <td><input class="form-control form-control-sm" name="username" ng-model="username" id="username" ng-required="true" /></td>
+                    </tr>
+                    <!--                    <tr>
+                                            <td><label for="password">PASSWORD:</label></td>
+                                            <td><input type="password" class="form-control form-control-sm" name="password" ng-model="password" id="password" ng-required="true" /></td>
+                                        </tr>-->
+                    <tr>
+                        <td><label for="role">ROLE:</label></td>                              
+                        <td>
+                            <select class="form-control form-control-sm" name="role" ng-model="role" id="role" ng-required="true">
+                                <!--<option value="0">NONE</option>--> 
+                                <option ng-repeat="option in roles" ng-value="option.id">{{option.name}}</option>                   
+                            </select>    
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" name="service" ng-model="service" id="service" value="admin" />
+                <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Submit</button>
+            </form>
+        </div>
+    </div>
+</div> 

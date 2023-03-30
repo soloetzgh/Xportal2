@@ -1,0 +1,1049 @@
+<div class="header-bg">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                            <!--<span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>-->
+
+                            <label class="ml-5" for="show-records-select">Show</label>
+                            <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+                                    <button id="reverse-btn" title="initiate vasgate reprocessing for authorization" class="btn btn-primary btn-sm  sm-btn cursor-pointer" style="color: black; margin-top: -10px; margin-right: 8px; cursor: pointer;" ng-click="vasReprocessInitiate('initiate', 'VasReprocessTrxs')">INITIATE</button>
+
+                                    <div class="cntr-innr">
+                                        <form ng-submit="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', 1);">
+                                            <label class="search" for="inpt_search">
+                                                <input id="inpt_search" title="press Enter to search" type="text" name="searchKey" placeholder="" ng-model="searchTrxnKey" />
+                                                <input  type="hidden" name="service" value="search" />
+                                            </label>
+                                        </form>
+                                    </div>&nbsp;
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<!--<div class="wrapper" data-ng-init="initializeSettings('Tmc', 'nodes', 'nodeList');">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;">
+                                    <i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>
+                                    Initiate Vas Reprocessing Report
+                                </h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form ng-submit="getRecords('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');" id="tmc">
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td><label for="start-date">Start Date</label></td>
+                                            <td> 
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="end-date"> End Date</label></td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="status">Status</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="status" ng-model="status" id="status" data-ng-init="status = 'ALL';">
+                                                    <option value="ALL">ALL</option>
+                                                    <option value="SUCCESS">SUCCESSFUL</option>
+                                                    <option value="REVERSAL">REVERSAL</option>
+                                                    <option value="FAIL">FAILED</option>
+                                                    <option value="AMBIGUOUS">AMBIGUOUS</option> 
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="pan">PAN:</label></td>
+                                            <td><input class="form-control form-control-sm" name="pan" ng-model="pan" id="pan" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="trans_data">Reference:</label></td>
+                                            <td><input class="form-control form-control-sm" name="trans_data" ng-model="trans_data" id="trans_data" /></td>
+                                        </tr>
+                                        <tr >
+                                            <td><label for="channel">Channel</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="channel" ng-model="channel" id="channel" data-ng-init="channel = 'ALL';">
+                                                    <option value="ALL">ALL</option>
+                                                    <option value="ATM">ATM</option>
+                                                    <option value="FUNDGATE">FUNDGATE</option>
+                                                    <option value="MOBILE">MOBILE</option>
+                                                    <option value="JUSTPAY">JUSTPAY</option>
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td><label for="transType">Type</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="transtype" ng-model="transtype" id="transtype" data-ng-init="transtype = 'ALL'">
+                                                    <option value="ALL">ALL</option>
+                                                    <option value="FundsTransfer">FUNDS TRANSFER</option>
+                                                    <option value="Payments">PAYMENTS</option>
+                                                    <option value="Withdrawals">WITHDRAWALS</option>
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="from_source">Source</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="from_source" ng-model="from_source" id="from_source" data-ng-init="from_source = 'ALL'">
+                                                    <option value="ALL">ALL</option> 
+                                                    <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="destination">Target: </label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="destination" ng-model="destination" id="destination" data-ng-init="destination = 'ALL'" >
+                                                    <option value="ALL">ALL</option> 
+                                                    <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr data-ng-init = "record = 'new';">
+                                            <td><label>Records</label></td>
+                                                                                        <td><input id="record" type="radio" ng-model="record" value="new">New  
+                                                                                            <input id="record" type="radio" ng-model="record" value="old">Old <br />
+                                                                                        </td>
+                                            <td>
+                                                <input ng-model="record"  ng-repeat-start="option in ['new', 'old']" type="radio" aria-checked="true" name="optionType" value="{{option}}"/>
+                                                <span style="padding-right:10px;" ng-repeat-end>{{option}}</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="vasgatereprocess" />
+                                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <th class="text-left">Reference</th>
+                                            <th class="text-left">Status</th>
+                                            <th class="text-left">Narration</th>
+                                            <th class="text-left">Account</th>
+                                            <th class="text-left">Client</th> 
+                                            <th class="text-left">Vastype</th> 
+                                            <th class="text-left">Amount</th>  
+                                            <th class="text-left">Mobile</th>
+                                             <th class="text-left">Transtype</th>
+                                            <th class="text-left">PAN</th>  
+                                            <th class="text-left">CUSTOMER A/C</th>
+                                            <th class="text-left">MERCHANT A/C</th>
+                                            <th class="text-left">TRANS AMOUNT</th>q
+                                            <th class="text-left">FEE</th>
+                                            <th class="text-left">RESPONSE CODE</th>
+                                            <th class="text-left">RESPONSE</th>                        
+                                            <th class="text-left">TERMINAL ID</th> 
+                                            <th class="text-left">STAN</th> 
+                                            <th class="text-left">INFO</th> 
+                                            <th class="text-left">REFERENCE &#x02116;</th> 
+                                            <th class="text-left">SOURCE</th> 
+                                            <th class="text-left">DESTINATION</th> 
+                                            <th class="text-left">RESPONSE DATE</th> 
+                                            <th class="text-left">TAT(s)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-font">
+                                        <tr ng-hide="filteredTmcTrxs.length">
+                                            <td colspan="21" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredTmcTrxs.length">
+                                            <td colspan="21" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredTmcTrxs" ng-class="tmcRowColor(f.status)">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td class="text-left">{{f.reference}}</td>
+                                             <td class="text-left">{{f.status}}</td>
+                                            <td class="text-left">{{f.narration}}</td>
+                                            <td class="text-left">{{f.account}}</td>
+                                            <td class="text-left">{{f.client}}</td>
+                                            <td>{{f.vastype}}</td>
+                                            <td>{{f.amount}}</td>
+                                            <td>{{f.mobile}}</td>
+                                             <td>{{f.transtype}}</td>
+                                            <td>{{f.source_account}}</td>
+                                            <td>{{f.destination_account}}</td>
+                                            <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>  
+                                            <td><small><i>&#8373;</i></small>{{getAmt(f.fee)}}</td>
+                                            <td class="text-center">{{f.response_code}}</td>                               
+                                            <td class="text-left">{{f.response}}</td>
+                                            <td>{{f.terminal_id}}</td>
+                                            <td>{{f.stan}}</td>
+                                            <td class="text-left">{{f.card_acc_name}}</td>
+                                            <td >{{f.reference}}</td>
+                                            <td class="text-left">{{f.src_node}}</td>
+                                            <td class="text-left">{{f.target_node}}</td>
+                                            <td>{{f.response_time}}</td> 
+                                            <td>{{trnxTAT(f.response_time, f.trans_date)}}</td>
+                                        </tr>                                     
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             end col 
+        </div>
+         end row 
+    </div>
+</div>
+<div class="sticky-container">
+    <ul class="sticky">
+                <li class="extend animated slideInRight" ng-show="!(balance.indexOf('n/a') > - 1)" style="justify-content: center">
+                    <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+                </li>
+        <li ng-click="showUploadData('vasreprocess')" title="upload as excel" ng-if="testTmcUpdate()">
+        <li ng-click="showUploadData('vasreprocess')" title="upload as excel">
+            <i class="fa fa-upload fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+            <i  class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;"></i>
+        </li>
+        
+                <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(filteredTmcTrxs)"></i>
+        </li>
+        
+                <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscalltable', 1, 0, 'response_code', '00', 'amount', 'fee');">
+            <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+        
+                        <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscall', 1, 0, 'response_code', '00', 'amount', 'fee');">
+            <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(TmcTrxs)"></i>
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" href="./Xportal/Report/EXCEL?action=tmc"></i>
+        </li>
+                <li on-long-press="autoRefreshReport('getTMCTrxns');" ng-click="refreshReport2('TmcTrxs','Tmc','tmc',1,0, 'response_code','00','amount','fee');">
+                    <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>
+        <li  ng-click="refreshReport2('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');">
+            <i class="fa fa-sync fa-2x refresh-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+    </ul>
+</div>-->
+<!--Page wrapper ends here-->
+
+<!-- first call start-->
+
+<div class="wrapper" data-ng-init="initializeSettings('Tmc', 'nodes', 'nodeList');" ng-show="DisplayFirst">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <!--                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                                                    <div class="card-header">
+                                                        <h5 class="font-16 my-0" style="text-align: center;">
+                                                            <i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>
+                                                            Initiate Vas Reprocessing Report
+                                                        </h5>
+                                                    </div>
+                                                    <div class="card-body" style="padding: 0.35rem !important;" >
+                                                        <form ng-submit="getRecords('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');" id="tmc">
+                                                            <table class="table borderless">
+                                                                <tr>
+                                                                    <td><label for="start-date">Start Date</label></td>
+                                                                    <td> 
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="end-date"> End Date</label></td>
+                                                                    <td>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="status">Status</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="status" ng-model="status" id="status" data-ng-init="status = 'ALL';">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="SUCCESS">SUCCESSFUL</option>
+                                                                            <option value="REVERSAL">REVERSAL</option>
+                                                                            <option value="FAIL">FAILED</option>
+                                                                            <option value="AMBIGUOUS">AMBIGUOUS</option> 
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="pan">PAN:</label></td>
+                                                                    <td><input class="form-control form-control-sm" name="pan" ng-model="pan" id="pan" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="trans_data">Reference:</label></td>
+                                                                    <td><input class="form-control form-control-sm" name="trans_data" ng-model="trans_data" id="trans_data" /></td>
+                                                                </tr>
+                                                                <tr >
+                                                                    <td><label for="channel">Channel</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="channel" ng-model="channel" id="channel" data-ng-init="channel = 'ALL';">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="ATM">ATM</option>
+                                                                            <option value="FUNDGATE">FUNDGATE</option>
+                                                                            <option value="MOBILE">MOBILE</option>
+                                                                            <option value="JUSTPAY">JUSTPAY</option>
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr >
+                                                                    <td><label for="transType">Type</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="transtype" ng-model="transtype" id="transtype" data-ng-init="transtype = 'ALL'">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="FundsTransfer">FUNDS TRANSFER</option>
+                                                                            <option value="Payments">PAYMENTS</option>
+                                                                            <option value="Withdrawals">WITHDRAWALS</option>
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="from_source">Source</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="from_source" ng-model="from_source" id="from_source" data-ng-init="from_source = 'ALL'">
+                                                                            <option value="ALL">ALL</option> 
+                                                                            <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="destination">Target: </label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="destination" ng-model="destination" id="destination" data-ng-init="destination = 'ALL'" >
+                                                                            <option value="ALL">ALL</option> 
+                                                                            <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr data-ng-init = "record = 'new';">
+                                                                    <td><label>Records</label></td>
+                                                                                                                <td><input id="record" type="radio" ng-model="record" value="new">New  
+                                                                                                                    <input id="record" type="radio" ng-model="record" value="old">Old <br />
+                                                                                                                </td>
+                                                                    <td>
+                                                                        <input ng-model="record"  ng-repeat-start="option in ['new', 'old']" type="radio" aria-checked="true" name="optionType" value="{{option}}"/>
+                                                                        <span style="padding-right:10px;" ng-repeat-end>{{option}}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <input type="hidden" name="service" ng-model="service" id="service" value="vasgatereprocess" />
+                                                            <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                                        </form>
+                                                    </div>
+                                                </div>-->
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <th class="text-left">Reference</th>
+                                            <th class="text-left">Status</th>
+                                            <th class="text-left">Narration</th>
+                                            <th class="text-left">Account</th>
+                                            <th class="text-left">Client</th> 
+                                            <th class="text-left">Vastype</th> 
+                                            <th class="text-left">Amount</th>  
+                                            <th class="text-left">Mobile</th>
+                                            <th class="text-left">Transtype</th>
+                                            <!--                                            <th class="text-left">PAN</th>  
+                                                                                        <th class="text-left">CUSTOMER A/C</th>
+                                                                                        <th class="text-left">MERCHANT A/C</th>
+                                                                                        <th class="text-left">TRANS AMOUNT</th>q
+                                                                                        <th class="text-left">FEE</th>
+                                                                                        <th class="text-left">RESPONSE CODE</th>
+                                                                                        <th class="text-left">RESPONSE</th>                        
+                                                                                        <th class="text-left">TERMINAL ID</th> 
+                                                                                        <th class="text-left">STAN</th> 
+                                                                                        <th class="text-left">INFO</th> 
+                                                                                        <th class="text-left">REFERENCE &#x02116;</th> 
+                                                                                        <th class="text-left">SOURCE</th> 
+                                                                                        <th class="text-left">DESTINATION</th> 
+                                                                                        <th class="text-left">RESPONSE DATE</th> 
+                                                                                        <th class="text-left">TAT(s)</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-font">
+                                        <tr ng-hide="filteredNlaReversalTrxs.length">
+                                            <td colspan="21" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredNlaReversalTrxs.length">
+                                            <td colspan="21" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredNlaReversalTrxs" ng-class="tmcRowColor(f.status)">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td class="text-left">{{f.reference}}</td>
+                                            <td class="text-left">{{f.status}}</td>
+                                            <td class="text-left">{{f.narration}}</td>
+                                            <td class="text-left">{{f.account}}</td>
+                                            <td class="text-left">{{f.client}}</td>
+                                            <td>{{f.vastype}}</td>
+                                            <td>{{f.amount}}</td>
+                                            <td>{{f.mobile}}</td>
+                                            <td>{{f.transtype}}</td>
+                                            <!--                                            <td>{{f.source_account}}</td>
+                                                                                        <td>{{f.destination_account}}</td>
+                                                                                        <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>  
+                                                                                        <td><small><i>&#8373;</i></small>{{getAmt(f.fee)}}</td>
+                                                                                        <td class="text-center">{{f.response_code}}</td>                               
+                                                                                        <td class="text-left">{{f.response}}</td>
+                                                                                        <td>{{f.terminal_id}}</td>
+                                                                                        <td>{{f.stan}}</td>
+                                                                                        <td class="text-left">{{f.card_acc_name}}</td>
+                                                                                        <td >{{f.reference}}</td>
+                                                                                        <td class="text-left">{{f.src_node}}</td>
+                                                                                        <td class="text-left">{{f.target_node}}</td>
+                                                                                        <td>{{f.response_time}}</td> 
+                                                                                        <td>{{trnxTAT(f.response_time, f.trans_date)}}</td>-->
+                                        </tr>                                     
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container" ng-show="DisplayFirst">
+    <ul class="sticky">
+        <!--        <li class="extend animated slideInRight" ng-show="!(balance.indexOf('n/a') > - 1)" style="justify-content: center">
+                    <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+                </li>-->
+        <!--        <li ng-click="showUploadData('vasreprocess')" title="upload as excel" ng-if="testTmcUpdate()">-->
+        <li ng-click="showUploadData('vasreprocess')" title="upload as excel">
+            <i class="fa fa-upload fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i  class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;"></i>
+        </li>
+
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(filteredTmcTrxs)"></i>
+        </li>
+
+        <!--                <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscalltable', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>
+                
+                                <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscall', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+
+        <!--        <li class="download">
+                    <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(TmcTrxs)"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" href="./Xportal/Report/EXCEL?action=tmc"></i>
+                </li>
+                        <li on-long-press="autoRefreshReport('getTMCTrxns');" ng-click="refreshReport2('TmcTrxs','Tmc','tmc',1,0, 'response_code','00','amount','fee');">
+                            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                        </li>
+                <li  ng-click="refreshReport2('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-sync fa-2x refresh-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+    </ul>
+</div>
+
+<!-- first call end -->
+
+<!-- second call start-->
+
+<div class="wrapper" data-ng-init="initializeSettings('Tmc', 'nodes', 'nodeList');" ng-show="DisplaySecond">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <!--                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                                                    <div class="card-header">
+                                                        <h5 class="font-16 my-0" style="text-align: center;">
+                                                            <i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>
+                                                            Initiate Vas Reprocessing Report
+                                                        </h5>
+                                                    </div>
+                                                    <div class="card-body" style="padding: 0.35rem !important;" >
+                                                        <form ng-submit="getRecords('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');" id="tmc">
+                                                            <table class="table borderless">
+                                                                <tr>
+                                                                    <td><label for="start-date">Start Date</label></td>
+                                                                    <td> 
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="end-date"> End Date</label></td>
+                                                                    <td>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="status">Status</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="status" ng-model="status" id="status" data-ng-init="status = 'ALL';">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="SUCCESS">SUCCESSFUL</option>
+                                                                            <option value="REVERSAL">REVERSAL</option>
+                                                                            <option value="FAIL">FAILED</option>
+                                                                            <option value="AMBIGUOUS">AMBIGUOUS</option> 
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="pan">PAN:</label></td>
+                                                                    <td><input class="form-control form-control-sm" name="pan" ng-model="pan" id="pan" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="trans_data">Reference:</label></td>
+                                                                    <td><input class="form-control form-control-sm" name="trans_data" ng-model="trans_data" id="trans_data" /></td>
+                                                                </tr>
+                                                                <tr >
+                                                                    <td><label for="channel">Channel</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="channel" ng-model="channel" id="channel" data-ng-init="channel = 'ALL';">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="ATM">ATM</option>
+                                                                            <option value="FUNDGATE">FUNDGATE</option>
+                                                                            <option value="MOBILE">MOBILE</option>
+                                                                            <option value="JUSTPAY">JUSTPAY</option>
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr >
+                                                                    <td><label for="transType">Type</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="transtype" ng-model="transtype" id="transtype" data-ng-init="transtype = 'ALL'">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="FundsTransfer">FUNDS TRANSFER</option>
+                                                                            <option value="Payments">PAYMENTS</option>
+                                                                            <option value="Withdrawals">WITHDRAWALS</option>
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="from_source">Source</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="from_source" ng-model="from_source" id="from_source" data-ng-init="from_source = 'ALL'">
+                                                                            <option value="ALL">ALL</option> 
+                                                                            <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="destination">Target: </label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="destination" ng-model="destination" id="destination" data-ng-init="destination = 'ALL'" >
+                                                                            <option value="ALL">ALL</option> 
+                                                                            <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr data-ng-init = "record = 'new';">
+                                                                    <td><label>Records</label></td>
+                                                                                                                <td><input id="record" type="radio" ng-model="record" value="new">New  
+                                                                                                                    <input id="record" type="radio" ng-model="record" value="old">Old <br />
+                                                                                                                </td>
+                                                                    <td>
+                                                                        <input ng-model="record"  ng-repeat-start="option in ['new', 'old']" type="radio" aria-checked="true" name="optionType" value="{{option}}"/>
+                                                                        <span style="padding-right:10px;" ng-repeat-end>{{option}}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <input type="hidden" name="service" ng-model="service" id="service" value="vasgatereprocess" />
+                                                            <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                                        </form>
+                                                    </div>
+                                                </div>-->
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <th class="text-left">Reference</th>
+                                            <th class="text-left">Status</th>
+                                            <th class="text-left">Narration</th>
+                                            <!--                                            <th class="text-left">Account</th>
+                                                                                        <th class="text-left">Client</th> 
+                                                                                        <th class="text-left">Vastype</th> 
+                                                                                        <th class="text-left">Amount</th>  
+                                                                                        <th class="text-left">Mobile</th>
+                                                                                         <th class="text-left">Transtype</th>-->
+                                            <!--                                            <th class="text-left">PAN</th>  
+                                                                                        <th class="text-left">CUSTOMER A/C</th>
+                                                                                        <th class="text-left">MERCHANT A/C</th>
+                                                                                        <th class="text-left">TRANS AMOUNT</th>q
+                                                                                        <th class="text-left">FEE</th>
+                                                                                        <th class="text-left">RESPONSE CODE</th>
+                                                                                        <th class="text-left">RESPONSE</th>                        
+                                                                                        <th class="text-left">TERMINAL ID</th> 
+                                                                                        <th class="text-left">STAN</th> 
+                                                                                        <th class="text-left">INFO</th> 
+                                                                                        <th class="text-left">REFERENCE &#x02116;</th> 
+                                                                                        <th class="text-left">SOURCE</th> 
+                                                                                        <th class="text-left">DESTINATION</th> 
+                                                                                        <th class="text-left">RESPONSE DATE</th> 
+                                                                                        <th class="text-left">TAT(s)</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-font">
+                                        <tr ng-hide="filteredVasReprocessTrxs.length">
+                                            <td colspan="21" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredVasReprocessTrxs.length">
+                                            <td colspan="21" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredVasReprocessTrxs" ng-class="tmcRowColor(f.status)">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td class="text-left">{{f.reference}}</td>
+                                            <td class="text-left">{{f.status}}</td>
+                                            <td class="text-left">{{f.narration}}</td>
+                                            <!--                                            <td class="text-left">{{f.account}}</td>
+                                                                                        <td class="text-left">{{f.client}}</td>
+                                                                                        <td>{{f.vastype}}</td>
+                                                                                        <td>{{f.amount}}</td>
+                                                                                        <td>{{f.mobile}}</td>
+                                                                                         <td>{{f.transtype}}</td>-->
+                                            <!--                                            <td>{{f.source_account}}</td>
+                                                                                        <td>{{f.destination_account}}</td>
+                                                                                        <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>  
+                                                                                        <td><small><i>&#8373;</i></small>{{getAmt(f.fee)}}</td>
+                                                                                        <td class="text-center">{{f.response_code}}</td>                               
+                                                                                        <td class="text-left">{{f.response}}</td>
+                                                                                        <td>{{f.terminal_id}}</td>
+                                                                                        <td>{{f.stan}}</td>
+                                                                                        <td class="text-left">{{f.card_acc_name}}</td>
+                                                                                        <td >{{f.reference}}</td>
+                                                                                        <td class="text-left">{{f.src_node}}</td>
+                                                                                        <td class="text-left">{{f.target_node}}</td>
+                                                                                        <td>{{f.response_time}}</td> 
+                                                                                        <td>{{trnxTAT(f.response_time, f.trans_date)}}</td>-->
+                                        </tr>                                     
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container" ng-show="DisplaySecond">
+    <ul class="sticky">
+        <!--        <li class="extend animated slideInRight" ng-show="!(balance.indexOf('n/a') > - 1)" style="justify-content: center">
+                    <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+                </li>-->
+        <!--        <li ng-click="showUploadData('vasreprocess')" title="upload as excel" ng-if="testTmcUpdate()">-->
+        <!--        <li ng-click="showUploadData('vasreprocess')" title="upload as excel">
+                    <i class="fa fa-upload fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+                    <i  class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+
+        <li  ng-click="uploadData('filteredVasReprocessTrxs', 'VasgateReprocess', 'vasreprocesscalltable', 1, 0, 'response_code', '00', 'amount', 'fee');">
+            <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(filteredTmcTrxs)"></i>
+        </li>
+
+        <!--                        <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscalltable', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                            <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                        </li>-->
+
+        <!--                        <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscall', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+
+        <!--        <li class="download">
+                    <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(TmcTrxs)"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" href="./Xportal/Report/EXCEL?action=tmc"></i>
+                </li>
+                        <li on-long-press="autoRefreshReport('getTMCTrxns');" ng-click="refreshReport2('TmcTrxs','Tmc','tmc',1,0, 'response_code','00','amount','fee');">
+                            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                        </li>
+                <li  ng-click="refreshReport2('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-sync fa-2x refresh-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+    </ul>
+</div>
+
+<!-- second call end -->
+
+<!-- third call start-->
+
+<div class="wrapper" data-ng-init="initializeSettings('Tmc', 'nodes', 'nodeList');" ng-show="DisplayThird">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <!--                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                                                    <div class="card-header">
+                                                        <h5 class="font-16 my-0" style="text-align: center;">
+                                                            <i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>
+                                                            Initiate Vas Reprocessing Report
+                                                        </h5>
+                                                    </div>
+                                                    <div class="card-body" style="padding: 0.35rem !important;" >
+                                                        <form ng-submit="getRecords('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');" id="tmc">
+                                                            <table class="table borderless">
+                                                                <tr>
+                                                                    <td><label for="start-date">Start Date</label></td>
+                                                                    <td> 
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="end-date"> End Date</label></td>
+                                                                    <td>
+                                                                        <div class="input-group input-group-sm">
+                                                                            <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                                            <div class="input-group-append">
+                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="status">Status</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="status" ng-model="status" id="status" data-ng-init="status = 'ALL';">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="SUCCESS">SUCCESSFUL</option>
+                                                                            <option value="REVERSAL">REVERSAL</option>
+                                                                            <option value="FAIL">FAILED</option>
+                                                                            <option value="AMBIGUOUS">AMBIGUOUS</option> 
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="pan">PAN:</label></td>
+                                                                    <td><input class="form-control form-control-sm" name="pan" ng-model="pan" id="pan" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="trans_data">Reference:</label></td>
+                                                                    <td><input class="form-control form-control-sm" name="trans_data" ng-model="trans_data" id="trans_data" /></td>
+                                                                </tr>
+                                                                <tr >
+                                                                    <td><label for="channel">Channel</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="channel" ng-model="channel" id="channel" data-ng-init="channel = 'ALL';">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="ATM">ATM</option>
+                                                                            <option value="FUNDGATE">FUNDGATE</option>
+                                                                            <option value="MOBILE">MOBILE</option>
+                                                                            <option value="JUSTPAY">JUSTPAY</option>
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr >
+                                                                    <td><label for="transType">Type</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="transtype" ng-model="transtype" id="transtype" data-ng-init="transtype = 'ALL'">
+                                                                            <option value="ALL">ALL</option>
+                                                                            <option value="FundsTransfer">FUNDS TRANSFER</option>
+                                                                            <option value="Payments">PAYMENTS</option>
+                                                                            <option value="Withdrawals">WITHDRAWALS</option>
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="from_source">Source</label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="from_source" ng-model="from_source" id="from_source" data-ng-init="from_source = 'ALL'">
+                                                                            <option value="ALL">ALL</option> 
+                                                                            <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                                        </select>    
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td><label for="destination">Target: </label></td>
+                                                                    <td>
+                                                                        <select class="form-control form-control-sm" name="destination" ng-model="destination" id="destination" data-ng-init="destination = 'ALL'" >
+                                                                            <option value="ALL">ALL</option> 
+                                                                            <option ng-repeat="option in nodeList" value="{{option.id}}">{{option.name}}</option>                   
+                                                                        </select>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr data-ng-init = "record = 'new';">
+                                                                    <td><label>Records</label></td>
+                                                                                                                <td><input id="record" type="radio" ng-model="record" value="new">New  
+                                                                                                                    <input id="record" type="radio" ng-model="record" value="old">Old <br />
+                                                                                                                </td>
+                                                                    <td>
+                                                                        <input ng-model="record"  ng-repeat-start="option in ['new', 'old']" type="radio" aria-checked="true" name="optionType" value="{{option}}"/>
+                                                                        <span style="padding-right:10px;" ng-repeat-end>{{option}}</span>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <input type="hidden" name="service" ng-model="service" id="service" value="vasgatereprocess" />
+                                                            <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                                        </form>
+                                                    </div>
+                                                </div>-->
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <th class="text-left">
+                                                <input type="checkbox" name="select" id="chk-all" ng-model="selectAll" ng-change="toggleSelectAll('VasReprocessTrxs')">
+                                                Select All</th>
+                                            <th class="text-left">Reference</th>
+                                            <th class="text-left">Status</th>
+                                            <!--                                            <th class="text-left">Narration</th>-->
+                                            <th class="text-left">Account</th>
+                                            <th class="text-left">Client</th> 
+                                            <th class="text-left">Vastype</th> 
+                                            <th class="text-left">Amount</th>  
+                                            <th class="text-left">Mobile</th>
+                                            <th class="text-left">Transtype</th>
+                                            <!--                                            <th class="text-left">PAN</th>  
+                                                                                        <th class="text-left">CUSTOMER A/C</th>
+                                                                                        <th class="text-left">MERCHANT A/C</th>
+                                                                                        <th class="text-left">TRANS AMOUNT</th>q
+                                                                                        <th class="text-left">FEE</th>
+                                                                                        <th class="text-left">RESPONSE CODE</th>
+                                                                                        <th class="text-left">RESPONSE</th>                        
+                                                                                        <th class="text-left">TERMINAL ID</th> 
+                                                                                        <th class="text-left">STAN</th> 
+                                                                                        <th class="text-left">INFO</th> 
+                                                                                        <th class="text-left">REFERENCE &#x02116;</th> 
+                                                                                        <th class="text-left">SOURCE</th> 
+                                                                                        <th class="text-left">DESTINATION</th> 
+                                                                                        <th class="text-left">RESPONSE DATE</th> 
+                                                                                        <th class="text-left">TAT(s)</th>-->
+                                        </tr>
+                                    </thead>
+                                    <tbody class="table-font">
+                                        <tr ng-hide="filteredVasReprocessTrxs.length">
+                                            <td colspan="21" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredVasReprocessTrxs.length">
+                                            <td colspan="21" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredVasReprocessTrxs" ng-class="tmcRowColor(f.status)">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td><input type="checkbox" name="selection" id="chk-{{f.reference}}" ng-model="selectedData[$index]" ng-value="f" ng-change="toggleSelect('VasReprocessTrxs', $index)"></td>
+                                            <td class="text-left">{{f.reference}}</td>
+                                            <td class="text-left">{{f.status}}</td>
+                                            <!--                                            <td class="text-left">{{f.narration}}</td>-->
+                                            <td class="text-left">{{f.account}}</td>
+                                            <td class="text-left">{{f.client}}</td>
+                                            <td>{{f.vastype}}</td>
+                                            <td>{{f.amount}}</td>
+                                            <td>{{f.mobile}}</td>
+                                            <td>{{f.transtype}}</td>
+                                            <!--                                            <td>{{f.source_account}}</td>
+                                                                                        <td>{{f.destination_account}}</td>
+                                                                                        <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>  
+                                                                                        <td><small><i>&#8373;</i></small>{{getAmt(f.fee)}}</td>
+                                                                                        <td class="text-center">{{f.response_code}}</td>                               
+                                                                                        <td class="text-left">{{f.response}}</td>
+                                                                                        <td>{{f.terminal_id}}</td>
+                                                                                        <td>{{f.stan}}</td>
+                                                                                        <td class="text-left">{{f.card_acc_name}}</td>
+                                                                                        <td >{{f.reference}}</td>
+                                                                                        <td class="text-left">{{f.src_node}}</td>
+                                                                                        <td class="text-left">{{f.target_node}}</td>
+                                                                                        <td>{{f.response_time}}</td> 
+                                                                                        <td>{{trnxTAT(f.response_time, f.trans_date)}}</td>-->
+                                        </tr>                                     
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container" ng-show="DisplayThird">
+    <ul class="sticky">
+        <!--        <li class="extend animated slideInRight" ng-show="!(balance.indexOf('n/a') > - 1)" style="justify-content: center">
+                    <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+                </li>-->
+        <!--        <li ng-click="showUploadData('vasreprocess')" title="upload as excel" ng-if="testTmcUpdate()">-->
+        <!--        <li ng-click="showUploadData('vasreprocess')" title="upload as excel">
+                    <i class="fa fa-upload fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+                    <i  class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+
+        <!--        <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscall', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(filteredTmcTrxs)"></i>
+        </li>
+
+        <!--                <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscalltable', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>
+                
+                                <li  ng-click="uploadData('filteredTmcTrxs', 'VasgateReprocess', 'vasreprocesscall', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-angle-double-right fa-2x" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+
+        <!--        <li class="download">
+                    <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(TmcTrxs)"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" href="./Xportal/Report/EXCEL?action=tmc"></i>
+                </li>
+                        <li on-long-press="autoRefreshReport('getTMCTrxns');" ng-click="refreshReport2('TmcTrxs','Tmc','tmc',1,0, 'response_code','00','amount','fee');">
+                            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                        </li>
+                <li  ng-click="refreshReport2('TmcTrxs', 'Tmc', 'tmc', 1, 0, 'response_code', '00', 'amount', 'fee');">
+                    <i class="fa fa-sync fa-2x refresh-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+    </ul>
+</div>
+
+<!-- third call end -->
+
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('TmcTrxs', 'Tmc', 'tmc', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('TmcTrxs', 'Tmc', 'tmc', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('TmcTrxs', 'Tmc', 'tmc', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('TmcTrxs', 'Tmc', 'tmc', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;
+            </div>
+            <div class="col-sm-6">
+                <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                <span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>
+                <span class="badge-dark badge mr-3 cursor-pointer" title="Total Fee"><i>&#8373;</i> {{TmcRecordsTotalFee}} </span>
+                <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>               
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                </select>   
+                &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });</script>
+

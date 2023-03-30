@@ -1,0 +1,210 @@
+<div class="header-bg">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                            <!--<span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>-->
+
+                            <label class="ml-5" for="show-records-select">Show</label>
+                            <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+                                    <button id="reverse-btn" title="initiate reversal for authorization" class="btn btn-primary btn-sm  sm-btn cursor-pointer" style="color: black; margin-top: -10px; margin-right: 8px; cursor: pointer;" ng-click="nlaReversalSelected('initiate', 'NlaReversalTrxs')">INSERT</button>
+
+                                    <div class="cntr-innr">
+                                        <form ng-submit="getRecords('NlaReversalTrxs', 'nlaliquidationreport', 'nlatrans', 1);">
+                                            <label class="search" for="inpt_search">
+                                                <input id="inpt_search" title="press Enter to search" type="text" name="searchKey" placeholder="" ng-model="searchTrxnKey" />
+                                                <input  type="hidden" name="service" value="search" />
+                                            </label>
+                                        </form>
+                                    </div>&nbsp;
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>INSERT DATA</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <!--                                <form ng-submit="getRecords('NLATrxs', 'Reversal', 'reversal', 1);" id="reversal">-->
+                                <form ng-submit="whitelistblacklistSelected('WhitelistBlacklistTrxs', 'whitelistblacklistinsert', 'whitelistblacklisttrans', 1, 0);" id="whitelistblacklisttrans">
+
+                                    <table class="table borderless">
+                                        <!--                                        <tr>
+                                                                                    <td><label for="start-date">Start Date</label></td>
+                                                                                    <td> 
+                                                                                        <div class="input-group input-group-sm">
+                                                                                            <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td><label for="end-date">End Date</label></td>
+                                                                                    <td>
+                                                                                        <div class="input-group input-group-sm">
+                                                                                            <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                                                            <div class="input-group-append">
+                                                                                                <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </td>
+                                                                                </tr>-->
+
+                                        <tr>
+                                            <td><label for="accountType">Account Type:</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="accountType"  id="accountType">                                                
+                                                    <option value="MOMO">MOBILE MONEY</option>  
+                                                    <option value="BANK">BANK</option>  
+                                                </select>    
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td><label for="account">Account No:</label></td>
+                                            <td><input ng-required="true" class="form-control form-control-sm" name="account" ng-model="account" id="account"  ng-required="true"/></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="reason">Reason:</label></td>
+                                            <td><input ng-required="true" class="form-control form-control-sm" name="reason" ng-model="reason" id="reason"  ng-required="true"/></td>
+                                        </tr>                                      
+                                        <tr>
+                                            <td><label for="action">Action:</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="action"  id="action">                                                
+                                                    <option value="BLACKLIST">BLACKLIST</option>  
+                                                    <option value="WHITELIST">WHITELIST</option>  
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="insertdatatrans" />
+                                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">INSERT</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <!--                                            <th class="text-left">
+                                                                                            <input type="checkbox" name="select" id="chk-all" ng-model="selectAll" ng-change="toggleSelectAll('NlaReversalTrxs')">
+                                                                                            Select All</th>-->
+                                            <!--                                            <th class="text-left">
+                                                                                            <input type="checkbox" name="select" id="chk-all" ng-model="selectAll" ng-change="toggleSelectAll('NlaReversalTrxs')">
+                                                                                            Select All</th>-->
+                                            <th class="text-center">ACCOUNT</th> 
+                                            <th class="text-center">ACTION</th> 
+                                            <th class="text-center">REASON</th>
+                                            <th class="text-center">AUTHORIZER</th>
+                                            <th class="text-center">DATE WHITELISTED</th>  
+                                            <th class="text-center">DATE BLACKLISTED</th>   
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-hide="filteredNlaReversalTrxs.length">
+                                            <td colspan="13" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredNlaReversalTrxs.length">
+                                            <td colspan="13" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredNlaReversalTrxs">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <!--                                            <td><input type="checkbox" name="selection" id="chk-{{f.transid}}" ng-model="selectedData[$index]" ng-value="f" ng-change="toggleSelect($index)"></td>-->
+                                            <!--                                            <td><input type="checkbox" name="selection" id="chk-{{f.transid}}" ng-model="selectedData[$index]" ng-value="f" ng-change="toggleSelect('NlaReversalTrxs', $index)"></td>-->
+                                            <td class="text-center">{{f.account}}</td>
+                                            <td class="text-center">{{f.action}}</td>
+                                            <td class="text-center">{{f.reason}}</td>  
+                                            <td class="text-center">{{f.authorizer}}</td> 
+                                            <td class="text-center">{{f.dateWhitelisted}}</td> 
+                                            <td class="text-center">{{f.dateBlacklisted}}</td> 
+
+                                            <!--                                            <td class="text-center">{{f.merchant_code}}</td>
+                                                                                        <td class="text-right">{{f.fee}}</td>
+                                                                                        <td class="text-right">{{f.elevy}}</td>-->
+                                            <!--                                            <td class="text-center">{{f.trans_amount}}</td>                      
+                                                                                        <td class=""><button id="{{f.id}}" title="initiate reversal for authorization" class="btn btn-primary btn-sm  sm-btn hpy-1 px-3 cursor-pointer" ng-click="reverse(f.id, f.transid, 'ini')">INITIATE</button></td>
+                                                                                        <td>{{f.response_code}}</td>
+                                                                                        <td class=""><button id="{{f.id}}" disabled title="reversal status" ng-class="{
+                                                                                                    'btn-success':f.reversed === 'SUCCESS', 'btn - danger': f.reversed === 'ERROR', 'btn-primary':f.reversed === 'DUPLICATE' }" class="btn  btn-sm  sm-btn hpy-1 px-3 cursor-pointer" ng-if="f.reversed" >{{f.reversed}}</button></td>
+                                                                                        <td class="text-left">{{trimJP(f.trans_descr)}}</td>-->
+                                            <!--                                            <td>{{f.trans_date}}</td>                 -->
+                                        </tr>   
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container">
+    <ul class="sticky">
+        <!--        <li ng-click="showUploadData('reversal')" title="upload as excel" >
+                    <i class="fa fa-upload fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>
+                    <i  class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;"></i>
+                </li>-->
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(NlaReversalTrxs)"></i>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });
+</script>

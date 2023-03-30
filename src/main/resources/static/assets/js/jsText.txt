@@ -1,0 +1,7 @@
+if(paging && $scope.pageNumber){} ==  this is to check so that when user clicks on paging links and no record have been 
+fetched b4 no request shd be sent. when page is loaded no records have been set. so why click next or previous. where are 
+you going? ideally i shd disable them i just don't want to go this way since i have to enable them in the code again.
+also note that getFGTransactions(pageNumber+1,496) ie the pagination calls takes a dummy parameter. this enables me to 
+know that click is coming from pagination links. that is why i test if(paging && $scope.pageNumber). $scope.pageNumber this 
+also helps me since when page is loaded no pageNumber exists. 
+

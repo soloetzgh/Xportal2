@@ -1,0 +1,122 @@
+<div ng-show="testBarUBP()">
+    <div class="top-header-offset"></div>
+    <!--loader-->
+    <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+        <span>Loading</span>
+        <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+        <span class="el-1"></span>
+        <span class="el-2"></span>
+        <span class="el-3"></span>
+        <span class="el-4"></span>
+        <span class="el-5"></span>
+        <span class="el-6"></span>
+    </div>
+    <!--EndofLoader--> 
+    <div class="container-fluid card-outline-secondary">
+        <!--filter query box-->
+        <div class="card filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                Card Update Details
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block font08">
+                <form ng-submit="getCardDetails(1);">
+                    <table class="table borderless">        
+                        <tr>
+                            <td><label for="card_num">Card Number:</label></td>
+                            <td><input class="form-control form-control-sm" name="card_num" ng-model="card_num" id="card_num" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="transId">Mobile No:</label></td>
+                            <td><input class="form-control form-control-sm" name="transId" ng-model="transId" id="transId" /></td>
+                        </tr>                  
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="barclaysUBP" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <!--actions div-->      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getBarUBPTrxn(1, 612)" > First</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getBarUBPTrxn(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+            &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getBarUBPTrxn(pageNumber + 1, 496)"> Next</span>&nbsp;
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getBarUBPTrxn(fgRecordsLastPage, 777)"> Last</span>&nbsp;
+            <span class="ml-5 badge badge-info py-1"> Total records found: {{fgRecordsTotalCount}} </span>
+            <span class="ml-5 badge badge-info py-1"> Total Successful: <i>&#8373;</i> {{fgRecordsTotalAmount}} </span>
+
+            <label class="ml-5" for="show-records-select">Show</label>
+            <select class="" ng-change="reloadBarUBPTrxns()" id="show-records-select" ng-model="rowsPerPage">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>               
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="2000">2000</option>
+            </select>   
+            &nbsp;&nbsp;
+
+            <a href="./Xportal/Report/EXCEL?action=barUBP" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+            <!--&nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>-->
+            &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+            &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>
+
+            <span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadBarUBPTrxns()" ></span>
+
+            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="Card Number or Mobile No" >
+                <span class="input-group-addon cursor-pointer" ng-click="searchBarUBPTrxn()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+            </div>    
+            <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+        </div>
+        <div class="table-wrapper scrollbar">
+
+            <table class="table row-even  table-bordered table-hover tablse-striped table-sm text-center">
+                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">TRANS ID</th> 
+                        <th class="text-center">ETZ REF</th> 
+                        <th class="text-center">AMOUNT</th>  
+                        <th class="text-center">UTILITY CODE</th>
+                        <th class="text-center">UTILITY REF</th>  
+                        <th class="text-center">RESPONSE CODE</th>
+                        <th class="text-center">RESPONSE</th> 
+                        <th class="text-center">MESSAGE</th> 
+                        <th class="text-center">TRANS DATE</th>                               
+                    </tr>
+                </thead>
+                <tbody class="font07">
+                    <tr ng-hide="ubpTrxs.length">
+                        <td colspan="10" class="text-center text-danger">No data available - Found[0]</td>
+                    </tr> 
+                    <tr ng-hide="ubpTrxs.length">
+                        <td colspan="10" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                    </tr> 
+                    <tr ng-repeat="f in ubpTrxs" ng-class="barRowColor(f.resultCode)">
+                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                        <td>{{f.extTransid}}</td>
+                        <td>{{f.uniqueTransid}}</td>                                       
+                        <td class=""><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                        <td>{{f.utilityCode}}</td>
+                        <td class="">{{f.utilityRef}}</td>
+                        <td class="">{{mapBarUBPCode(f.resultCode)}}</td>
+                        <td class="text-uppercase">{{f.result}}</td>
+                        <td title="{{f.message}}" class="">{{trim(f.message)}}</td>                              
+                        <td>{{f.transDate| date:'dd/MM/yy @ HH:mm:ss'}}</td>                           
+                    </tr>                      
+                </tbody>
+            </table>
+        </div>
+    </div> 
+</div>
+<div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+    <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+    <br>
+    <hr>
+    <br>
+    Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+</div>

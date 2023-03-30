@@ -1,0 +1,295 @@
+<div class="header-bg" >
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('PbcTrxs', 'MerchantPay', 'mpay', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('PbcTrxs', 'MerchantPay', 'mpay', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('PbcTrxs', 'MerchantPay', 'mpay', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('PbcTrxs', 'MerchantPay', 'mpay', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                            <span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>
+
+                            <!--<label class="ml-5" for="show-records-select">Show</label>-->
+                            <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+                                    <div class="cntr-innr">
+                                        <form ng-submit="getRecords('PbcTrxs', 'Pbc', 'pbcSearch', 1, 0, 'status', '0', 'amount');" id="pbcSearch">
+                                            <label class="search" for="inpt_search">
+                                                <input id="inpt_search" title="press Enter to search"  type="text" placeholder="EtzRef or ClientRef" name="searchKey"/>
+                                                <input  type="hidden" name="service" value="search" />
+                                            </label>
+                                        </form>
+                                    </div>&nbsp;
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" data-ng-init="initializeSettings('Pbc', 'rmPbcProfiles', 'rmList');
+        initializeSettings('Pbc', 'doPbcProfiles', 'doList');
+        initializeSettings('Pbc', 'pcPbcProfiles', 'pcList');
+        initializeSettings('Pbc', 'activityTypes', 'activityList');
+        option = 'subordinate'" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox" ng-init="rm = 'ALL'; dm = 'ALL'; pc = 'ALL'">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>PBC Activity Report</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form ng-submit="getRecords('PbcTrxs', 'Pbc', 'pbc', 1, 0, 'status', '0', 'amount');" id="pbc">
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td><label for="start-date">Start Date</label></td>
+                                            <td> 
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="end-date">End Date</label></td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!--                                        <tr>
+                                                                                    <td><label for="uniqueTransId">Etz Reference:</label></td>
+                                                                                    <td><input class="form-control form-control-sm" name="uniqueTransId" ng-model="uniqueTransId" id="uniqueTransId" /></td>
+                                                                                </tr>-->
+                                        <tr>
+                                            <td><label for="from_source">ID No:</label></td>
+                                            <td><input class="form-control form-control-sm" name="from_source" ng-model="from_source" id="from_source" /></td>
+                                        </tr>
+
+                                        <tr ng-show="(rmList.length > 1) || testEtz()" >
+                                            <!--<tr ng-show="testEtz() || testMerchantPayAll()">-->
+                                            <td><label for="merchant">RM:</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="merchant" ng-model="merchant" id="merchant" 
+                                                        ng-change="initializeSettings('Pbc', 'doPbcProfiles', 'doList', 'merchant');">
+                                                    <option value="ALL">ALL</option>
+                                                    <option ng-repeat="option in rmList" value="{{option.id}}">{{option.name}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="(doList.length > 1)"  data-ng-init="dm = 'ALL'">
+                                            <!--<tr ng-show="testEtz() || testMerchantPayAll()">-->
+                                            <td><label for="merchant">DO:</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="dm" ng-model="dm" id="dm" 
+                                                        ng-change="initializeSettings('Pbc', 'pcPbcProfiles', 'pcList', 'dm');">
+                                                    <option value="ALL">ALL</option>
+                                                    <option ng-repeat="option in doList" value="{{option.id}}">{{option.name}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="(pcList.length > 1)" ng-init="servicecode = 'ALL'">
+                                            <!--<tr ng-show="testEtz() || testMerchantPayAll()">-->
+                                            <td><label for="merchant">PC:</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="servicecode" ng-model="servicecode" id="servicecode" 
+                                                        ng-change="initializeSettings('Pbc', 'fmPbcProfiles', 'fmList', 'servicecode');">
+                                                    <option value="ALL">ALL</option>
+                                                    <option ng-repeat="option in pcList" value="{{option.id}}">{{option.name}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="fmList.length > 1">
+                                            <td><label for="network">FM</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="network" id="network">
+                                                    <option value="ALL">ALL</option>        
+                                                    <option ng-repeat="option in fmList" value="{{option.id}}">{{option.name}}</option>   
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="(activityList.length > 0)" ng-init="product = 'ALL'" >
+                                            <td><label for="product" style="white-space: pre-line !important;">Activity Type</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="product" ng-model="product" id="product">
+                                                    <option value="ALL">ALL</option>
+                                                    <option ng-repeat="option in activityList| orderBy:'name'" value="{{option.id}}" ng-if="activityList.length > 0">{{option.name}}</option>
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="g-typ">Filter</label>
+                                            </td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="option" ng-model="option" id="option">
+                                                    <option selected value="initiator">Initiator</option>
+                                                    <option value="subordinate">Subordinate</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <!--                                        <tr ng-show="(codeList.length > 0)" ng-init="servicecode = 'ALL'">
+                                                                                    <tr ng-show="testEtz() || testMerchantPayAll()">
+                                                                                    <td><label for="servicecode">Service Code</label></td>
+                                                                                    <td>
+                                                                                        <select class="form-control form-control-sm" name="servicecode" ng-model="servicecode" id="servicecode">
+                                                                                            <option value="ALL">ALL</option>
+                                                                                            <option ng-repeat="option in codeList" value="{{option.id}}">{{option.name}}</option>
+                                                                                        </select>
+                                                                                    </td>
+                                                                                </tr>-->
+                                        <tr>
+                                            <td><label for="status">Status</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="status" ng-model="status" id="status">
+                                                    <option value="ALL">ALL</option>
+                                                    <!--                                                    <option value="PENDING">PENDING</option>-->
+                                                    <option value="SUCCESSFUL">SUCCESSFUL</option>
+                                                    <option value="FAILED">FAILED</option>
+                                                </select>       
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="transactions" />
+                                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">ACTIVITY REFERENCE</th> 
+                                            <th class="text-center">INIT ID &#x02116;</th> 
+                                            <th class="text-center">INIT NAME</th> 
+                                            <th class="text-center">INIT DISTRICT</th>
+                                            <th class="text-center">ACTIVITY</th> 
+                                            <th class="text-center">AMOUNT</th>
+                                            <th class="text-center">TARGET ID &#x02116;</th>
+                                            <th class="text-center">TARGET NAME</th>
+                                            <th class="text-center">STATUS</th>
+                                            <th class="text-center">STATUS MSG</th> 
+                                            <th class="text-center">EXTRA INFO</th> 
+                                            <th class="text-center">TRANS DATE</th>                               
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-hide="filteredPbcTrxs.length">
+                                            <td colspan="13" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredPbcTrxs.length">
+                                            <td colspan="13" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredPbcTrxs" ng-class="fgRowColor(f.status)">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td class="text-left">{{f.activityReference}}</td>
+                                            <td class="text-center">{{f.initIdNo}}</td>
+                                            <td class="text-left">{{f.initName}}</td>
+                                            <td class="text-left">{{f.initDistrict}}</td>
+                                            <td class="text-center">{{f.activity}}</td>
+                                            <td class="text-center"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                                            <td class="text-center">{{f.targetIdNo}}</td>   
+                                            <td class="text-left">{{f.targetName}}</td>  
+                                            <td class="text-center">{{f.status}}</td> 
+                                            <td class="text-right" title ="{{f.statusMsg}}" >{{trim(f.statusMsg)}}</td>  
+                                            <td class="text-right">{{f.extraInfo}}</td>  
+                                            <td class="text-left">{{f.transactionDate}}</td>                                                    
+                                        </tr>     
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container">
+    <ul class="sticky">
+        <!--        <li class="extend animated slideInRight" ng-show="!(balance.indexOf('n/a') > -1)" style="justify-content: center">
+                    <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+                </li>-->
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(PbcTrxs)"></i>
+        </li>
+        <li  ng-click="refreshReport2('PbcTrxs', 'Pbc', 'pbc', 1, 0, 'trans_status', '00', 'amount');">
+            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+    </ul>
+</div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('PbcTrxs', 'Pbc', 'pbc', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('PbcTrxs', 'Pbc', 'pbc', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('PbcTrxs', 'Pbc', 'pbc', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('PbcTrxs', 'Pbc', 'pbc', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;
+            </div>
+            <div class="col-sm-6">
+                <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                <span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>
+                <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>               
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                </select>   
+                &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });</script>

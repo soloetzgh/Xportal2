@@ -1,0 +1,68 @@
+<div class="top-header-offset"></div>
+<div data-ng-init ="initializeBucketBalance()" style="text-align: center;">
+    <ul class="balance" >
+        <!--  Item  -->
+        <li ng-repeat ="f in bucketBalanceTypes">
+            <svg viewBox="0 0 36 36" id = "circular-chart" class="orange">
+            <path class="circle-bg"
+                  d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+            <path class="circle"
+                  stroke-dasharray="{{calBalanceStroke(f.alias, f.minimum)}}"
+                  stroke ="{{calcBalanceLevel(f.alias, f.minimum)}}"
+                  d="M18 2.0845
+                  a 15.9155 15.9155 0 0 1 0 31.831
+                  a 15.9155 15.9155 0 0 1 0 -31.831"
+                  />
+            <text x="18" y="20.35" class="percentage" ng-bind="{{'percent' + f.alias}} + '%'"></text>
+            </svg>
+            <b><span style="color: black;">{{f.name}}</span><br/></b>
+            <strong>
+                <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp;
+                <span style="color: black;" ng-bind="{{f.alias}} || 0"></span>
+            </strong>
+        </li>
+
+    </ul>
+    <!--  Defining Angle Gradient Colors  -->
+    <svg width="0" height="0">
+    <defs>
+    <linearGradient id="cl1" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="1" y2="1">
+    <stop stop-color="#618099"/>
+    <stop offset="100%" stop-color="#8e6677"/>
+    </linearGradient>
+    <linearGradient id="cl2" gradientUnits="objectBoundingBox" x1="0" y1="0" x2="0" y2="1">
+    <stop stop-color="#8e6677"/>
+    <stop offset="100%" stop-color="#9b5e67"/>
+    </linearGradient>
+    <linearGradient id="cl3" gradientUnits="objectBoundingBox" x1="1" y1="0" x2="0" y2="1">
+    <stop stop-color="#9b5e67"/>
+    <stop offset="100%" stop-color="#9c787a"/>
+    </linearGradient>
+    <linearGradient id="cl4" gradientUnits="objectBoundingBox" x1="1" y1="1" x2="0" y2="0">
+    <stop stop-color="#9c787a"/>
+    <stop offset="100%" stop-color="#817a94"/>
+    </linearGradient>
+    <linearGradient id="cl5" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="0" y2="0">
+    <stop stop-color="#817a94"/>
+    <stop offset="100%" stop-color="#498a98"/>
+    </linearGradient>
+    <linearGradient id="cl6" gradientUnits="objectBoundingBox" x1="0" y1="1" x2="1" y2="0">
+    <stop stop-color="#498a98"/>
+    <stop offset="100%" stop-color="#618099"/>
+    </linearGradient>
+    </defs>
+    </svg>
+</div>
+
+<div class="sticky-container">
+    <ul class="sticky">
+        <li on-long-press="autoRefreshReport('fetchBucketBalance');" ng-click="refreshReport('fetchBucketBalance');">
+            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+    </ul>
+</div>
+
+

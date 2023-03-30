@@ -1,0 +1,369 @@
+<!--<div ng-show="testEcgCollections()">
+    <div class="top-header-offset"></div>
+
+    loader
+    <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+        <span>Loading</span>
+        <span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>
+        <span class="el-1"></span>
+        <span class="el-2"></span>
+        <span class="el-3"></span>
+        <span class="el-4"></span>
+        <span class="el-5"></span>
+        <span class="el-6"></span>
+    </div>
+    EndofLoader 
+    <div class="container-fluid card-outline-secondary">
+        filter query box
+        <div class="card justpay filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                BANK COLLECTIONS
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block font08">
+                <form ng-submit="getEcgCollections(1);">
+                    <table class="table borderless">
+                        <tr>
+                            <td><label for="start-date">Start Date</label></td>
+                            <td> 
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="end-date"> End Date</label></td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-show="testEtz()">
+                            <td><label for="bank">Bank</label></td>
+                            <td>
+                                <select class="form-control form-control-sm" name="bank_code" ng-model="bank_code" id="bank_code">
+                                    <option value="000">ALL</option> 
+                                    <option ng-repeat="option in banksList" ng-value="option.issuer_code">{{option.issuer_name}}</option>                   
+                                </select>    
+                            </td>
+                        </tr>
+                        <tr >
+                            <td><label for="merchant">Merchant</label></td>
+                            <td>
+                                <select class="form-control form-control-sm" name="merchant" ng-model="merchant" id="merchant" ng-init="merchant ='ECG'">
+                                    <option value="ECG" >ECG</option>
+                                    <option value="GHACEM">GHACEM</option>
+                                    <option value="KNUST">KNUST</option>
+                                </select>    
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="webCon" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+        actions div      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getEcgCollections(1, 612)" > First</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getEcgCollections(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+            &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getEcgCollections(pageNumber + 1, 496)"> Next</span>&nbsp;
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getEcgCollections(fgRecordsLastPage, 777)"> Last</span>&nbsp;
+            <span class="ml-5 badge badge-info py-1"> Total records found: {{fgRecordsTotalCount}} </span>
+            <span class="ml-5 badge badge-info py-1"> Total Amount: <i>&#8373;</i> {{fgRecordsTotalAmount}} </span>
+
+            <label class="ml-5" for="show-records-select">Show</label>
+            <select class="" ng-change="reloadEcgCollections()" id="show-records-select" ng-model="rowsPerPage">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>               
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="2000">2000</option>
+            </select>   
+            &nbsp;&nbsp;
+
+            <a href="javascript:;" ng-click="exportToExcel(ecgCollectionTrxs)" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+            &nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>
+            &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+            &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>
+
+                        <a href="javascript:;" ng-click="exportToExcel(ecgCollectionTrxs)" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+                        &nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>
+                        &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+                        &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>
+
+            <span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadEcgCollections()" ></span>
+
+
+            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="Id or Trans Id" >
+                <span class="input-group-addon cursor-pointer" ng-click="searchWebconTrxn()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+            </div>    
+            <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+        </div>
+        <div class="table-wrapper scrollbar">
+
+            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">TRANS ID</th> 
+                        <th class="text-center">DEST ACCOUNT</th>                                 
+                        <th class="text-center">DEST NAME</th>
+                        <th class="text-center">TRANS CHANNEL</th>  
+                        <th class="text-center">TRANS AMOUNT</th>
+                        <th class="text-center">CURRENCY</th>
+                        <th class="text-center">TRANS STATUS</th>
+                        <th class="text-center">TRANS DESCR</th>                           
+                        <th class="text-center">TRANS DATE</th>
+                    </tr>
+                </thead>
+                <tbody class="font07">
+                    <tr ng-hide="ecgCollectionTrxs.length">
+                        <td colspan="10" class="text-center text-danger">No data available - Found[0]</td>
+                    </tr> 
+                    <tr ng-hide="ecgCollectionTrxs.length">
+                        <td colspan="10" class="text-center"><a href="http://www.etranzactgh.com/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                    </tr>
+
+                    <tr ng-repeat="f in filteredecgTrxs">
+                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                        <td class="text-left">{{f.trans_id}}</td>
+                        <td class="text-left">{{f.dest_account}}</td>
+                        <td class="text-left" >{{f.dest_name}}</td>
+                        <td class="text-left" >{{f.trans_channel}}</td>
+                        <td class="text-right" >{{f.trans_amount}}</td>
+                        <td class="text-uppercase text-center" >{{f.currency}}</td>
+                        <td class="text-left">{{f.trans_status}}</td>
+                        <td class="text-uppercase text-center" >{{f.trans_descr}}</td>     
+                        <td class="text-uppercase text-center" >{{f.trans_date}}</td>    						
+                    </tr>                      
+                </tbody>
+            </table>
+        </div>
+    </div> 
+</div>
+-->
+
+<div class="header-bg">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('BankTrxs', 'BankCollection', 'bankCol', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('BankTrxs', 'BankCollection', 'bankCol', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('BankTrxs', 'BankCollection', 'bankCol', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getFGTransactions(fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                            <span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>
+
+                            <!--<label class="ml-5" for="show-records-select">Show</label>-->
+                            <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+                                    <div class="cntr-innr">
+                                        <form  ng-submit="getRecords('BankTrxs', 'BankCollection', 'bankColSearch', 1, 0, 'trans_status', '0', 'trans_amount');" id="bankColSearch">
+                                            <label class="search" for="inpt_search">
+                                                <input id="inpt_search" title="press Enter to search"  type="text" placeholder="EtzRef or ClientRef" name="searchKey"/>
+                                                <input  type="hidden" name="service" value="search" />
+                                            </label>
+                                        </form>
+                                    </div>&nbsp;
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" data-ng-init="initializeSettings('BankCollection', 'merchants', 'merchantList', 1);
+        initializeSettings('BankCollection', 'banks', 'banksList')">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>Bank Collection Report</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form ng-submit="getRecords('BankTrxs', 'BankCollection', 'bankCol', 1, 0, 'trans_status', '0', 'trans_amount');" id="bankCol">
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td><label for="start-date">Start Date</label></td>
+                                            <td> 
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="end-date"> End Date</label></td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr ng-show="banksList.length > 1">
+                                            <td><label for="bank">Bank</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="bank_code" ng-model="bank_code" id="bank_code" ng-init="bank_code = 'ALL'">
+                                                    <option value="ALL">ALL</option> 
+                                                    <option ng-repeat="option in banksList"  value="{{option.issuer_code}}">{{option.issuer_name}}</option>                   
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr >
+                                            <td><label for="merchant">Merchant</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="merchant" ng-model="merchant" id="merchant" ng-init="merchant = 'ECG'">
+                                                    <option value="ECG" >ECG</option>
+                                                    <option value="GHACEM">GHACEM</option>
+                                                    <option value="KNUST">KNUST</option>
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="transactions" />
+                                    <button type="submit" class="btn btn-secondary btn-block" >Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table table-striped">
+                                    <thead>
+                                        <tr>
+
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">TRANS ID</th> 
+                                            <th class="text-center">DEST ACCOUNT</th>                                 
+                                            <th class="text-center">DEST NAME</th>
+                                            <th class="text-center">TRANS CHANNEL</th>  
+                                            <th class="text-center">TRANS AMOUNT</th>
+                                            <th class="text-center">CURRENCY</th>
+                                            <th class="text-center">TRANS STATUS</th>
+                                            <th class="text-center">TRANS DESCR</th>                           
+                                            <th class="text-center">TRANS DATE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-hide="filteredBankTrxs.length">
+                                            <td colspan="12" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredBankTrxs.length">
+                                            <td colspan="12" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredBankTrxs| orderBy:orderProperty" ng-class="fgRowColor2(f.trans_status)">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td class="text-left">{{f.trans_id}}</td>
+                                            <td class="text-left">{{f.dest_account}}</td>
+                                            <td class="text-left" >{{f.dest_name}}</td>
+                                            <td class="text-left" >{{f.trans_channel}}</td>
+                                            <td class="text-right" >{{f.trans_amount}}</td>
+                                            <td class="text-uppercase text-center" >{{f.currency}}</td>
+                                            <td class="text-left">{{f.trans_status}}</td>
+                                            <td class="text-uppercase text-center" >{{f.trans_descr}}</td>     
+                                            <td class="text-uppercase text-center" >{{f.trans_date}}</td>                              
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container">
+    <ul class="sticky">
+        <li class="extend" ng-show="!(balance.indexOf('n/a') > -1)" style="justify-content: center">
+            <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+        </li>
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" ng-click="exportToExcel('./reports/ExportReport?report=fundgate&action=pdf&start=' + startDate + '&end=' + endDate, 2)"></i>-->
+            <!--<i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" href="./Xportal/Report/EXCEL?action=trxn&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(ubpTrxs)" ></i>
+        </li>
+        <li on-long-press="autoRefreshReport('getFGTransactions');" ng-click="refreshReport('reloadFGTrxns');">
+            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+    </ul>
+</div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('BankTrxs', 'BankCollection', 'bankCol', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('BankTrxs', 'BankCollection', 'bankCol', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('BankTrxs', 'BankCollection', 'bankCol', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getFGTransactions(fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;
+            </div>
+            <div class="col-sm-6">
+                <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                <span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>
+                <select class="" id="show-records-select" ng-model="rowsPerPage">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>               
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                </select>   
+                &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });
+</script>

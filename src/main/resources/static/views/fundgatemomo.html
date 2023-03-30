@@ -1,0 +1,172 @@
+<div ng-show="testFGTrx()">
+    <header class="navbar fixed-top navbar-expand-lg navbar-toggleable-md">
+        <div ng-show="testFGTrx()"  class="text-center balance-cont">
+            <span class="badge badge-info cursor-default font09">Balance :<small><i>&#8373;</i></small>{{balance}}</span><br>
+            <span class="font08">as at {{lastBalanceDate}}</span>
+        </div>         
+    </header>                    
+    <div class="top-header-offset"></div>
+    <!--loader-->
+    <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+        <span>Loading</span>
+        <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+        <span class="el-1"></span>
+        <span class="el-2"></span>
+        <span class="el-3"></span>
+        <span class="el-4"></span>
+        <span class="el-5"></span>
+        <span class="el-6"></span>
+    </div>
+    <!--EndofLoader--> 
+    <div class="container-fluid card-outline-secondary">
+        <!--filter query box-->
+        <div class="card filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                FundGateMomo Transactions
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block font08">
+                <form ng-submit="getFGMomoTransactions(1);">
+                    <table class="table borderless">
+                        <tr>
+                            <td><label for="start-date">Start Date</label></td>
+                            <td> 
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="end-date"> End Date</label></td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-show="!testFGReport()">
+                            <td><label for="merchant-select">Merchant</label></td>
+                            <td>
+                                <select class="form-control form-control-sm" name="merchant" ng-model="merchant" id="merchant-select">
+                                    <option value="ALL">All</option> 
+                                    <option ng-repeat="option in merchantList" ng-value="option.terminal_id">{{option.merchant_name}}</option>                   
+                                </select>    
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td><label for="account_no">Account No:</label></td>
+                            <td><input class="form-control form-control-sm" name="account_no" ng-model="account_no" id="account_no" /></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="fundgate" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <!--actions div-->      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getFGTransactions(1, 612)" > First</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getFGTransactions(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+            &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getFGTransactions(pageNumber + 1, 496)"> Next</span>&nbsp;
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getFGTransactions(fgRecordsLastPage, 777)"> Last</span>&nbsp;
+            <span class="ml-5 badge badge-info py-1"> Total records found: {{fgRecordsTotalCount}} </span>
+            <!--<span class="ml-5 badge badge-info py-1"> Total Successful: <i>&#8373;</i> {{fgRecordsTotalAmount}} </span>-->
+
+            <label class="ml-5" for="show-records-select">Show</label>
+            <select class="" ng-change="reloadFGMomoTrxns()" id="show-records-select" ng-model="rowsPerPage">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>               
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="2000">2000</option>
+            </select>   
+            &nbsp;&nbsp;
+
+            <!--<div class="btn-group cus-ml-1" >
+              <a class="btn dropdown-toggle cursor-pointer font07" data-toggle="dropdown" style="padding:0 0" >
+                  <span data-toggle="tootip" data-placement="top" title="Export report" ><img class="file-download-img" src="./static/img/save.png" alt="download excel" /></span>
+                <span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+              </a>
+              <div class="report dropdown-menu" style="font-size: 0.9em;" >
+                <a class="dropdown-item" href="./Xportal/Report/EXCEL?action=trxn&start={{startDate}}&end={{endDate}}"><i class="fa fa-file-excel-o fa-fw"></i> Excel - raw</a>
+                <a class="dropdown-item" href="./reports/FundGate?action=xlsx2&start={{startDate}}&end={{endDate}}"><i class="fa fa-file-excel-o fa-fw"></i> Excel - formatted</a>
+                <a class="dropdown-item" href="./reports/FundGate?action=pdf&start={{startDate}}&end={{endDate}}" target="_blank"><i class="fa fa-file-pdf-o fa-fw"></i> PDF</a>    
+                <a class="dropdown-item" href="./reports/FundGate?action=docx&start={{startDate}}&end={{endDate}}" ><i class="fa fa-file-word-o fa-fw"></i> Ms Word</a>
+                <a class="dropdown-item" href="./reports/FundGate?action=pptx&start={{startDate}}&end={{endDate}}" ><i class="fa fa-file-powerpoint-o fa-fw"></i> Ms Powerpoint</a>
+                <a class="dropdown-item" href="./reports/FundGate?action=html&start={{startDate}}&end={{endDate}}" target="_blank"><i class="fa fa-code fa-fw"></i> Web HTML</a>
+              </div>
+            </div>-->
+            <a href="./Xportal/Report/EXCEL?action=fgmomo" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+
+
+            <!--            <a href="./Xportal/Report/EXCEL?action=trxn" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+                        &nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>
+                        &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+                        &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>
+            -->
+            <span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadFGMomoTrxns()" ></span>
+
+
+            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="ETZ Transaction id" >
+                <span class="input-group-addon cursor-pointer" ng-click="searchFGMomoTransaction()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+            </div>    
+            <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+        </div>
+        <div class="table-wrapper scrollbar">
+
+            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">ETRANZACT ID</th> 
+                        <th class="text-center">CLIENT REF</th>
+                        <th class="text-center">TELCO REF</th>                                
+                        <th class="text-center">NETWORK</th>  
+                        <th class="text-center">DESTINATION</th>
+                        <th class="text-center">AMOUNT</th>  
+                        <th class="text-center">RESPONSE</th>
+                        <th title="response code" class="text-center">RESPONSE NARRATION</th>
+                        <!--<th class="text-center">TRANSACTION DATE</th>--> 
+                        <th class="text-center">RESPONSE DATE</th>
+                    </tr>
+                </thead>
+                <tbody class="font07">
+                    <tr ng-hide="fgMomoTrxs.length">
+                        <td colspan="10" class="text-center text-danger">No data available - Found[0]</td>
+                    </tr> 
+                    <tr ng-hide="fgMomoTrxs.length">
+                        <td colspan="10" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                    </tr> 
+                    <tr class="animate-repeat" ng-repeat="f in fgMomoTrxs" >
+                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                        <td>{{f.etz_ref}}</td>        
+                        <td>{{f.client_ref}}</td>
+                        <td>{{f.clientid}}</td>
+                        <td class="text-uppercase">{{f.mno}}</td>
+                        <td>{{f.beneficiary}}</td>
+                        <td class="text-left"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                        <td>{{f.response}}</td>
+                        <td title="{{f.respMessage}}" class="text-left text-lowercase">{{f.response_narration}}</td>
+                        <!--<td>{{f.created | date:'dd/MM/yy @ HH:mm:ss'}}</td>-->
+                        <td>{{f.date| date:'dd/MM/yy @ HH:mm:ss'}}</td>                           
+                    </tr>                      
+                </tbody>
+            </table>
+        </div>
+    </div> 
+</div>
+<div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+    <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+    <br>
+    <hr>
+    <br>
+    Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+</div>

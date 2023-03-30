@@ -1,0 +1,679 @@
+<div class="top-header-offset"></div>
+<!--loader-->
+<div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+    <span>Loading</span>
+    <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+    <span class="el-1"></span>
+    <span class="el-2"></span>
+    <span class="el-3"></span>
+    <span class="el-4"></span>
+    <span class="el-5"></span>
+    <span class="el-6"></span>
+</div>
+<!--EndofLoader--> 
+<div style="clear: both; min-height: 400px;" >
+    <div class="container-fluid card-outline-secondary">
+        <!--filter query box-->
+        <div class="card font08 filter-box ml-2 card-outline-secondary" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                QUERY TRANSACTION
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block ">
+                <form ng-submit="centralInvestigation();">
+                    <table class="table borderless">
+                        <tr>
+                            <td><label for="transType">TransType:</label></td>
+                            <td>
+                                <select class="form-control form-control-sm" name="transType" ng-model="transType" id="transType">
+                                    <option value="">Select Channel</option>
+                                    <option value="mobile">Mobile</option>              
+                                    <option value="fundgate">FundGate</option>
+                                    <option value="tmc">ATM</option>
+                                    <option value="payoutlet">PayOutlet</option> 
+                                    <option value="justpay">JustPay</option> 
+                                    <option value="console">Console</option> 
+                                </select>    
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="start-date">Start Date</label></td>
+                            <td> 
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="end-date"> End Date</label></td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="reference">Reference ID:</label></td>
+                            <td><input class="form-control form-control-sm" name="reference" ng-model="reference" id="reference" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="account">Mobile/Account No</label></td>
+                            <td><input class="form-control form-control-sm" name="account" ng-model="account" id="account" /></td>
+                        </tr>
+
+
+
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="sas" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+
+        <!--actions div-->      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1 mt-4 text-center" style="height: 40px;background: #fff">
+            <span class="bold font12">CENTRAL TRANSACTION INVESTIGATION</span>
+            <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+        </div>
+
+        <div class="repro-cont mt-3">
+            <div class="border-btn mb-2 font08">
+                <span class="tab-title invest reptab active pb-2 bold" data-tab="mg-request">MG Request</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="mg-response">MG Response</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="autoswitch">AutoSwitch</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="tmc">TMC</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="momo">MoMo</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="fundgate">FundGate</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="vasgate">VasGate</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="vtu">TopUp</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="justpay">JustPay</span>
+                <span class="tab-title invest reptab pb-2 bold" data-tab="ussd">USSD</span>
+            </div>
+
+            <div class="repro-body">
+                <!--MG REQUEST-->
+                <div class="tab-content mg-request toggle" >
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">ETRANZACT ID</th> 
+                                        <th class="text-center">MOBILE NO</th> 
+                                        <th class="text-center">APPID</th> 
+                                        <th class="text-center">MESSAGE</th>  
+                                        <th class="text-center">PAN</th>
+                                        <th class="text-center">CHANNEL</th>  
+                                        <th class="text-center">CREATED</th>
+                                        <th class="text-center">TOKEN</th>                                                                                                               
+                                    </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.m_requests.length">
+                                        <td colspan="9" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.m_requests.length">
+                                        <td colspan="9" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.m_requests">
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td>{{f.unique_transid}}</td>        
+                                        <td>{{f.mobile_no}}</td>
+                                        <td>{{f.appid}}</td>
+                                        <td class="text-left">{{f.message}}</td>
+                                        <td class="text-left">{{f.pan}}</td>
+                                        <td class="text-left">{{f.channel}}</td>
+                                        <td>{{f.created| date:'dd/MM/yy @ HH:mm:ss'}}</td> 
+                                        <td>{{f.token}}</td>                                 
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+
+                </div>
+
+                <!--MG OUTGOING-->
+                <div class="tab-content mg-response toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">APPID</th> 
+                                        <th class="text-center">RESPONSE CODE</th> 
+                                        <th class="text-center">RESPONSE MESSAGE</th> 
+                                        <th class="text-center">MOBILE NO</th> 
+                                        <th class="text-center">SENDER ID</th>  
+                                        <th class="text-center">TOKEN</th>
+                                        <th class="text-center">CREATED</th>                                                                                                                               
+                                    </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.m_outgoing_messages.length">
+                                        <td colspan="8" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.m_outgoing_messages.length">
+                                        <td colspan="8" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.m_outgoing_messages">
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td>{{f.appid}}</td>        
+                                        <td>{{f.response_code}}</td>
+                                        <td>{{f.response_message}}</td>
+                                        <td>{{f.mobile_no}}</td>
+                                        <td class="text-left">{{f.sender_id}}</td>
+                                        <td class="text-left">{{f.token}}</td>
+                                        <td>{{f.created| date:'dd/MM/yy @ HH:mm:ss'}}</td>                                 
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--AUTOSWITCH-->
+                <div class="tab-content autoswitch toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">ETRANZACT ID</th> 
+                                        <th class="text-center">CARD NUM</th> 
+                                        <th class="text-center">MERCHANT CODE</th>  
+                                        <th class="text-center">RSP CODE</th>
+                                        <th class="text-center">TRANS CODE</th> 
+                                        <th class="text-center">AMOUNT</th>  
+                                        <th class="text-center">FEE</th>  
+                                        <th class="text-center">DESCR</th>
+                                        <th class="text-center">TRX DATE</th>
+                                        <th class="text-center">RSP DATE</th>
+                                        <th class="text-center">CHANNEL</th>                           
+                                        <th class="text-center">REVERSED</th>                                       
+                                        <th class="text-center">STAN</th> 
+                                    </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.e_requestlog.length">
+                                        <td colspan="14" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.e_requestlog.length">
+                                        <td colspan="14" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.e_requestlog" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td>{{f.transid}}</td>        
+                                        <td>{{f.card_NUM}}</td>
+                                        <td class="text-uppercase">{{f.merchant_CODE}}</td>
+                                        <td>{{f.response_CODE}}</td>
+                                        <td class="text-center">{{f.trans_CODE}}</td>
+                                        <td class="text-center">{{f.trans_AMOUNT}}</td>
+                                        <td>{{f.fee}}</td>
+                                        <td>{{f.trans_DESCR}}</td>        
+                                        <td>{{f.trans_DATE| date:'dd/MM/yy @ HH:mm:ss'}}</td>    
+                                        <td>{{f.response_TIME| date:'dd/MM/yy @ HH:mm:ss'}}</td>
+                                        <td>{{f.channelid}}</td>
+                                        <td>{{f.reversed}}</td>                                      
+                                        <td>{{f.stan}}</td>
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--TMC-->
+                <div class="tab-content tmc toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">ETRANZACT ID</th> 
+                                        <th class="text-center">PAN</th> 
+                                        <th class="text-center">PROCODE</th>  
+                                        <th class="text-center">RSP CODE</th>
+                                        <th class="text-center">ACC_ID</th> 
+                                        <th class="text-center">MTI</th> 
+                                        <th class="text-center">AMOUNT</th>  
+                                        <th class="text-center">FEE</th>                                         
+                                        <th class="text-center">CARD ACC NAME</th>
+
+                                        <th class="text-center">CARD SCHEME</th>                                                                               
+                                        <th class="text-center">TRX DATE</th>
+                                        <th class="text-center">RSP DATE</th>
+                                        <th class="text-center">TARGET</th> 
+                                        <th class="text-center">REVERSAL KEY</th> 
+                                        <th class="text-center">STAN</th>                                        
+                                    </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.e_tmcrequest.length">
+                                        <td colspan="16" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.e_tmcrequest.length">
+                                        <td colspan="16" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.e_tmcrequest" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td>{{f.trans_DATA}}</td>        
+                                        <td>{{f.pan}}</td>
+                                        <td>{{f.pro_CODE}}</td>
+                                        <td>{{f.response_CODE}}</td>
+                                        <td class="">{{f.acct_ID2}}</td>
+                                        <td class="">{{f.mti}}</td>
+                                        <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>  
+                                        <td>{{f.fee}}</td>
+                                        <td>{{f.card_ACC_NAME}}</td>        
+                                        <td>{{f.card_SCHEME}}</td>
+                                        <td>{{f.trans_DATE| date:'dd/MM/yy @ HH:mm:ss'}}</td>    
+                                        <td>{{f.response_TIME| date:'dd/MM/yy @ HH:mm:ss'}}</td>
+                                        <td class="text-left">{{f.target}}</td>
+                                        <td>{{f.reversal_KEY}}</td>
+                                        <td>{{f.stan}}</td>
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--MOMO-->
+                <div class="tab-content momo toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">REFERENCE</th> 
+                                        <th class="text-center">CLIENT ID</th> 
+                                        <th class="text-center">CLIENT CODE</th>  
+                                        <th class="text-center">NETWORK</th>
+                                        <th class="text-center">MOBILE</th>  
+                                        <th class="text-center">ACCOUNT NUMBER</th>
+                                        <th class="text-center">BANK</th>                           
+                                        <th class="text-center">AMOUNT</th> 
+                                        <th class="text-center">PAYMENT TYPE</th> 
+                                        <th class="text-center">CHANNEL</th> 
+                                        <th class="text-center">STATUS</th>
+                                        <th class="text-center">NARRATION</th> 
+                                        <th class="text-center">TRANS DATE</th> 
+                                        <th class="text-center">SWITCH CODE</th> 
+                                        <th class="text-center">FLAG</th>                                                                            
+                                    </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.mobilemoney.length">
+                                        <td colspan="16" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.mobilemoney.length">
+                                        <td colspan="16" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.mobilemoney" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td class="text-left">{{f.reference}}</td>
+                                        <td class="text-left">{{f.clientid}}</td>
+                                        <td>{{f.clientcode}}</td>
+                                        <td>{{f.client}}</td>
+                                        <td>{{f.msisdn}}</td>
+                                        <td>{{f.cardno}}</td>                               
+                                        <td class="text-left">{{f.cardno2}}</td>                               
+                                        <td class="text-right"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                                        <td>{{f.paymenttype}}</td>
+                                        <td>{{f.channel}}</td>
+                                        <td>{{f.respcode}}</td>
+                                        <td>{{f.narration}}</td>
+                                        <td>{{f.trnxdate}}</td>
+                                        <td>{{f.switchcode}}</td>
+                                        <td>{{f.flag}}</td>                                         
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--FUNDGATE-->
+                <div class="tab-content fundgate toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">ETRANZACT ID</th> 
+                                        <th class="text-center">CLIENT REF</th> 
+                                        <th class="text-center">BILLER</th>  
+                                        <th class="text-center">PRODUCT</th>
+                                        <th class="text-center">DESTINATION ACC</th>  
+                                        <th class="text-center">AMOUNT</th>
+                                        <th title="response code" class="text-center">RSP CODE</th> 
+                                        <th class="text-center">BILLER'S RESPONSE</th> 
+                                        <!--<th class="text-center">TRANSACTION DATE</th>--> 
+                                        <th class="text-center">RESPONSE DATE</th>                                                                           
+                                    </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.fundgate.length">
+                                        <td colspan="10" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.fundgate.length">
+                                        <td colspan="10" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.fundgate" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td>{{f.etzRef}}</td>        
+                                        <td>{{f.clientRef}}</td>
+                                        <td class="text-uppercase">{{f.lineType}}</td>
+                                        <td>{{f.action}}</td>
+                                        <td class="text-left">{{f.destination}}</td>
+                                        <td class="text-left"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                                        <td>{{getResponseCode(f.respMessage)}}</td>
+                                        <td title="{{f.respMessage}}" class="text-left text-lowercase">{{getResponseMsg(f.respMessage)}}</td>
+                                        <!--<td>{{f.created | date:'dd/MM/yy @ HH:mm:ss'}}</td>-->
+                                        <td>{{f.created2| date:'dd/MM/yy @ HH:mm:ss'}}</td>                           
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--VASGATE-->
+                <div class="tab-content vasgate toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">ETZ REF</th> 
+                                        <th class="text-center">TRANS ID</th> 
+                                        <th class="text-center">MERCHANT</th>  
+                                        <th class="text-center">AMOUNT</th>
+                                        <th class="text-center">DATE</th>  
+                                        <th class="text-center">CHANNEL</th>
+                                        <th class="text-center">STATUS</th> 
+                                        <th class="text-center">CUST ACCOUNT</th> 
+                                        <th class="text-center">MOBILE Nos</th> 
+                                        <th class="text-center">BANK</th>
+                                        <th class="text-center">TRANS NOTE</th>                                    </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.t_paytrans.length">
+                                        <td colspan="12" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.t_paytrans.length">
+                                        <td colspan="12" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.t_paytrans" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td title="{{f.unique_transid}}" class="text-left">{{trimVasBillId(f.unique_transid)}}</td>  
+                                        <td>{{f.payment_code}}</td>
+                                        <td class="text-uppercase">{{f.merchant_id}}</td>
+                                        <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                                        <td>{{f.trans_date}}</td>
+                                        <td>{{f.trans_channel}}</td>
+                                        <td class="text-left">{{f.trans_status}}</td>                               
+                                        <td>{{f.subscriber_id}}</td>
+                                        <td>{{f.mobile_no}}</td>
+                                        <td>{{getBankName(f.issuer_code)}}</td>
+                                        <td>{{f.trans_note}}</td>                                         
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--VTU TOPUP-->
+                <div class="tab-content vtu toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">ID</th> 
+                                        <th class="text-center">Trans ID</th>                                 
+                                        <th class="text-center">Line Type</th>
+                                        <th class="text-center">Network</th>  
+                                        <th class="text-center">Source</th>
+                                        <th class="text-center">Destination</th>                           
+                                        <th class="text-center">Status</th> 
+                                        <th class="text-center">Response Message</th> 
+                                        <th class="text-center">Amount</th> 
+                                        <th class="text-center">Date</th>
+                                        <th class="text-center">Response Date</th>                                  </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.t_provider_log.length">
+                                        <td colspan="12" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.t_provider_log.length">
+                                        <td colspan="12" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.t_provider_log" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td class="text-left">{{f.id}}</td>
+                                        <td class="text-left">{{f.unique_transid}}</td>
+                                        <td>{{f.linetype}}</td>
+                                        <td class="text-uppercase text-left">{{f.provider}}</td>
+                                        <td>{{f.source}}</td>
+                                        <td>{{f.dest_account}}</td>                               
+                                        <td class="text-left">{{f.response_code}}</td>                               
+                                        <td title="{{f.response_message}}" class="text-left">{{trimShort(f.response_message)}}</td>
+                                        <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                                        <td>{{f.trans_date| date:'dd/MM/yy @ HH:mm:ss'}}</td>
+                                        <td>{{f.response_date| date:'dd/MM/yy @ HH:mm:ss'}}</td>                                    
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--JustPay-->
+                <div class="tab-content justpay toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">REFERENCE</th> 
+                                        <!--<th class="text-center">EXTERNAL ID</th>--> 
+                                        <th class="text-center">VASTYPE</th>  
+                                        <th class="text-center">ORIGINATOR</th>
+                                        <th class="text-center">ORIG MSISDN</th>  
+                                        <th class="text-center">DEST TYPE</th>
+                                        <th class="text-center">DEST MSISDN</th> 
+                                        <th class="text-center">AMOUNT</th> 
+                                        <th class="text-center">FEE</th> 
+                                        <!--<th class="text-center">CALLBACK RESPONSE</th>-->
+                                        <th class="text-center">WALLET DEBIT RESPONSE</th>
+                                        <!--<th class="text-center">VALUE RESPONSE</th>--> 
+                                        <th class="text-center">BILLER'S RESPONSE</th> 
+                                        <th class="text-center">TRANS DATE</th>
+                                        <th class="text-center">REVERSAL</th>                                       </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.just_pay.length">
+                                        <td colspan="13" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.just_pay.length">
+                                        <td colspan="13" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.just_pay" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td>{{f.reference}}</td>        
+                                        <!--<td>{{f.clientid}}</td>-->
+                                        <td class="text-uppercase">{{f.mainoptions}}</td>
+                                        <td class="text-uppercase">{{f.provider}}</td>
+                                        <td class="">{{f.mmno}}</td>
+                                        <td class="text-uppercase">{{f.vastype}}</td>
+                                        <td class="text-left">{{f.destacct}}</td>
+                                        <td class="text-left"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                                        <td class="text-left">{{f.fee}}</td>
+                                        <td class="text-right" title="{{f.callback_msg}}">{{trimJP(f.callback_msg)}}</td>
+                                        <td class="text-right">{{getValueCodeMsgMapping(f.value_code)}}</td>
+                                        <td>{{f.created_date| date:'dd/MM/yy @ HH:mm:ss'}}</td>
+                                        <td class="text-right">{{getFlagMessage(f.flag)}}</td>                                  
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+                <!--USSD-->
+                <div class="tab-content ussd toggle">
+                    <div ng-show="testSas()" class="relative">                                              
+                        <div class="table-wrapper scrollbar">
+                            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">UNIQUE TRANS ID</th> 
+                                        <th class="text-center">MOBILE</th> 
+                                        <th class="text-center">AMOUNT</th>  
+                                        <th class="text-center">ACCOUNT DEBIT STATUS</th>
+                                        <th class="text-center">TOPUP STATUS</th>  
+                                        <th class="text-center">PROVIDER</th>
+                                        <th class="text-center">BANK</th>                           
+                                        <th class="text-center">TRANS DATE</th>                                 </tr>
+                                </thead>
+                                <tbody class="font07">
+                                    <tr ng-hide="response.ussd_transaction_log.length">
+                                        <td colspan="9" class="text-center text-danger">No data available - Found[0]</td>
+                                    </tr> 
+                                    <tr ng-hide="response.ussd_transaction_log.length">
+                                        <td colspan="9" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                    </tr> 
+                                    <tr ng-repeat="f in response.ussd_transaction_log" ng-class="fgRowColor(f.respMessage)" >
+                                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                        <td class="text-left">{{f.unique_transid}}</td>
+                                        <td class="text-left">{{f.mobile_no}}</td>
+                                        <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                                        <td class="text-left" title="{{f.response_message}}">{{trim(f.response_message)}}</td>
+                                        <td class="text-left">{{f.response_status}}</td>
+                                        <td class="text-left" >{{f.provider}}</td>                               
+                                        <td class="text-left">{{f.user_bank_code}}</td>                               
+                                        <td class="text-right">{{f.trans_date}}</td>                        
+                                    </tr>                          
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                        <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                        <br>
+                        <hr>
+                        <br>
+                        Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div> 
+</div>
+
+<script>
+    $('.reptab').on('click', function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $(".toggle").css('display', 'none');
+        var c = $(this).attr("data-tab");
+        c = "." + c;
+        $(c).css('display', 'block');
+    });
+    $('.auth-reptab').on('click', function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $(".auth-toggle").css('display', 'none');
+        var c = $(this).attr("data-tab");
+        c = "." + c;
+        $(c).css('display', 'block');
+    });</script>

@@ -1,0 +1,150 @@
+<div class="header-bg">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+
+                            <!--<label class="ml-5" for="show-records-select">Show</label>-->
+                            <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" >
+    <div class="container-fluid" data-ng-init="getRecords('PortalSettings', 'Admin', 'portalsettings', 1, 0);"  >
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>Portal Settings</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form ng-submit="getRecords('PortalSettings', 'Admin', 'portalsettings', 1, 0);" id="portalsettings">
+                                    <table class="table borderless">                                        
+                                        <tr>
+                                            <td><label for="setting_name">Setting Name:</label></td>
+                                            <td><input class="form-control form-control-sm" name="setting_name" ng-model="setting_name" id="setting_name" /></td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="portalSettings" />
+                                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <th class="text-left">SETTING NAME</th> 
+                                            <th class="text-left">SETTING DESCRIPTION</th> 
+                                            <th class="text-left">CURRENT VALUE</th>
+                                            <th class="text-left">STATUS</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-hide="filteredPortalSettings.length">
+                                            <td colspan="5" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredPortalSettings.length">
+                                            <td colspan="5" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr ng-repeat="f in filteredPortalSettings" id ="{{$index}}" class="portal-record cursor-pointer">
+                                            <td>{{$index + 1}}</td>
+                                            <td class="text-left">{{f.name}}</td>
+                                            <td class="text-left">{{f.description}}</td>
+                                            <td class="text-left">{{f.current_value}} {{f.type_2}}</td>
+                                            <td class="text-left" id ="{{'portalSettingStatus' + $index}}">{{f.status}}</td></tr>    
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container">
+    <ul class="sticky">
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(bogswitchTrxs)"></i>
+        </li>
+        <li ng-click="refreshReport('reloadBOGswitchTrxns');">
+            <i class="fa fa-sync fa-2x refresh-btn"  style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+    </ul>
+</div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('PortalSettings', 'Admin', 'portalsettings', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;
+            </div>
+            <div class="col-sm-6">
+                <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                <select class=""   ng-model="rowsPerPage">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>               
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                </select>   
+                &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });</script>

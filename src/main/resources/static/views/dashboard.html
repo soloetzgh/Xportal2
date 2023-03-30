@@ -1,0 +1,461 @@
+
+<div class="wrapper" data-ng-init="initDashboardData();">
+    <div class="container-fluid">
+        <div class="row row-deck" style="margin-top: -50px">
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">Total Sms Requests</div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item">Today</a>
+                                        <a class="dropdown-item">From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h1 mb-3">{{totalRequestStats||0}}</div>
+                        <!--                       <div class="d-flex mb-2">
+                                                    <div>Total Sms Count</div>
+                                                    <div class="ml-auto">
+                                                        <span class="text-green d-inline-flex align-items-center lh-1">
+                                                            7% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ml-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-blue" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">75% Complete</span>
+                                                    </div>
+                                                </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">Total Successful Requests </div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" >From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="h1 mb-3">75%</div>-->
+                        &nbsp;
+                        <div class="d-flex mb-2" ng-if = "!providerSuccessfulRequestStats.length" >
+                            <div>Loading...</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    0
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-2" ng-repeat="stat in providerSuccessfulRequestStats" >
+                            <div>{{stat.provider}}</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    {{stat.totalCount||0}} 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">Total Failed Requests </div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" >From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="d-flex mb-2" ng-if = "!providerFailedRequestStats.length" >
+                            <div ng-if="loadingProviderFailed">Loading...</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    0
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-2" ng-repeat="stat in providerFailedRequestStats" >
+                            <div>{{stat.provider}}</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    {{stat.totalCount||0}} 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">Total Pending Requests </div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" >From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="d-flex mb-2" ng-if = "!providerPendingRequestStats.length" >
+                            <div ng-if="loadingProviderFailed">Loading...</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    0
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-2" ng-repeat="stat in providerPendingRequestStats" >
+                            <div>{{stat.provider}}</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    {{stat.totalCount||0}} 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subheader">Total Data</div>
+                                        <div class="ml-auto lh-1">
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Last 7 days
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item active" >Last 7 days</a>
+                                                    <a class="dropdown-item" >Last 30 days</a>
+                                                    <a class="dropdown-item" >Last 3 months</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="h1 mb-3">75%</div>
+                                    <div class="d-flex mb-2">
+                                        <div>Conversion rate</div>
+                                        <div class="ml-auto">
+                                            <span class="text-green d-inline-flex align-items-center lh-1">
+                                                7% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ml-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-blue" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="sr-only">75% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+        </div>
+        <!-- end row -->
+
+        <div class="row row-deck">
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">Total Sms Responses</div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item">Today</a>
+                                        <a class="dropdown-item">From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="h1 mb-3">{{totalResponseStats||0}}</div>
+                        <!--                       <div class="d-flex mb-2">
+                                                    <div>Total Sms Count</div>
+                                                    <div class="ml-auto">
+                                                        <span class="text-green d-inline-flex align-items-center lh-1">
+                                                            7% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ml-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="progress progress-sm">
+                                                    <div class="progress-bar bg-blue" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                                        <span class="sr-only">75% Complete</span>
+                                                    </div>
+                                                </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader" style="font-size: small">Total Successful Responses </div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" >From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="h1 mb-3">75%</div>-->
+                        &nbsp;
+                        <div class="d-flex mb-2" ng-if = "!providerSuccessfulResponseStats.length" >
+                            <div>Loading...</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    0
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-2" ng-repeat="stat in providerSuccessfulResponseStats" >
+                            <div>{{stat.provider}}</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    {{stat.totalCount||0}} 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader">Total Failed Responses </div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" >From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="d-flex mb-2" ng-if = "!providerFailedResponseStats.length" >
+                            <div ng-if="loadingProviderFailed">Loading...</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    0
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-2" ng-repeat="stat in providerFailedResponseStats" >
+                            <div>{{stat.provider}}</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    {{stat.totalCount||0}} 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="subheader" >Total Pending Responses </div>
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" >From Calendar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <div class="d-flex mb-2" ng-if = "!providerPendingResponseStats.length" >
+                            <div ng-if="loadingProviderFailed">Loading...</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    0
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-2" ng-repeat="stat in providerPendingResponseStats" >
+                            <div>{{stat.provider}}</div>
+                            <div class="ml-auto">
+                                <span class="text-green d-inline-flex align-items-center lh-1">
+                                    {{stat.totalCount||0}} 
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--            <div class="col-sm-6 col-lg-3 stats-card animated bounceIn delay-05s">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subheader">Total Data</div>
+                                        <div class="ml-auto lh-1">
+                                            <div class="dropdown">
+                                                <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Last 7 days
+                                                </a>
+                                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                                    <a class="dropdown-item active" >Last 7 days</a>
+                                                    <a class="dropdown-item" >Last 30 days</a>
+                                                    <a class="dropdown-item" >Last 3 months</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="h1 mb-3">75%</div>
+                                    <div class="d-flex mb-2">
+                                        <div>Conversion rate</div>
+                                        <div class="ml-auto">
+                                            <span class="text-green d-inline-flex align-items-center lh-1">
+                                                7% <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ml-1"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="progress progress-sm">
+                                        <div class="progress-bar bg-blue" style="width: 75%" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="sr-only">75% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>-->
+        </div>
+        <!-- end row -->
+
+        <!--<div class="chart-1">-->
+        <div class="container-fluid chartView">
+            <div class="animated bounceIn delay-05s infobip">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right cursor-pointer" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" href="#!/providerStats" >From Calendar</a>
+                                        <a class="dropdown-item" >Export</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content clear graph-cnt full infobip center wrap w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="animated bounceIn delay-05s naloChart">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right cursor-pointer" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" href="#!/providerStats" >From Calendar</a>
+                                        <a class="dropdown-item" >Export</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content clear graph-cnt full nalo center wrap w-100">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="animated bounceIn delay-05s zentechChart">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="ml-auto lh-1">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle text-muted"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right cursor-pointer" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item active" >Today</a>
+                                        <a class="dropdown-item" href="#!/providerStats" >From Calendar</a>
+                                        <a class="dropdown-item" >Export</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="content clear graph-cnt full zentech center wrap w-100" >
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--</div>-->
+
+    </div>
+    <!--    <div class="sticky-container">
+            <ul class="sticky">
+                <li class="extend" ng-show="!(balance.indexOf('n/a') > -1)" style="justify-content: center">
+                    <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+                </li>
+                <li class="download">
+                    <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                    <i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" ng-click="exportToExcel('./reports/ExportReport?report=fundgate&action=pdf&start=' + startDate + '&end=' + endDate, 2)"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" href="./Xportal/Report/EXCEL?action=trxn&start={{startDate}}&end={{endDate}}"></i>
+                    <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel('./Xportal/Report/EXCEL?action=trxn&start=' + startDate + '&end=' + endDate, 2)" ></i>
+                </li>
+                <li on-long-press="autoRefreshReport('getFGTransactions');" ng-click="refreshReport('reloadFGTrxns');">
+                    <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+                </li>
+            </ul>
+        </div>-->

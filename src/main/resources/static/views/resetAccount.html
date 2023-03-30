@@ -1,0 +1,67 @@
+<div class="limiter" data-ng-init="checkTokenValidity()">
+    <div class="container-login100" >
+        <div class="wrap-login100 p-t-30 p-b-50 has-overlay animated bounceIn loginForm">
+            <div class="overlay">
+                <span class="login100-form-title p-b-20" >
+                    Reset Password
+                    <!--{{passwordChangeMessage  ||''}}-->
+                </span>
+                <p style="text-align: center;" class="p-b-20" >{{username|| ''}}</p>
+                <div class ="authLoading animated flipInY" style="display: none;">
+                    <div class="circle-loader" >
+                        <div class="checkmark error"></div>
+                    </div>
+                    <div style="text-align: center;"><h5>{{passwordChangeMessage||''}}</h5></div>
+                    <!--<div style="text-align: center;"><h5>{{extraInfo||''}}</h5></div>-->
+                </div>
+                <form class="login100-form validate-form animated flipInY authLogin" >	
+                    <div id="pswd_info">
+                        <h6>Password Requirements</h6>
+                        <ul>
+                            <li id="password-lowercase" class="invalid">At least <strong>1 lowercase character(s)</strong></li>
+                            <li id="password-uppercase" class="invalid">At least <strong>1 uppercase character(s)</strong></li>
+                            <li id="password-number" class="invalid">At least <strong>1 number(s)</strong></li>
+                            <li id="password-special" class="invalid">At least <strong>1 special character(s)</strong></li>
+                            <li id="password-details" class="invalid"><strong>No logon Id or personal name(s)</strong></li>
+                            <li id="password-length" class="invalid">At least <strong>12 character(s) long</strong></li>
+
+                        </ul>
+                    </div>
+
+                    <div class="wrap-input100 validate-input newpassword " data-validate="Enter New password">
+                        <span class="btn-show-pass" ng-click="toggleShowPassword('showPassword2');">
+                            <i class="fa showPassword2 fa-eye"></i>
+                        </span>
+                        <input class="input100 newpassword okPassword" type="{{showPassword2}}" ng-model="auth.newpassword" placeholder="New Password">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+                    <div class="strength-meter">
+                        <div class="strength-meter-fill" data-strength="{{passwordStrength}}"></div>
+                    </div>
+                    <strong style="color:red; font-size:10px;">NB: Password should not contain portions of your logon ID, personal names, guessable dates (birthdates or anniversaries), or be constructed around a dictionary word</strong>
+
+
+                    <div class="wrap-input100 validate-input confpassword " data-validate="Confirm New Password">
+                        <span class="btn-show-pass" ng-click="toggleShowPassword('showPassword3');">
+                            <i class="fa showPassword3 fa-eye"></i>
+                        </span>
+                        <input class="input100 confpassword" type="{{showPassword3}}" ng-model="auth.confpassword" placeholder="Confirm Password">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+                    <strong style="color:red; font-size:10px;" id="password-match">Passwords do not match</strong>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn shadow-bottom">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" ng-click="executeDialogAction('ResetAccount');" ng-cloak="true">
+                                Reset Account &nbsp; <i class="fa fa-sign-in"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

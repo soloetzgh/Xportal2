@@ -1,0 +1,159 @@
+<div class="card-block font08 ">
+    <div class="text-right">
+        <button class="badge badge-success update-btn py-2 px-2 cursor-pointer addRoleElement" >ADD ROLE <i class="fa fa-user-plus"></i></button>
+    </div>
+    <br/>
+    <form method="post" id="userUpdateForm">
+        <div id="typeIdData">
+            <table class="table borderless" id="item_table">
+                <tr id="field10_">
+                    <td style="padding-right: 10px">
+                        <button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button>
+                    </td>
+                    <td style="padding-right: 10px">
+                        <select ng-model="values['field10_']"  ng-options="x.name for x in  newList"></select>
+                    </td>
+
+                </tr>
+                <tr id="field20_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field20_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield20_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field21_1']" >
+                                <option ng-repeat="option in datafield20_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field30_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field30_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield30_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field31_2']" >
+                                <option ng-repeat="option in datafield30_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field40_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field40_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield40_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field41_3']" >
+                                <option ng-repeat="option in datafield40_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field50_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field50_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield50_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field51_4']" >
+                                <option ng-repeat="option in datafield50_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field60_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field60_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield60_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field61_5']" >
+                                <option ng-repeat="option in datafield60_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field70_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field70_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield70_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field71_6']" >
+                                <option ng-repeat="option in datafield70_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field80_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field80_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield80_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field81_7']" >
+                                <option ng-repeat="option in datafield80_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field90_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field90_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield90_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field91_8']" >
+                                <option ng-repeat="option in datafield90_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field100_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field100_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield100_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field101_9']" >
+                                <option ng-repeat="option in datafield100_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field110_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field110_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield110_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field111_10']" >
+                                <option ng-repeat="option in datafield110_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field120_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field120_']"  ng-options="x.name for x in  newList"></select></td>
+                </tr>
+                <tr id="field130_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field130_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield130_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field131_12']" >
+                                <option ng-repeat="option in datafield130_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr id="field140_">
+                    <td style="padding-right: 10px"><button type="button" name="remove" class="btn btn-danger btn-sm remove" ng-click="removeRoleElement();"><i class="fa fa-trash"></i></button></td>
+                    <td style="padding-right: 10px"><select ng-model="values['field140_']"  ng-options="x.name for x in  newList"></select></td>
+                    <td>
+                        <div id="datafield140_">
+                            <select class="form-control form-control-sm item_quantity" name="item_quantity[]" ng-model="values['field141_13']" >
+                                <option ng-repeat="option in datafield140_" value="{{option.alias}}">{{option.name}}</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <input type="hidden" name="service" value="modifyUser"/>
+        <input type="hidden" name="userId" value="9000000000000490"/>
+    </form>
+</div>

@@ -1,0 +1,135 @@
+<div class="limiter" ng-show="!authenticated">
+    <div class="container-login100" >
+        <div class="wrap-login100 p-t-30 p-b-50 has-overlay animated bounceIn loginForm">
+            <div class="overlay">
+                <span class="login100-form-title p-b-41">
+                    Login
+                </span>
+                <div class ="authLoading animated flipInY" style="display: none;">
+                    <div class="circle-loader" >
+                        <div class="checkmark error"></div>
+                    </div>
+                    <div style="text-align: center;"><h5>{{loginMessage||''}}</h5></div>
+                    <div style="text-align: center;"><h5>{{extraInfo||''}}</h5></div>
+                </div>
+                <form class="login100-form validate-form animated flipInY authLogin" >					
+                    <div class="wrap-input100 validate-input username" data-validate = "Enter Username">
+                        <input class="input100 username" type="text" name="username" ng-model="auth.username" placeholder="Username">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+                    <div class="wrap-input100 validate-input password " data-validate="Enter password" ng-show="!showResetForm">
+                        <span class="btn-show-pass" ng-click="toggleShowPassword('showPassword');">
+                            <i class="fa showPassword fa-eye"></i>
+                        </span>
+                        <input class="input100 password" type="{{showPassword}}" ng-model="auth.password" placeholder="Password">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn shadow-bottom">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" ng-click="executeDialogAction('Login');" ng-cloak="true">
+                                Login &nbsp; <i class="fa fa-sign-in"></i>
+                            </button>
+
+                            <!--                            <button class="login100-form-btn ld-ext-right login_state" ng-click="executeDialogAction('Login');" ng-cloak="true">
+                                                            {{login_state}} &nbsp; <i class="fa fa-sign-in"></i>
+                                                            <div class="ld ld-ring ld-spin"></div>
+                                                        </button>-->
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <span class="txt1">
+                            Forgot Password ?
+                        </span>
+                        <button type="button" class="txt2" ng-click="toggleAuthView('reset');">
+                            Click Me &#128578;
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="wrap-login100 p-t-30 p-b-50 has-overlay animated bounceIn resetForm" style="display: none;">
+            <div class="overlay">
+                <span class="login100-form-title p-b-41">
+                    Password Reset
+                </span>
+                <div class ="authLoading animated flipInY" style="display: none;">
+                    <div class="circle-loader" >
+                        <div class="checkmark error"></div>
+                    </div>
+                    <div style="text-align: center;"><h5>{{loginMessage||''}}</h5></div>
+                </div>
+                <form class="login100-form validate-form animated flipInY authLogin" >					
+                    <div class="wrap-input100 validate-input" data-validate = "Enter Username">
+                        <input class="input100 username" type="text" name="username" ng-model="auth.username" placeholder="Username">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" ng-click="executeDialogAction('Reset');" ng-cloak="true">
+                                Reset &nbsp; <i class="zmdi zmdi-refresh-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="txt2" ng-click="toggleAuthView('login')">
+                            Back to Login &#128578;
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="wrap-login100 p-t-30 p-b-50 has-overlay animated bounceIn changepasswordForm" style="display: none;">
+            <div class="overlay">
+                <div class ="authLoading animated flipInY" style="display: none;">
+                    <div class="circle-loader" >
+                        <div class="checkmark error"></div>
+                    </div>
+                    <div style="text-align: center;"><h5>{{passwordChangeMessage||''}}</h5></div>
+                </div>
+                <form class="login100-form validate-form animated flipInY authLogin" >					
+                    <div class="wrap-input100 validate-input oldpassword " data-validate="Enter Current password">
+                        <span class="btn-show-pass" ng-click="toggleShowPassword('showPassword1');">
+                            <i class="fa showPassword1 fa-eye"></i>
+                        </span>
+                        <input class="input100 oldpassword" type="{{showPassword1}}" ng-model="auth.oldpassword" placeholder="Current Password">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input newpassword " data-validate="Enter New password">
+                        <span class="btn-show-pass" ng-click="toggleShowPassword('showPassword2');">
+                            <i class="fa showPassword2 fa-eye"></i>
+                        </span>
+                        <input class="input100 newpassword" type="{{showPassword2}}" ng-model="auth.newpassword" placeholder="New Password">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input confpassword " data-validate="Confirm New Password">
+                        <span class="btn-show-pass" ng-click="toggleShowPassword('showPassword3');">
+                            <i class="fa showPassword3 fa-eye"></i>
+                        </span>
+                        <input class="input100 confpassword" type="{{showPassword3}}" ng-model="auth.confpassword" placeholder="Confirm Password">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+
+                    <div class="wrap-input100 validate-input email" data-validate ="Enter Valid Email">
+                        <input class="input100 email" id="email" type="text" name="email" ng-model="auth.email" placeholder="Email">
+                        <span class="focus-input100" data-placeholder=""></span>
+                    </div>
+
+                    <div class="container-login100-form-btn">
+                        <div class="wrap-login100-form-btn shadow-bottom">
+                            <div class="login100-form-bgbtn"></div>
+                            <button class="login100-form-btn" ng-click="executeDialogAction('changePassword');" ng-cloak="true">
+                                Change Password &nbsp; <i class="zmdi zmdi-sign-in"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,369 @@
+<div class="top-header-offset"></div>
+<div style="clear: both; min-height: 400px;" >
+    <div class="container-fluid card-outline-secondary">
+
+        <!--actions div-->      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1 mt-4 text-center" style="height: 40px;background: #fff">
+            <span class="bold font12">REPROCESSING PORTAL</span>
+            <!--            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                            <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="ETZ Transaction id" >
+                            <span class="input-group-addon cursor-pointer" ng-click="searchBarUBPTrxn()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+                        </div>               -->
+        </div>
+
+        <div class="repro-cont mt-3">
+            <div class="border-btn mb-2 font09">
+                <span class="tab-title reptab active pb-2 bold" data-tab="verify">VERIFY</span>
+                <span class="tab-title reptab pb-2 bold" data-tab="request" >SEND REQUEST</span>
+                <span class="tab-title reptab pb-2 bold" data-tab="authorize">AUTHORIZER</span>
+            </div>
+
+            <div class="repro-body mt-5">
+                <div class="tab-content verify toggle" >
+                    <!--filter query box-->
+                    <div class="card repro-box ml-2 mr-5 card-outline-secondary float-left">
+                        <div class="card-header text-center">
+                            VERIFY ACCOUNT
+                        </div>
+                        <div class="card-block font08">
+                            <form ng-submit="verify();">
+                                <table class="table borderless">
+                                    <tr>
+                                        <td><label for="merchant">Merchant</label></td>
+                                        <td>
+                                            <select class="form-control form-control-sm" name="merchant" ng-model="merchant" id="merchant">
+                                                <option value="">Select Merchant</option> 
+                                                <option ng-repeat="option in vasgateMerchantList" ng-value="option.alias">{{option.name}}</option>                   
+                                            </select>    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="account">Account Id:</label></td>
+                                        <td><input class="form-control form-control-sm" name="account" ng-model="account" id="account" ng-required="true" /></td>
+                                    </tr>
+
+                                </table>
+                                <input type="hidden" name="service" ng-model="service" id="service" value="verify" />
+                                <button type="submit" class="btn btn-secondary btn-block cursor-pointer" id="verify-btn">Verify</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--filter query box-->
+                    <div class="card repro-box ml-2 card-outline-secondary float-left">
+                        <div class="card-header text-center">
+                            VERIFICATION RESPONSE
+                        </div>
+                        <div class="card-block font08">
+                            <div class="mb-2 text-primary" ><span class="bold">Resp:&nbsp;&nbsp;</span> {{vasRsp.otherInfo}}</div>
+                            <div><span class="bold text-info">Resp Code:&nbsp;&nbsp; {{vasRsp.status}}</span> </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="tab-content request toggle">
+                    <!--filter query box-->
+                    <div class="card repro-box ml-2 mr-5 card-outline-secondary float-left">
+                        <div class="card-header text-center">
+                            SUBMIT REQUEST
+                        </div>
+                        <div class="card-block font08">
+                            <form ng-submit="sendRequest();">
+                                <table class="table borderless">
+                                    <tr>
+                                        <td><label for="merchant">Merchant</label></td>
+                                        <td>
+                                            <select class="form-control form-control-sm" name="merchant" ng-model="merchant" id="merchant">
+                                                <option value="">Select Merchant</option> 
+                                                <option ng-repeat="option in vasgateMerchantList" ng-value="option.alias">{{option.name}}</option>                   
+                                            </select>    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="account">Account Id:</label></td>
+                                        <td><input class="form-control form-control-sm" name="account" ng-model="account" id="account" ng-required="true" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="amount">Amount:</label></td>
+                                        <td><input class="form-control form-control-sm" name="amount" ng-model="amount" id="amount" ng-required="true" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="reference">Reference:</label></td>
+                                        <td><input class="form-control form-control-sm" name="reference" ng-model="reference" id="reference" ng-required="true" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="banks">Bank</label></td>
+                                        <td>
+                                            <select class="form-control form-control-sm" name="bank" ng-model="bank" id="banks">
+                                                <option value="">Select Bank</option> 
+                                                <option ng-repeat="option in banksList" ng-value="option.issuer_code">{{option.issuer_name}}</option>                                    
+                                            </select>    
+                                        </td>
+                                    </tr>
+
+                                </table>
+                                <input type="hidden" name="service" ng-model="service" id="service" value="request" />
+                                <button type="submit" class="btn btn-secondary btn-block cursor-pointer" id="req-btn">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!--filter query box-->
+                    <div class="card repro-box ml-2 card-outline-secondary float-left">
+                        <div class="card-header text-center">
+                            REQUEST RESPONSE
+                        </div>
+                        <div class="card-block font08">
+                            <div class="mb-2 text-primary" ><span class="bold">Resp:&nbsp;&nbsp;</span> {{reqRsp.otherInfo}}</div>
+                            <div><span class="bold text-info">Resp Code:&nbsp;&nbsp; {{reqRsp.status}}</span> </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content authorize toggle">
+                    <!--                    <div class="border-btn mb-2 pt-2" style="background: lightgray;margin-top:-40px">
+                                            <span class="auth-tab-title auth-reptab active pb-2 " data-tab="pending">Pending</span>
+                                            <span class="auth-tab-title auth-reptab pb-2 " data-tab="processed" >Processed</span>
+                                        </div>-->
+
+                    <div class="auth-tab-content pending auth-toggle font09" style="margin-top:-40px">
+                        <div ng-show="testSas()" class="relative">
+
+                            <!--reprocessing form-->
+                            <div class="process-form fixed" ng-show="showReProcessBox">
+                                <!--filter query box-->
+                                <div class="card repro-box ml-2 mr-5 card-outline-secondary float-left">
+                                    <div class="card-header text-center">
+                                        REPROCESS REQUEST
+                                        <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideReProcessBoxView()" title="close window"></span>
+                                    </div>
+                                    <div class="card-block font08 white-bg">
+                                        <form ng-submit="reProcess();">
+                                            <table class="table borderless">
+                                                <tr>
+                                                    <td><label for="merchant2">Merchant</label></td>
+                                                    <td><input readonly class="form-control form-control-sm" name="merchant2" ng-model="merchant2" id="merchant2" ng-required="true" /></td>                                                                                                    
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="account2">Account Id:</label></td>
+                                                    <td><input readonly class="form-control form-control-sm" name="account2" ng-model="account2" id="account2" ng-required="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="amount2">Amount:</label></td>
+                                                    <td><input readonly class="form-control form-control-sm" name="amount2" ng-model="amount2" id="amount2" ng-required="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="reference2">Reference:</label></td>
+                                                    <td><input readonly class="form-control form-control-sm" name="reference2" ng-model="reference2" id="reference2" ng-required="true" /></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="bank2">Bank</label></td>
+                                                    <td><input readonly class="form-control form-control-sm" name="bank2" ng-model="bank2" id="bank2" ng-required="true" /></td>                                                  
+                                                </tr>
+
+                                            </table>
+                                            <input type="hidden" name="service" ng-model="service" id="service" value="request" />
+                                            <button type="submit" class="btn btn-secondary btn-block cursor-pointer" id="repro-btn">Submit</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <!--filter query box-->
+                                <div class="card repro-box ml-2 card-outline-secondary float-left">
+                                    <div class="card-header text-center">
+                                        REPROCESS RESPONSE
+                                        <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideReProcessBoxView()" title="close window"></span>
+                                    </div>
+                                    <div class="card-block font08 white-bg">
+                                        <div class="mb-2 text-primary" ><span class="bold">Resp:&nbsp;&nbsp;</span> {{vasRsp2.otherInfo}}</div>
+                                        <div><span class="bold text-info">Resp Code:&nbsp;&nbsp; {{vasRsp2.status}}</span> </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!--loader-->
+                            <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+                                <span>Loading</span>
+                                <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+                                <span class="el-1"></span>
+                                <span class="el-2"></span>
+                                <span class="el-3"></span>
+                                <span class="el-4"></span>
+                                <span class="el-5"></span>
+                                <span class="el-6"></span>
+                            </div>
+                            <!--EndofLoader--> 
+                            <div class="container-fluid card-outline-secondary">
+                                <!--filter query box-->
+                                <div class="card font08 repro filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+                                    <div class="card-header text-center">
+                                        REPROCESSING RECORDS
+                                        <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+                                    </div>
+                                    <div class="card-block font08">
+                                        <form ng-submit="getReproTrxns(1);">
+                                            <table class="table borderless">
+                                                <tr>
+                                                    <td><label for="start-date">Start Date</label></td>
+                                                    <td> 
+                                                        <div class="input-group input-group-sm">
+                                                            <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                            <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="end-date"> End Date</label></td>
+                                                    <td>
+                                                        <div class="input-group input-group-sm">
+                                                            <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                            <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                        </div>
+                                                    </td>
+                                                </tr>                                                                                                                                     
+                                                <tr>
+                                                    <td><label for="status">Status</label></td>
+                                                    <td>
+                                                        <select class="form-control form-control-sm" name="status" ng-model="status" id="status">
+                                                            <option value="ALL">ALL</option>
+                                                            <option value="1">PENDING</option>                  
+                                                            <option value="0">PROCESSED</option>                                
+                                                        </select>    
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td><label for="uniqueTransId">Reference ID:</label></td>
+                                                    <td><input class="form-control form-control-sm" name="uniqueTransId" ng-model="uniqueTransId" id="uniqueTransId" /></td>
+                                                </tr>     
+                                            </table>
+                                            <input type="hidden" name="service" ng-model="service" id="service" value="sas" />
+                                            <button type="submit" class="btn btn-secondary btn-block cursor-pointer" id="filter-btn">Search</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <!--actions div-->      
+                                <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+                                    <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getReproTrxns(1, 612)" > First</span>&nbsp;
+                                    <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getReproTrxns(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+                                    &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                                    <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getReproTrxns(pageNumber + 1, 496)"> Next</span>&nbsp;
+                                    <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getReproTrxns(fgRecordsLastPage, 777)"> Last</span>&nbsp;
+                                    <span class="ml-5 badge badge-info py-1"> Total records found: {{fgRecordsTotalCount}} </span>
+                                    <span class="ml-5 badge badge-info py-1"> Total Amount: <i>&#8373;</i> {{fgRecordsTotalAmount}} </span>
+
+                                    <label class="ml-5" for="show-records-select">Show</label>
+                                    <select class="" ng-change="reloadReproTrxns()" id="show-records-select" ng-model="rowsPerPage">
+                                        <option value="50">50</option>
+                                        <option value="100">100</option>
+                                        <option value="150">150</option>               
+                                        <option value="300">300</option>
+                                        <option value="400">400</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                        <option value="2000">2000</option>
+                                    </select>   
+                                    &nbsp;&nbsp;
+
+                                    <a href="./Xportal/Report/EXCEL?action=sas" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+                                    <!--&nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>-->
+                                    &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+                                    &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>
+
+                                    <span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadReproTrxns()" ></span>
+
+
+                                    <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                                        <input type="text" ng-model="searchRepro()" class="form-control form-control-sm" placeholder="Reference or mobile Nos" >
+                                        <span class="input-group-addon cursor-pointer" ng-click="searchRepro()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+                                    </div>    
+                                    <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+                                </div>
+                                <div class="table-wrapper scrollbar">
+
+                                    <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                                        <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                            <tr>
+                                                <th class="text-center">#</th>
+                                                <th class="text-center">REFERENCE</th> 
+                                                <th class="text-center">MERCHANT</th> 
+                                                <th class="text-center">ACCOUNT</th>  
+                                                <th class="text-center">AMOUNT</th>
+                                                <th class="text-center">BANK</th>  
+                                                <th class="text-center">STATUS</th>  
+                                                <th class="text-center">ACTION</th>  
+                                                <th class="text-center">RSP. CODE</th> 
+                                                <th class="text-center">RSP. MSG</th>  
+                                                <th class="text-center">REQUEST DATE</th>
+                                                <th class="text-center">INITIATOR</th>
+                                                <th class="text-center">PROCESSED DATE</th>
+                                                <th class="text-center">AUTHORIZER</th>                                                                                      
+                                            </tr>
+                                        </thead>
+                                        <tbody class="font07">
+                                            <tr ng-hide="reproTrxs.length">
+                                                <td colspan="14" class="text-center text-danger">No data available - Found[0]</td>
+                                            </tr> 
+                                            <tr ng-hide="reproTrxs.length">
+                                                <td colspan="14" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                            </tr> 
+
+                                            <tr ng-repeat="f in reproTrxs" ng-class="">
+                                                <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                                <td class="text-center">{{f.reference}}</td>
+                                                <td class="text-left">{{f.merchant}}</td>
+                                                <td class="text-left">{{f.account}}</td>
+                                                <td class="text-right"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>  
+                                                <td class="text-left">{{f.bank_name}}</td>                               
+                                                <td class="text-left">{{f.status}}</td>   
+                                                <td class="text-center"><span class="badge badge-primary update-btn py-2 px-3 cursor-pointer" ng-click="populateReProcessForm($index)">PROCESS</span></td> 
+                                                <td class="text-center">{{f.rsp_code}}</td>
+                                                <td class="text-left">{{f.rsp_message}}</td>      
+                                                <td>{{f.date_created| date:'dd/MM/yy @ HH:mm:ss'}}</td>
+                                                <td class="text-left">{{f.initiator}}</td>            
+                                                <td>{{f.date_processed| date:'dd/MM/yy @ HH:mm:ss'}}</td> 
+                                                <td class="text-center">{{f.authorizer}}</td>
+
+
+                                            </tr>                      
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> 
+                        </div>
+                        <div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+                            <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+                            <br>
+                            <hr>
+                            <br>
+                            Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+                        </div>
+                    </div>
+
+                    <!--                    <div class="auth-tab-content processed auth-toggle" >
+                                            processed
+                                        </div>-->
+
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<script>
+    $('.reptab').on('click', function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $(".toggle").css('display', 'none');
+        var c = $(this).attr("data-tab");
+        c = "." + c;
+        $(c).css('display', 'block');
+    });
+    $('.auth-reptab').on('click', function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $(".auth-toggle").css('display', 'none');
+        var c = $(this).attr("data-tab");
+        c = "." + c;
+        $(c).css('display', 'block');
+    });</script>

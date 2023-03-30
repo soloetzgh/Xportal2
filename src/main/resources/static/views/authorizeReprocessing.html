@@ -1,0 +1,207 @@
+<div class="header-bg">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('ErequestTrxs', 'Reprocess', 'reprocess', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('ErequestTrxs', 'Reprocess', 'reprocess', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('ErequestTrxs', 'Reprocess', 'reprocess', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('ErequestTrxs', 'Reprocess', 'reprocess', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                            <!--<span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>-->
+
+                            <label class="ml-5" for="show-records-select">Show</label>
+                            <select class=""  id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+                                    <button id="reverse-btn" title="authorize reprocess" class="btn btn-primary btn-xs  sm-btn py-2 px-2 cursor-pointer" style="color: black; cursor: pointer;" ng-click="processRequest('Reprocess', 'authorize')">AUTHORIZE</button>
+                                    <button id="reverse-btn" title="deny reprocess" class="btn btn-danger btn-xs sm-btn py-2 px-2 cursor-pointer" style="color: black; cursor: pointer;" ng-click="processRequest('Reprocess', 'deny')">DENY</button>
+                                    <div class="cntr-innr">
+                                        <form ng-submit="getRecords('ErequestTrxs', 'Reprocess', 'searchReprocess', 1);" id="searchReprocess">
+                                            <label class="search" for="inpt_search">
+                                                <input id="inpt_search" title="press Enter to search" type="text" name="searchKey" placeholder="" ng-model="searchTrxnKey" />
+                                                <input  type="hidden" name="service" value="search" />
+                                            </label>
+                                        </form>
+                                    </div>&nbsp;
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>AUTHORIZE REVERSAL</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form   ng-submit="getRecords('ErequestTrxs', 'Reprocess', 'reprocess', 1);" id="reprocess">
+                                    <!--                                    <input type="hidden" name="status" value="pending" id="status" />-->
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td><label for="start-date">Start Date</label></td>
+                                            <td> 
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" ng-required="true" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="end-date">End Date</label></td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" ng-required="true" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label >Status: </label>
+                                            </td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="status" ng-model="status" id="status" ng-init="status = 'pending'">
+                                                    <option value="all">ALL</option>
+                                                    <option value="authorized">AUTHORIZED</option>
+                                                    <option value="denied">DENIED</option>
+                                                    <option value="pending">PENDING</option>
+
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="trans_data">Reference:</label></td>
+
+                                            <td><input class="form-control form-control-sm" name="trans_data" ng-model="trans_data" id="trans_data" /></td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="transactions" />
+                                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">
+                                                <input type="checkbox" name="select" id="chk-all" title="Select All" ng-model="selectAll" ng-change="toggleSelectAll('ErequestTrxs', 'reference')">
+                                            </th>
+                                            <th class="text-left">REFERENCE</th> 
+                                            <th class="text-center">TRANSACTION TYPE</th> 
+                                            <th class="text-left">SOURCE TYPE</th>
+                                            <th class="text-right">SOURCE</th>
+                                            <th class="text-left">DESTINATION TYPE</th>
+                                            <th class="text-right">DESTINATION</th>
+                                            <th class="text-center">AMOUNT</th>  
+                                            <!--<th class="text-center">ACTION</th>--> 
+                                            <th class="text-center">RSP CODE</th>
+
+                                            <th class="text-center">DESCR</th>  
+                                            <th class="text-center">INITIATOR</th> 
+                                            <th class="text-center">STATUS</th> 
+                                            <!--<th class="text-center"></th>-->
+                                            <th class="text-center">DATE INITIATED</th>  
+                                            <!--<th colspan="2" class="text-center">ACTION</th>--> 
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-hide="filteredErequestTrxs.length">
+                                            <td colspan="14" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredErequestTrxs.length">
+                                            <td colspan="14" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr class="animate-repeat" ng-repeat="f in filteredErequestTrxs">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td><input type="checkbox" name="selection" id="chk-{{f.reference}}" ng-model="selectedData[$index]" ng-value="f" ng-change="toggleSelect('ErequestTrxs', $index, 'reference')"></td>
+                                            <td class="text-left">{{f.reference}}</td>
+                                            <td class="text-center">{{f.transaction_type}}</td>
+                                            <td class="text-left">{{f.source_type}}</td>
+                                            <td class="text-right">{{f.source}}</td>
+                                            <td class="text-left">{{f.destination_type}}</td>
+                                            <td class="text-right">{{f.destination}}</td>
+                                            <td class="text-center">{{f.amount}}</td>    
+                                            <td>{{f.response_code}}</td>
+                                            <td class="text-left">{{trimJP(f.trans_descr)}}</td>
+                                            <td>{{f.initiated_by}}</td>  
+                                            <td><button id="{{f.id}}" disabled title=" status" ng-class="{'btn-success': (f.status === 'DENIED' || f.status === 'AUTHORIZED'), 'btn-danger': f.status === 'ERROR', 'btn-primary':f.status === 'PENDING' }"
+                                                        class="btn  btn-xs sm-btn py-2 px-2" ng-click="checkReversal"
+                                                        >{{f.status}}
+                                                </button>
+                                            </td>  
+                                            <td>{{f.initiated_date}}</td>   
+
+                                            <!--                                            <td class="text-center">
+                                                                                            <button id="{{f.id}}" title="authorize reprocess" class="btn btn-primary btn-sm sm-btn cursor-pointer" ng-click="reverse(f.id, f.transid, 'auth')">AUTHORIZE</button>
+                                                                                        </td>-->
+                                            <!--                                            <td>
+                                                                                            <button id="{{f.id + '_1'}}" style="background: black;color:white" title="check reprocess status from TMC" class="btn btn-sm sm-btn  cursor-pointer hidden" ng-click="searchTMCTrxn(f.id + '_1', f.transid)">VERIFY</button>
+                                                                                        </td>-->
+
+                                        </tr>   
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container">
+    <ul class="sticky">
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(ErequestTrxs)"></i>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });
+</script>

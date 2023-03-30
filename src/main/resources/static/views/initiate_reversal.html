@@ -1,0 +1,140 @@
+<div ng-show="testReversalInitiator()">
+    <div class="top-header-offset"></div>
+
+
+    <!--loader-->
+    <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+        <span>Loading</span>
+        <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+        <span class="el-1"></span>
+        <span class="el-2"></span>
+        <span class="el-3"></span>
+        <span class="el-4"></span>
+        <span class="el-5"></span>
+        <span class="el-6"></span>
+    </div>
+    <!--EndofLoader--> 
+    <div class="container-fluid card-outline-secondary">
+        <!--filter query box-->
+        <div class="card tmc font08 filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                INITIATE REVERSAL
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block font08">
+                <form ng-submit="getReversalTrxns(1);">
+                    <table class="table borderless">
+                        <tr>
+                            <td><label for="start-date">Start Date</label></td>
+                            <td> 
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="end-date"> End Date</label></td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="trans_data">Reference:</label></td>
+                            <td><input ng-required="true" class="form-control form-control-sm" name="trans_data" ng-model="trans_data" id="trans_data" /></td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="momo" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <!--actions div-->      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getReversalTrxns(1, 612)" > First</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getReversalTrxns(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+            &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{erequestRecordsLastPage}}</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getReversalTrxns(pageNumber + 1, 496)"> Next</span>&nbsp;
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getReversalTrxns(erequestRecordsLastPage, 777)"> Last</span>&nbsp;
+            <span class="ml-5 badge badge-info py-1"> Total records found: {{erequestRecordsTotalCount}} </span>
+            <span class="ml-5 badge badge-info py-1"> Total Amount Successful: <i>&#8373;</i> {{erequestRecordsTotalAmount}} </span>
+            <!--<span class="ml-5 badge badge-info py-1"> Total Successful: <i>&#8373;</i> {{TotalAmount}} </span>-->
+
+            <label class="ml-5" for="show-records-select">Show</label>
+            <select class="" ng-change="reloadReversalTrxns()" id="show-records-select" ng-model="rowsPerPage">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>               
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="2000">2000</option>
+            </select>   
+            &nbsp;&nbsp;
+
+            <a href="./Xportal/Report/EXCEL?action=tmc" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+            <!--            &nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>
+                        &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+                        &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>-->
+
+            <span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadMomoTrxns()" ></span>
+            <!--            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                            <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="Reference" >
+                            <span class="input-group-addon cursor-pointer" ng-click="searchE_RequestLogTrxn()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+                        </div>    -->
+            <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+        </div>
+        <div class="table-wrapper scrollbar">
+
+            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">REFERENCE</th> 
+                        <th class="text-center">TRANS CODE</th> 
+                        <th class="text-center">CARD NUM</th>
+                        <th class="text-center">MERCHANT CODE</th>
+                        <th class="text-center">FEE</th>
+                        <th class="text-center">AMOUNT</th>  
+                        <th class="text-center">ACTION</th> 
+                        <th class="text-center">RSP CODE</th>
+                        <th class="text-center">DESCR</th>  
+                        <th class="text-center">DATE</th>                       
+                    </tr>
+                </thead>
+                <tbody class="font07">
+                    <tr ng-hide="erequestTrxs.length">
+                        <td colspan="11" class="text-center text-danger">No data available - Found[0]</td>
+                    </tr> 
+                    <tr ng-hide="erequestTrxs.length">
+                        <td colspan="11" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                    </tr> 
+                    <tr class="animate-repeat" ng-repeat="f in erequestTrxs" ng-class="erequestRowColor(f.response_code)">
+                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                        <td class="text-left">{{f.transid}}</td>
+                        <td class="text-center">{{f.trans_code}}</td>
+                        <td class="text-right">{{f.card_num}}</td>
+                        <td class="text-center">{{f.merchant_code}}</td>
+                        <td class="text-right">{{f.fee}}</td>
+                        <td class="text-right">{{f.trans_amount}}</td>                      
+                        <td class=""><button id="{{f.id}}" title="initiate reversal for authorization" class="btn btn-primary btn-sm  sm-btn hpy-1 px-3 cursor-pointer" ng-click="reverse(f.id, f.transid, 'ini')">INITIATE</button></td>
+                        <td>{{f.response_code}}</td>
+                        <td class="text-left">{{f.trans_descr}}</td>
+                        <td>{{f.trans_date}}</td>                     
+                    </tr>                      
+                </tbody>
+            </table>
+        </div>
+    </div> 
+</div>
+<div ng-show="!testReversalInitiator()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+    <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+    <br>
+    <hr>
+    <br>
+    Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+</div>

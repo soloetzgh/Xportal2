@@ -1,0 +1,311 @@
+<div class="header-bg">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getRecords('MobileAppRecs', 'MobileAppMgmt', 'mobileAppLogSearch', 1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getRecords('MobileAppRecs', 'MobileAppMgmt', 'mobileAppLogSearch', pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getRecords('MobileAppRecs', 'MobileAppMgmt', 'mobileAppLogSearch', pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getRecords('MobileAppRecs', 'MobileAppMgmt', 'mobileAppLogSearch', fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+
+                            <label class="ml-5" for="show-records-select">Show</label>
+                            <select class="" ng-change="" id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" data-ng-init="initializeSettings('MobileAppMgmt', 'appIdList', 'appIdList');
+        initializeSettings('MobileAppMgmt', 'nm_otp', 'nmotpList');">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox" ng-init="record = 'new'">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i> USSD MGMT</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form ng-submit="getRecords('MobileAppRecs', 'MobileAppMgmt', 'mobileAppLogSearch', 1);" id="mobileAppLogSearch">
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td>
+                                                <label for="start-date">Start Date</label>
+                                            </td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="end-date"> End Date</label>
+                                            </td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label >Search By: </label>
+                                            </td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="type" ng-model="type" id="type" ng-init="type = 'modified'">
+                                                    <option value="">ALL</option>
+                                                    <option value="created">CREATED</option>
+                                                    <option value="modified">MODIFIED</option>
+
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="mobile_no">Mobile No:</label>
+                                            </td>
+                                            <td>
+                                                <input class="form-control form-control-sm" name="mobile_no" ng-model="mobile_no" id="mobile_no"  />
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="(appIdList.length > 0)">
+                                            <td>
+                                                <label for="appId">AppId</label>
+                                            </td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="appId" ng-model="appId" id="appId" ng-init="appId = 'ALL'">
+                                                    <option value="ALL">All</option>
+                                                    <option ng-repeat="option in appIdList" value="{{option.id}}">{{option.name}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <label for="status">Status</label>
+                                            </td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="status" ng-model="status" id="status" ng-init="status = 'ALL'">
+                                                    <option value="ALL">All</option>
+                                                    <option value="ACTIVE">Active</option>
+                                                    <option value="INACTIVE">Inactive</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+
+                                    </table>
+                                    <input type="hidden" name="service"  value="search" />
+                                    <!--<input type="hidden" name="type" value="status" />-->
+
+                                    <button type="submit" class="btn btn-secondary btn-block" >Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">PHONE</th> 
+                                            <th class="text-center">APP NAME</th> 
+                                            <th class="text-center">ACCOUNT</th> 
+                                            <th class="text-center">CREATED</th> 
+                                            <th class="text-center">MODIFIED</th>
+                                            <th class="text-center">STATUS</th>
+                                            <th class="text-center">ACTION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-hide="filteredMobileAppRecs.length">
+                                            <td colspan="8" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="filteredMobileAppRecs.length">
+                                            <td colspan="8" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr> 
+                                        <tr ng-repeat="f in filteredMobileAppRecs| orderBy:orderProperty">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <!--<td title="{{f.Phone}}">{{trimVasBillId(f.UNIQUE_TRANSID)}}</td>-->  
+                                            <td class="text-center">{{f.Phone}}</td>
+                                            <!--<td class="text-center">{{f.AppId}}</td>-->
+                                            <td class="text-center">{{f.AppName}}</td>
+                                            <!--<td class="text-center">{{f.card_num}}</td>-->
+                                            <td class="text-center"><button class="btn btn-info btn-sm font07 cursor-pointer" id="{{'account' + $index}}" ng-click="showUserAccounts(f, 1, $index)"> <i class="fa fa-eye"></i>&nbsp; SHOW</button></td> 
+                                            <td class="text-center">{{f.Created}}</td>
+                                            <td class="text-center">{{f.Modified}}</td>
+                                            <td class="text-center" id="{{'toggle' + f.Client_ID}}">{{f.active === 'true' ? 'ACTIVE' : 'INACTIVE' }}</td>
+                                            <!--<td class="text-center"><button class="btn btn-info btn-sm font07 cursor-pointer" id="{{'vst' + f.Client_ID}}" ng-click="toggleMobileAppStatus(f.Client_ID, f.Phone, (f.active === 'false') ? 'ACTIVATE' : 'DEACTIVATE', f.AppId, $index)">CHANGE</button></td>--> 
+                                            <td class="text-center"><button class="btn btn-info btn-sm font07 cursor-pointer" id="{{'vst' + f.Client_ID}}" ng-click="showAccountUserForm(f)">MODIFY</button></td> 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+
+<form id="mam_form" class="card-user-form draggable_item">
+    <div id="wizard">
+        <div class="draggable_item_header"></div>
+        <a class="boxclose"  id="boxclose" ng-click="hideCardUserForm();"></a>
+        <div class="user-content">
+            <div class="form-header" style="display: block !important;">
+                <!--                <div class="avartar">
+                                    <a >
+                                        <img id="verifyIDimage" style="border-style: double;height: auto; width: 110px; border-radius: 50%;" src="../assets/img/avatar_2x.png" alt="">
+                                    </a>
+                
+                                </div>-->
+                <div class="form-group" style="width: 90% !important;">
+                    <div class="form-holder" >
+                        <input type="text"  placeholder="" class="form-control" name="account_number" ng-model="account_number" ng-disabled ="true">
+                        <input type="hidden" name="account_id" value="{{account_id}}">
+                        <input type="hidden" name="account_number" value="{{account_number}}">
+
+                        <label for="account">Account</label>
+                    </div>
+                    <div class="form-holder" >
+                        <input type="text" placeholder="" class="form-control" name="firstname" ng-model="firstname" id="firstname" ng-disabled ="true">
+                        <label for="firstname">First Name</label>
+                    </div>
+                    <div class="form-holder">
+                        <input type="text" placeholder="" class="form-control" name="appname" ng-model="appname" id="appname" ng-disabled ="true">
+                        <input type="hidden" name="appId" id="appid" >
+                        <label for="appname">App Name</label>
+                    </div>
+                    <div class="form-holder">
+                        <input type="text" placeholder="" class="form-control" name="mobile_no" id="mobile_nos" ng-model="mobile_no" ng-disabled ="true">
+                        <input type="hidden" name="mobile_no" id="mobile_number">
+                        <label for="mobile_no">Mobile No</label>
+                    </div>
+
+                    <div class="form-holder" >
+                        <select class="form-control" style="height: 35px; padding: 0px 0px 0px 10px;" name="action"  ng-model="card_service" id="action" ng-change="checkActionType(card_service)">
+                            <option disabled selected value="">Select Action</option>
+                            <option value="activate">Activate Account</option>
+                            <option value="deactivate" >Deactivate Account</option>
+                            <option value="dehotlist">Dehotlist Account</option>
+                            <option value="hotlist">Hotlist Account</option>
+                            <option value="enhancement">Enhance Account</option>
+                            <option value="pinreset">Pin Reset</option>
+                            <option value="number_modification">Number Modification</option>
+                            <!--                            <option value="other">Other</option>-->
+                            <!--<option value="update">Update Account</option>-->
+                        </select>
+                        <label>Action</label>
+                    </div>
+                    <div class="form-holder" id ="branchList" ng-if="branchList.length > 0">
+
+                        <select class="form-control form-control-sm" name="branch" ng-model="branch" id="branch">
+                            <option value="" disabled>Select Branch</option>
+                            <option ng-repeat="option in branchList" value="{{option.id}}">{{option.name}}</option>
+                        </select> 
+                        <label>Branch</label>
+                    </div>
+
+                    <div class="form-holder numberModification">
+                        <input type="text" placeholder="" class="form-control"  name="new_mobile_no" ng-model="new_mobile_no" ng-disabled="card_service !== 'number_modification'">
+                        <label for="mobile_no">New Mobile No</label>
+                    </div>
+
+                    <div class ="row numberModificationOtp" id="new_mobile_no" style="position: relative;" ng-if="nmotpList.includes(bankCode)">
+                        <div  style="position: relative;">
+                            <div class="form-holder" >
+                                <input type="text" placeholder="" class="form-control"  name="otp" ng-disabled="(card_service === 'number_modification' && nmotpList.includes(bankCode))">
+                                <label for="otp">OTP</label>
+                            </div>
+                        </div>
+                        <div style="position: absolute; top: 2px; right: -10px;" >
+                            <div class="btn btn-danger ld-ext-right otp_process_state" style="margin: -3px 0px 0px -45px; transform: scale(0.65);" ng-click="sendNMOtp()" >
+                                {{otp_process_state}}
+                                <div class="ld ld-ring ld-spin"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-holder" id="enhancementType" >
+                        <select class="form-control" style="height: 35px; padding: 0px 0px 0px 10px;" name="enhancement_type"  ng-model="enhancement_type" id="enhancement_type" ng-init="enhancement_type = '013'" ng-disabled="card_service !== 'enhancement'">
+                            <option value="014">Enhanced</option>
+                            <option value="013">Medium</option>
+                        </select>
+                        <label>Enhancement Type</label>
+                    </div>
+                    <div class="form-holder" style="display: flex; flex-direction: row-reverse;" >
+                        <textarea   rows="2"  class="form-control" style="resize: none;" id="reason" name="reason" ng-model="reason"></textarea>
+                        <label>Reason</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="btn btn-primary ld-ext-right process_state" style="margin: 10px;" ng-click="processMobileAppMgmt()" >
+            {{process_state}}
+            <div class="ld ld-ring ld-spin"></div>
+        </div>
+    </div>
+    <input type="hidden" name="service" value="modifyAccount" />
+    <input type="hidden" id="account_number" name="card_number" />
+</form>
+
+<div class="sticky-container">
+    <ul class="sticky">
+        <li class="extend" ng-show="!(balance.indexOf('n/a') > -1)" style="justify-content: center">
+            <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+        </li>
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" ng-click="exportToExcel(MobileAppRecs)"></i>
+        </li>
+        <li on-long-press="autoRefreshReport('getMobileAppActivation');" ng-click="refreshReport2('MobileAppRecs', 'MobileAppMgmt', 'mobileAppLogSearch', 1, 0);">
+            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+    </ul>
+</div>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+    });
+</script>

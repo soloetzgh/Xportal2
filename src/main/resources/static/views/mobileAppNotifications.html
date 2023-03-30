@@ -1,0 +1,72 @@
+<form id="mam_form" class="card-user-form" style="display: block !important;" data-ng-init="initializeSettings('MobileAppMgmt', 'banks', 'banksList', 'all');">
+    <div id="wizard">
+        <!--<div class="draggable_item_header"></div>-->
+        <!--<a class="boxclose"  id="boxclose" ng-click="hideCardUserForm();"></a>-->
+        <div class="user-content">
+            <div class="form-header" style="display: block !important;">
+                <!--                <div class="avartar">
+                                    <a >
+                                        <img id="verifyIDimage" style="border-style: double;height: auto; width: 110px; border-radius: 50%;" src="../assets/img/avatar_2x.png" alt="">
+                                    </a>
+                
+                                </div>-->
+                <div class="form-group" style="width: 90% !important;" >
+                    <div class="form-holder" ng-if="testEtz()">
+
+                        <select class="form-control form-control-sm" name="bank_code" ng-model="bank_code"   id="bank_code" ng-required="true">
+                            <option value="" selected>Select Bank</option>
+                            <option ng-repeat="option in banksList" value="{{option.issuer_code}}">{{option.issuer_name}}</option> 
+                        </select> 
+                        <!--<label>Bank</label>-->
+                    </div>
+                    <div class="form-holder">
+
+                        <select class="form-control form-control-sm" name="type" ng-model="type" id="type" ng-init="type = 'SENDTODEVICE'" ng-change="(type === 'SENDTOTOPIC' ? initializeSettings('MobileAppMgmt', 'getBankTopics', 'topicList', 'bank_code') : '')">
+                            <option value="SENDTODEVICE">Send To Device</option>
+                            <option value="SENDTOTOPIC">Send To Topic</option>
+                        </select> 
+                        <label>Notification Type</label>
+                    </div>
+                    <div class="form-holder" ng-if="type === 'SENDTODEVICE'">
+                        <input type="text" placeholder="" class="form-control" minlength="10" maxlength="12" name="destination" ng-required = "true">
+                        <label for="mobile_no">Mobile No</label>
+                    </div>
+                    <div class="form-holder" id ="topicList"   ng-if="type === 'SENDTOTOPIC'">
+
+                        <select class="form-control form-control-sm" name="destination" ng-model="destination" data-ng-init="destination = 'all';initializeSettings('MobileAppMgmt', 'getBankTopics', 'topicList', 'bank_code');">
+                            <!--                            <option value="" disabled>Select Topic</option>-->
+                            <!--<option value="all" >ALL</option>-->
+                            <option ng-repeat="option in topicList" value="{{option.id}}">{{option.name}}</option> 
+                        </select> 
+                        <label>Topic</label>
+                    </div>
+
+                    <div class="form-holder" style="display: flex; flex-direction: row-reverse;" >
+                        <textarea rows="2"  class="form-control" style="resize: none;" name="title" ng-model="notificationTitle" ng-required = "true"></textarea>
+                        <label>Title</label>
+                    </div>
+                    <div class="form-holder" style="display: flex; flex-direction: row-reverse;" >
+                        <textarea rows="2"  class="form-control" style="resize: none;"  name="body" ng-model="notificationBody" ng-required = "true" ></textarea>
+                        <label>Body</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="justify-content: center;" >
+
+            <button class="btn btn-success ld-ext-right notification_process_state process_state" style="margin: 10px;" ng-click="disableAuth(); processMobileAppNotification('notification');" >
+                {{notification_process_state}}
+                <div class="ld ld-ring ld-spin"></div>
+            </button>
+
+
+            <!--            <button class="btn btn-danger ld-ext-right deny_process_state process_state" style="margin: 10px;" ng-click="disableAuth(); processMobileAppUserLog('deny')" >
+                            {{deny_process_state}}
+                            <div class="ld ld-ring ld-spin"></div>
+                        </button>-->
+
+        </div>
+    </div>
+    <input type="hidden" name="service" value ="sendNotification" />
+
+</form>

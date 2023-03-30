@@ -1,0 +1,55 @@
+<!--filter query box-->
+<div class="card momo filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+    <div class="card-header text-center">
+        Mobile Money Search Results [09FG01010217506411263]
+        <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+    </div>
+    <div class="card-block font08">
+        <table class="table borderless">
+            <tr>
+                <td>Reference</td>
+                <td> 
+                    09FG01010207306233043
+                </td>
+            </tr>
+            <tr>
+                <td>Client</td>
+                <td> 
+                    MTN
+                </td>
+            </tr>
+            <tr>
+                <td>MSISDN</td>
+                <td> 
+                    233245235484
+                </td>
+            </tr>
+            <tr>
+                <td>PAYMENT TYPE</td>
+                <td> 
+                    233245235484
+                </td>
+            </tr>
+            <tr>
+                <td>AMOUNT</td>
+                <td> 
+                    400
+                </td>
+            </tr>
+            <tr>
+                <td>DATE</td>
+                <td> 
+                    2018-01-01 02:10:25
+                </td>
+            </tr>
+            <tr>
+                <td>RESP CODE</td>
+                <td> 
+                    2018-01-01 02:10:25
+                </td>
+            </tr>
+        </table>
+        <input type="hidden" name="service" ng-model="service" id="service" value="fundgate" />
+        <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+    </div>
+</div>

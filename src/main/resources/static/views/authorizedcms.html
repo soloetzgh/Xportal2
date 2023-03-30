@@ -1,0 +1,213 @@
+<div ng-show="testTech()">
+    <div class="top-header-offset"></div>
+    <!--loader-->
+    <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+        <span>Loading</span>
+        <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+        <span class="el-1"></span>
+        <span class="el-2"></span>
+        <span class="el-3"></span>
+        <span class="el-4"></span>
+        <span class="el-5"></span>
+        <span class="el-6"></span>
+    </div>
+    <!--EndofLoader--> 
+
+    <div class="container-fluid card-outline-secondary">
+        <!--filter query box-->
+        <div class="card card-view filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                Card Update Details
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block font08">
+                <form ng-submit="getCardDetails(1);">
+                    <table class="table borderless">        
+                        <tr>
+                            <td><label for="card_num2">Card Number:</label></td>
+                            <td><input class="form-control form-control-sm" name="card_num2" ng-model="card_num2" id="card_num2" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="from_source">Mobile No:</label></td>
+                            <td><input class="form-control form-control-sm" name="from_source" ng-model="from_source" id="from_source" /></td>
+                        </tr>                  
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="cdv" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>      
+    <!--actions div-->      
+    <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+        <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getBarUBPTrxn(1, 612)" > First</span>&nbsp;
+        <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getBarUBPTrxn(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+        &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+        <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getBarUBPTrxn(pageNumber + 1, 496)"> Next</span>&nbsp;
+        <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getBarUBPTrxn(fgRecordsLastPage, 777)"> Last</span>&nbsp;
+        <span class="ml-5 badge badge-info py-1"> Total records found: {{fgRecordsTotalCount}} </span>
+        <!--<span class="ml-5 badge badge-info py-1"> Total Successful: <i>&#8373;</i> {{fgRecordsTotalAmount}} </span>-->
+
+        <label class="ml-5" for="show-records-select">Show</label>
+        <select class="" ng-change="reloadCardDetails()" id="show-records-select" ng-model="rowsPerPage">
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="150">150</option>               
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+            <option value="1000">1000</option>
+            <option value="2000">2000</option>
+        </select>   
+        &nbsp;&nbsp;
+
+        <!--<a href="./Xportal/Report/EXCEL?action=barUBP" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>-->
+        <!--&nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>-->
+        &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+        &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>
+
+        <!--<span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadBarUBPTrxns()" ></span>-->
+
+        <!--        <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                    <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="Card Number or Mobile No" >
+                    <span class="input-group-addon cursor-pointer" ng-click="searchCard()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+                </div>    -->
+        <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+    </div>
+    <div class="table-wrapper scrollbar">        
+        <table class="table row-even  table-bordered table-hover tablse-striped table-sm text-center">
+            <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                <tr>
+                    <th class="text-center">#</th>
+                    <th class="text-center">CARD NUMBER</th> 
+                    <th class="text-center">LAST NAME</th> 
+                    <th class="text-center">FIRST NAME</th>  
+                    <th class="text-center">EMAIL</th>
+                    <th class="text-center">GSM</th>  
+                    <th class="text-center">LICENSE/VOTERS</th>
+                    <th class="text-center">CITY</th> 
+                    <th class="text-center">STREET</th> 
+                    <th class="text-center">EXPIRATION</th>
+                    <th class="text-center">ONLINE BALANCE</th>
+                    <th class="text-center">USER HOTLIST</th>
+                    <th class="text-center">USER LOCKED</th>   
+                    <th class="text-center">PIN MISSED</th>                    
+                    <th class="text-center">CHANGE PIN</th>
+                    <th class="text-center">BOUND WORK</th> 
+                    <th class="text-center">BOUND VALUE</th> 
+                    <th class="text-center">ACTION</th>                          
+                </tr>
+            </thead>
+            <tbody class="font07">
+                <tr ng-hide="crdTrxs.length">
+                    <td colspan="18" class="text-center text-danger">No data available - Found[0]</td>
+                </tr> 
+                <tr ng-hide="crdTrxs.length">                             
+                    <td colspan="18" class="text-center text-danger">{{errorData}}</td>
+                </tr> 
+                <tr ng-hide="crdTrxs.length">
+                    <td colspan="18" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                </tr> 
+                <tr class="animate-repeat" ng-repeat="f in crdTrxs" ng-class="barRowColor5(f.resultCode)">
+                    <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                    <td>{{f.card_num}}</td>
+                    <td>{{f.Lastname}}</td>                                       
+                    <td class="">{{f.Firstname}}</td>
+                    <td class="text-left">{{f.Email}}</td>
+                    <td class="">{{f.Phone}}</td>
+                    <td class="">{{f.fax}}</td>
+                    <td class="text-uppercase">{{f.city}}</td>
+                    <td class="">{{f.Street}}</td>
+                    <td class="">{{f.card_expiration}}</td>
+                    <td class="">{{f.Online_Balance}}</td>
+                    <td class="">{{f.User_Hotlist}}</td>
+                    <td class="">{{f.User_Locked}}</td>
+                    <td class="">{{f.Pin_Missed}}</td>  
+                    <td class="">{{f.Change_Pin}}</td> 
+                    <td class="text-uppercase">{{f.bound_work}}</td>
+                    <td class="text-uppercase">{{f.bound_value}}</td>   
+                    <td class=""><span class="badge badge-primary update-btn py-2 px-3 cursor-pointer" ng-click="updateForm($index)">UPDATE</span></td>
+                </tr>                      
+            </tbody>
+        </table>
+
+        <!--card update form-->
+        <div class="card-update-cont" ng-show="showCardUpdateBox" >
+            <!--filter query box-->
+            <div class="card card-update card-outline-secondary">
+                <div class="card-header text-center">
+                    Card Update Information
+                    <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideCardUpdateBoxView()" title="close window"></span>
+                </div>
+                <div id="updateResp" class="text-center white-text" ng-show="cardUpdateResultView"></div>
+                <div class="card-block font08">
+                    <form ng-submit="updateCard();">
+                        <table class="table borderless">        
+                            <tr>
+                                <td><label>Card Number:</label></td>
+                                <td><label class="">&nbsp;&nbsp;&nbsp;{{card_num3}}</label></td>            
+                            </tr>
+                            <tr>
+                                <td><label for="firstName">First Name:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="firstName" ng-model="firstName" id="firstName"/></td>
+                            </tr>
+                            <tr>
+                                <td><label for="lastName">Last Name:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="lastName" ng-model="lastName" id="lastName" /></td>
+                            </tr>
+                            <tr>
+                                <td><label for="from_source">Mobile No:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="from_source2" ng-model="from_source2" id="from_source2" /></td>
+                            </tr>    
+                            <tr>
+                                <td><label>Minimum Balance</label></td>
+                                <td><label class="">&nbsp;&nbsp;&nbsp;0.0</label></td>             
+                            </tr>   
+                            <tr>
+                                <td><label>Bound Work:</label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="bound_work" ng-model="bound_work" id="bound_work" /></td>
+                            </tr> 
+                            <tr>
+                                <td><label for="street">Street:<i class="text-danger"> *</i></label></td>
+                                <td><textarea class="form-control form-control-sm text-primary" name="street" ng-model="street" id="street" rows="3"></textarea></td>
+                            </tr> 
+                            <tr>
+                                <td><label for="email">Email:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="email" ng-model="email" id="email" /></td>
+                            </tr> 
+                            <tr>
+                                <td><label for="city">City:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="city" ng-model="city" id="city" /></td>
+                            </tr> 
+                            <tr>
+                                <td><label for="fax">ID:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="fax" ng-model="fax" id="fax" /></td>
+                            </tr>    
+                            <tr>
+                                <td><label for="hotlist">User Hotlist:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="user_hotlist" ng-model="user_hotlist" id="user_hotlist" /></td>
+                            </tr>  
+                            <tr>
+                                <td><label for="locked">User Locked:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="user_locked" ng-model="user_locked" id="user_locked" /></td>
+                            </tr>  
+                            <tr>
+                                <td><label for="missed">Pin Missed:<i class="text-danger"> *</i></label></td>
+                                <td><input class="form-control form-control-sm text-primary" name="pin_missed" ng-model="pin_missed" id="pin_missed" /></td>
+                            </tr>  
+                        </table>
+                        <input type="hidden" name="service" ng-model="service" id="service2" />
+                        <button type="submit" class="btn btn-secondary btn-block filter-btn">Update</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> 
+</div>
+<div ng-show="!testTech()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+    <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+    <br>
+    <hr>
+    <br>
+    Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+</div>

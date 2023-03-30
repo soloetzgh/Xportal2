@@ -1,0 +1,327 @@
+<div ng-show="testReprocessingAuthorizer() || testAdm()">
+    <div class="top-header-offset"></div>
+    <!--loader-->
+    <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+        <span>Loading</span>
+        <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+        <span class="el-1"></span>
+        <span class="el-2"></span>
+        <span class="el-3"></span>
+        <span class="el-4"></span>
+        <span class="el-5"></span>
+        <span class="el-6"></span>
+    </div>
+    <!--EndofLoader--> 
+    <div class="container-fluid card-outline-secondary">
+        <!--filter query box-->
+        <!--        <div class="card tmc font08 filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+                    <div class="card-header text-center">
+                        REPROCESSING RECORDS
+                        <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+                    </div>
+                    <div class="card-block font08">
+                        <div class="card-block font08">
+                            <form ng-submit="getReproTrxns(1);">
+                                <table class="table borderless">
+                                    <tr>
+                                        <td><label for="start-date">Start Date</label></td>
+                                        <td> 
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="end-date"> End Date</label></td>
+                                        <td>
+                                            <div class="input-group input-group-sm">
+                                                <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                            </div>
+                                        </td>
+                                    </tr>                                                                                                                                     
+                                    <tr>
+                                        <td><label for="status">Status</label></td>
+                                        <td>
+                                            <select class="form-control form-control-sm" name="status" ng-model="status" id="status">
+                                                <option value="ALL">ALL</option>
+                                                <option value="1">PENDING</option>                  
+                                                <option value="0">PROCESSED</option>                                
+                                            </select>    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label for="uniqueTransId">Reference ID:</label></td>
+                                        <td><input class="form-control form-control-sm" name="uniqueTransId" ng-model="uniqueTransId" id="uniqueTransId" /></td>
+                                    </tr>     
+                                </table>
+                                <input type="hidden" name="service" ng-model="service" id="service" value="sas" />
+                                <button type="submit" class="btn btn-secondary btn-block cursor-pointer" id="filter-btn">Search</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>-->
+        <div class="card tmc font08 filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                REPROCESS RECORDS
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block font08">
+                <form ng-submit="getReproTrxns(1);">
+                    <table class="table borderless">
+                        <tr>
+                            <td><label for="start-date">Start Date</label></td>
+                            <td> 
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="end-date"> End Date</label></td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="account">Account</label></td>
+                            <td><input class="form-control form-control-sm" name="account" ng-model="account" id="account" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="trans_data">Reference:</label></td>
+                            <td><input class="form-control form-control-sm" name="trans_data" ng-model="trans_data" id="trans_data" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="transType">Type</label></td>
+                            <td>
+                                <select class="form-control form-control-sm" name="transType" ng-model="transType" id="transType">
+                                    <option value="ALL">ALL</option> 
+                                    <!--<option ng-repeat="option in banksList" ng-value="option.issuer_code">{{option.issuer_name}}</option>-->    
+                                    <option value="AIRTIME">AIRTIME</option>
+                                    <option value="BILL">BILL</option>
+                                </select>    
+                            </td>
+                        </tr>
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="momo" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <!--actions div-->      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getReproTrxns(1, 612)" > First</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getReproTrxns(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+            &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{erequestRecordsLastPage}}</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getReproTrxns(pageNumber + 1, 496)"> Next</span>&nbsp;
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getReproTrxns(erequestRecordsLastPage, 777)"> Last</span>&nbsp;
+            <span class="ml-5 badge badge-info py-1"> Total records found: {{erequestRecordsTotalCount}} </span>
+            <!--<span class="ml-5 badge badge-info py-1"> Total Amount Successful: <i>&#8373;</i> {{erequestRecordsTotalAmount}} </span>-->
+            <!--<span class="ml-5 badge badge-info py-1"> Total Successful: <i>&#8373;</i> {{TotalAmount}} </span>-->
+
+            <label class="ml-5" for="show-records-select">Show</label>
+            <select class="" ng-change="reloadReversalTrxns()" id="show-records-select" ng-model="rowsPerPage">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>               
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="2000">2000</option>
+            </select>   
+            &nbsp;&nbsp;
+
+            <a href="./Xportal/Report/EXCEL?action=tmc" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+            <!--            &nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>
+                        &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+                        &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>-->
+
+            <span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadReversalTrxns()" ></span>
+            <!--            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                            <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="Reference" >
+                            <span class="input-group-addon cursor-pointer" ng-click="searchE_RequestLogTrxn()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+                        </div>    -->
+            &nbsp; &nbsp;
+            <button class="open-dialog btn-success" id="AuthorizeBtn" type="button" ng-click="confirmationDialog()" disabled>AUTHORIZE</button>
+            <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+        </div>
+        <div class="table-wrapper scrollbar relative" data-ng-init="getReversalTrxns(1)">
+
+            <!--verify - tmc transaction detail-->
+            <div class="card fixed tmc-search-div card-outline-secondary" ng-show="showTMCView">
+                <div class="card-header text-center">
+                    TMC TRANSACTION DETAIL
+                    <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="toggleTMCView()" title="close window"></span>
+                </div>
+                <div class="card-block font08">
+                    <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                        <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                            <tr>
+                                <th class="text-center">SN</th>
+                                <th class="text-center">MTI</th>
+                                <th class="text-center">REFERENCE</th>                           
+                                <th class="text-center">TRANS DATE</th>  
+                                <!--<th class="text-center">PROCESSING CODE</th>-->                             
+                                <th class="text-center">TRANS AMOUNT</th>                             
+                                <th class="text-center">RESPONSE CODE</th>                                                                                  
+                            </tr>
+                        </thead>
+                        <tbody class="font07">
+                            <tr ng-hide="tmcTrxs.length">
+                                <td colspan="6" class="text-center text-danger">No data available - Found[0]</td>
+                            </tr> 
+                            <tr ng-hide="tmcTrxs.length">
+                                <td colspan="6" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                            </tr> 
+                            <tr class="animate-repeat" ng-repeat="f in tmcTrxs" ng-class="tmcRowColor(f.response_code)">
+                                <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                <td class="text-left">{{f.mti}}</td>
+                                <td class="text-left">{{f.trans_data}}</td>    
+                                <td>{{f.trans_date| date:'dd/MM/yy @ HH:mm'}}</td>
+                                <!--                                <td>{{f.pro_code}}</td>-->                             
+                                <td><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>                                
+                                <td>{{f.response_code}}</td>                                                                                                                                             
+                            </tr>                      
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--
+                        <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center" >
+                            <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                                <tr>
+                                    <th class="text-center">#</th>
+                                    <th class="text-center">REFERENCE</th> 
+                                    <th class="text-center">TRANS CODE</th> 
+                                    <th class="text-center">CARD NUM</th>
+                                    <th class="text-center">MERCHANT CODE</th>
+                                    <th class="text-center">FEE</th>
+                                    <th class="text-center">AMOUNT</th>  
+                                    <th colspan="2" class="text-center">ACTION</th> 
+                                    <th class="text-center">RSP CODE</th>
+                                    <th class="text-center">DESCR</th>  
+                                    <th class="text-center">DATE</th>                       
+                                </tr>
+                            </thead>
+                            <tbody class="font07">
+                                <tr ng-hide="erequestTrxs.length">
+                                    <td colspan="12" class="text-center text-danger">No data available - Found[0]</td>
+                                </tr> 
+                                <tr ng-hide="erequestTrxs.length">
+                                    <td colspan="12" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                </tr> 
+                                <tr ng-repeat="f in erequestTrxs" ng-class="erequestRowColor(f.response_code)">
+                                    <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                    <td class="text-left">{{f.transid}}</td>
+                                    <td class="text-center">{{f.trans_code}}</td>
+                                    <td class="text-right">{{f.card_num}}</td>
+                                    <td class="text-center">{{f.merchant_code}}</td>
+                                    <td class="text-right">{{f.fee}}</td>
+                                    <td class="text-right">{{f.trans_amount}}</td>                      
+                                    <td class="">
+                                        <button id="{{f.id}}" title="authorize reversal" class="btn btn-primary btn-sm sm-btn hpy-1 px-3 cursor-pointer" ng-click="reverse(f.id, f.transid, 'auth')">AUTHORIZE</button>
+                                    </td>
+                                    <td>
+                                        <button id="{{f.id + '_1'}}" style="background: black;color:white" title="check reversal status from TMC" class="btn btn-sm sm-btn hpy-1 px-3 cursor-pointer hidden" ng-click="searchTMCTrxn(f.id + '_1', f.transid)">VERIFY</button>
+                                    </td>
+                                    <td>{{f.response_code}}</td>
+                                    <td class="text-left">{{f.trans_descr}}</td>
+                                    <td>{{f.trans_date}}</td>                     
+                                </tr>                      
+                            </tbody>
+                        </table>-->
+            <div class="table-wrapper scrollbar">
+
+                <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                    <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                        <tr>
+                            <th class="text-center">#</th>
+                            <!--<th class=""></th>-->
+                            <th class="text-left">REFERENCE</th> 
+                            <th class="text-center">MERCHANT</th> 
+                            <th class="text-center">ACCOUNT</th>  
+                            <th class="text-center">AMOUNT</th>
+                            <!--<th class="text-center">BANK</th>-->
+                            <th class="text-center">REQUEST DATE</th>
+                            <th class="text-center">INITIATOR</th>
+                            <th class="text-center">ACTION</th>  
+                            <th class="text-center">STATUS</th>  
+                            <!--<th class="text-center">ACTION</th>-->  
+                            <!--<th class="text-center">RSP. CODE</th>--> 
+                            <!--<th class="text-center">RSP. MSG</th>-->  
+
+                            <!--<th class="text-center">PROCESSED DATE</th>-->
+                            <!--<th class="text-center">AUTHORIZER</th>-->                                                                                      
+                        </tr>
+                    </thead>
+                    <tbody class="font07">
+                        <tr ng-hide="reproTrxs.length">
+                            <td colspan="14" class="text-center text-danger">No data available - Found[0]</td>
+                        </tr> 
+                        <tr ng-hide="reproTrxs.length">
+                            <td colspan="14" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                        </tr> 
+
+                        <tr class="animate-repeat" ng-repeat="f in reproTrxs" ng-class="">
+                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                            <!--<td><input type="checkbox" ng-model="f.selected" ng-click="checkAuthorizeNum()"></td>-->
+                            <td class="text-center">{{f.reference}}</td>
+                            <td class="text-left">{{f.product}}</td>
+                            <td class="text-left">{{f.account}}</td>
+                            <td class="text-right"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>  
+                            <!--<td class="text-left">{{f.bank_name}}</td>-->      
+                            <td>{{f.date_initiated| date:'dd/MM/yy @ HH:mm:ss'}}</td>
+                            <td class="text-left">{{f.initiated_by}}</td> 
+                            <td class="">
+                                <button id="{{'authorize' + $index}}" title="authorize reprocess" class="btn btn-success btn-xs sm-btn py-1 px-3 cursor-pointer" ng-click="authorizeReprocess($index, 'authorize')"><i class="fa fa-check-circle fa-lg"></i></button>
+                                <button id="{{'deny' + $index}}" title="deny reprocess" class="btn btn-danger btn-xs sm-btn py-1 px-3 cursor-pointer" ng-click="authorizeReprocess($index, 'deny')"><i class="fa fa-ban fa-lg"></i></button>
+                            </td>
+                            <td class="text-left">{{f.status}}</td>   
+                            <!--<td class="text-center"><span class="badge badge-primary update-btn py-2 px-3 cursor-pointer" ng-click="populateReProcessForm($index)">PROCESS</span></td>--> 
+                            <!--<td class="text-center">{{f.rsp_code}}</td>-->
+                            <!--<td class="text-left">{{f.rsp_message}}</td>-->                                             
+                            <!--<td>{{f.date_processed| date:'dd/MM/yy @ HH:mm:ss'}}</td>--> 
+                            <!--<td class="text-center">{{f.authorizer}}</td>-->
+
+
+                        </tr>                      
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div> 
+</div>
+
+<div id="confirmation-dialog">
+    <div class="modal fade confirmation-dialog" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">{{confirmationDialogConfig.title}}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="span5">{{confirmationDialogConfig.message}}</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" ng-repeat="button in confirmationDialogConfig.buttons" ng-click="executeDialogAction(button.action)" class="btn btn-primary">{{button.label}}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-show="!(testReprocessingAuthorizer() || testAdm())" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+    <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+    <br>
+    <hr>
+    <br>
+    Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+</div>

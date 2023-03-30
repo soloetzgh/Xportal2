@@ -1,0 +1,213 @@
+<div class="header-bg" data-ng-init="">
+    <div class="container-fluid widget-header">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <div class="row align-items-center" style="justify-content: flex-end;">
+                        <div class="row  page-options">
+
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getGcbMomoAcctTrxn(1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getGcbMomoAcctTrxn(pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                            <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getGcbMomoAcctTrxn(pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getGcbMomoAcctTrxn(fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;&nbsp;
+                            <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                            <!--<span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>-->
+
+                            <!--<label class="ml-5" for="show-records-select">Show</label>-->
+                            <select class="" ng-change="refreshReport('getGcbMomoAcctTrxn')" id="show-records-select" ng-model="rowsPerPage">
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>               
+                                <option value="300">300</option>
+                                <option value="400">400</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="2000">2000</option>
+                            </select>   
+                            &nbsp;&nbsp;
+
+
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="float-right d-md-block">
+                                <div class="cntr">
+                                    <!--                                    <div class="cntr-innr">
+                                                                            <form ng-submit="searchGipTransactions(496)">
+                                                                                <label class="search" for="inpt_search">
+                                                                                    <input id="inpt_search" title="press Enter to search" type="text" placeholder="" ng-model="searchTrxnKey" />
+                                                                                </label>
+                                                                            </form>
+                                                                        </div>&nbsp;-->
+                                    <span class="fa fa-window-restore" ng-click="toggleFilterBoxView();" style="font-size: 1.5em; color: black; margin-top: 10px;" title="show/hide form" id="filter-card-btn"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- page wrapper start -->
+<div class="wrapper" >
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="card reportView">
+                    <div class="card-body"> 
+                        <div class="card filter-box card-block" ng-show="showFilterBox" ng-init="record = 'new'">
+                            <div class="card-header">
+                                <h5 class="font-16 my-0" style="text-align: center;"><i class="fas fa-window-close mr-3 cursor-pointer" style="color: #d9534f;float: right;" ng-click="hideFilterBox();" title="close window"></i>GCB Momo Report</h5>
+                            </div>
+                            <div class="card-body" style="padding: 0.35rem !important;" >
+                                <form ng-submit="getGcbMomoAcctTrxn(1);">
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td><label for="start-date">Start Date</label></td>
+                                            <td> 
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="end-date">End Date</label></td>
+                                            <td>
+                                                <div class="input-group input-group-sm">
+                                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="gcbmomotype">Type</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="gcbmomotype" ng-model="gcbmomotype" id="gcbmomotype">
+                                                    <option value="B2W">B2W</option>
+                                                    <option value="W2B">W2B</option>
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="lineType">Network</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="lineType" ng-model="lineType" id="lineType">
+                                                    <option value="ALL">ALL</option>
+                                                    <option value="MTN">MTN</option>
+                                                    <option value="TIGO">TIGO</option>
+                                                    <option value="VODAFONE">VODAFONE</option>
+                                                </select>    
+                                            </td>
+                                        </tr> 
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="vtu" />
+                                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="table-rep-plugin">
+                            <div class="table-responsive mb-0" data-pattern="priority-columns">
+                                <table id="records-table" class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">#</th>
+                                            <th class="text-left">UNIQUE_TRANSID</th> 
+                                            <th class="text-left">DE37</th> 
+                                            <th class="text-left">DE102</th>
+                                            <th class="text-left">DE103</th>
+                                            <th class="text-left">DE123</th>
+                                            <th class="text-left">DE39</th>
+                                            <th class="text-left">DE4</th> 
+                                            <th class="text-left">DE28</th> 
+                                            <th class="text-left">CREATED</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-hide="gcbAltTrxs.length">
+                                            <td colspan="10" class="text-center text-danger">No data available - Found[0]</td>
+                                        </tr> 
+                                        <tr ng-hide="gcbAltTrxs.length">
+                                            <td colspan="10" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                                        </tr>                            
+                                        <tr class="animate-repeat" ng-repeat="f in gcbAltTrxs" ng-class="vasRowColor(f.trans_status)">
+                                            <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                                            <td title="{{f.UNIQUE_TRANSID}}">{{trimVasBillId(f.UNIQUE_TRANSID)}}</td>  
+                                            <td>{{f.DE37}}</td>
+                                            <td>{{f.DE102}}</td>
+                                            <td>{{f.DE103}}</td>
+                                            <td>{{f.DE123}}</td>
+                                            <td class="text-left">{{f.DE39}}</td>                               
+                                            <td>{{f.DE4}}</td>
+                                            <td>{{f.DE28}}</td> 
+                                            <td>{{f.CREATED}}</td>  
+                                        </tr>  
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<div class="sticky-container">
+    <ul class="sticky">
+        <li class="extend animated slideInRight" ng-show="!(balance.indexOf('n/a') > -1)" style="justify-content: center">
+            <i class="fa fa-coins fa-2x fa-fw" style="color: #f8ae26;line-height: 45px; margin-left: 4px;"></i>&nbsp; <span>{{balance}}</span>    
+        </li>
+        <li class="download">
+            <i class="fa fa-download fa-2x download-btn" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+            <!--<i title="download as pdf" class="fa fa-file-pdf fa-2x fa-fw" style="color:#df212b; line-height: 45px; margin-left: 7px;" href="./reports/ExportReport?report=fundgate&action=pdf&start={{startDate}}&end={{endDate}}"></i>-->
+            <i title="download as excel" class="fa fa-file-excel fa-2x fa-fw" style="color:#016f38;line-height: 45px; margin-left: 7px;" href="./Xportal/Report/EXCEL?action=gcbAlt"></i>
+        </li>
+        <li ng-click="refreshReport('getGcbMomoAcctTrxn')">
+            <i class="fa fa-sync fa-2x refresh-btn" title="Long press({{timerate / 1000}}sec autoRefresh)" style=" color: #2c8ee3; line-height: 45px; margin-left: 7px;"></i>
+        </li>
+    </ul>
+</div>
+
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getGcbMomoAcctTrxn(1, 612)"> <i class="fa fa-step-backward"></i></span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getGcbMomoAcctTrxn(pageNumber - 1, 123)"> <i class="fa fa-backward"></i></span>&nbsp; &nbsp;
+                <span class="badge badge-info py-1">Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+                <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getGcbMomoAcctTrxn(pageNumber + 1, 496)"><i class="fa fa-forward"></i></span>&nbsp;
+                <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getGcbMomoAcctTrxn(fgRecordsLastPage, 777)"> <i class="fa fa-step-forward"></i></span>&nbsp;
+            </div>
+            <div class="col-sm-6">
+                <span class="badge-info badge mr-3 cursor-pointer" title="Total Records">{{fgRecordsTotalCount}} </span>
+                <span class="badge-success badge mr-3 cursor-pointer" title="Total Amount Successful"><i>&#8373;</i>{{fgRecordsTotalAmount}}</span>
+                <select class="" ng-change="refreshReport('getGcbMomoAcctTrxn')" id="show-records-select" ng-model="rowsPerPage">
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="150">150</option>               
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                </select>   
+                &nbsp;&nbsp;
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    $(function () {
+        $('.table-responsive').responsiveTable({});
+
+    });</script>

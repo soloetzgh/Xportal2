@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
+        <title>XPORTAL</title>
+        <meta content="Web Portal for transaction Monitoring" name="description" />
+        <meta content="Etranzact Ghana" name="author" />
+        <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css">
+        <link href="assets/css/toastr.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="assets/css/all.min.css" />
+        <link rel="stylesheet" href="assets/css/animate.min.css" />
+        <link rel="stylesheet" href="assets/css/main.css" />
+        <link rel="stylesheet" href="assets/css/util.css" />
+        <link rel="stylesheet" href="assets/css/loading.min.css" />
+        <link rel="stylesheet" href="assets/css/ldbtn.min.css" />
+
+        <link rel="stylesheet" href="assets/css/jquerysctipttop.min.css"/>
+
+
+    </head>
+
+    <body>
+        <div class="resBack">
+            <div class="loader">
+                <div class="loading-dots dark-gray">
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                    <i></i>
+                </div>
+                <span>Loading</span>
+            </div>
+            <nav id="navbarmenu"  class="navbar navbar-expand-md fixed-top navbar-toggleable-md shadow-bottom navbar-dark bg-dark resBack" style="display: none;">
+
+                <a href="#" class="navbar-brand">
+                    <img src="assets/img/support_logo.png" width="100" alt="" class="d-inline-block align-middle mr-2">
+
+                </a>
+                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="icon-bar top-bar"></span>
+                    <span class="icon-bar middle-bar"></span>
+                    <span class="icon-bar bottom-bar"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown" ng-repeat="menu in menus| uniq: 'name' | orderBy: 'name'" ng-show="menu.name !== 'All'">
+                            <a class="nav-link dropdown-toggle cursor-pointer" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="{{menu.icon}}"></i> {{menu.name}}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right scrollable-menu" aria-labelledby="navbarDropdown">
+                                <ul>
+                                    <li ng-repeat="subMenu in  menuList| subMenuFilter:menu.name | orderBy: 'name'">
+                                        <!--<a class="dropdown-item" ng-if="(profile.type_id.indexOf(subMenu.accessLevel) > -1) || (profile.type_id.indexOf('[1]') > -1 && subMenu.openTo.indexOf('[1]') > -1)" href="#!{{subMenu.routePath}}">{{subMenu.name}}</a>-->
+                                        <a class="dropdown-item" ng-if="checkOpenTo(subMenu.accessLevel)" href="#!{{subMenu.routePath}}">{{subMenu.name}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle cursor-pointer"  id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user-circle"></i>&nbsp;{{profile.username}}
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" ng-click="logout()">Logout</a>
+                                <a class="dropdown-item" href="#!changePassword">Change Password</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="ng-view resBack" ></div>
+
+            <!--            <footer class="footer">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        2021 © Etranzact Ghana <span class="d-none d-sm-inline-block"> - 3<sup>rd</sup> Floor Heritage Tower, West Ridge - Accra</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>-->
+            <!-- End Footer -->
+
+        </div>
+        <!--<script src="assets/js/jquery.min.js"></script>-->
+        <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <!--                <script src="assets/js/angular.min.js"></script>
+                        <script src="assets/js/angular-idle.min.js"></script>
+                        <script src="assets/js/angular-route.min.js"></script>
+                        <script src="assets/js/angular-filter.min.js"></script>-->
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+        <script src="assets/js/angular-idle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-route.min.js"></script>
+        <script src="assets/js/angular-filter.min.js"></script>
+        <script src="assets/js/serializejson.min.js"></script>
+        <script src="assets/js/ocLazyLoad.min.js"></script>
+
+        <script src="assets/js/moment.min.js"></script> 
+        <script src="assets/js/toastr.min.js"></script>
+        <script src="assets/js/loadingoverlay.min.js"></script>
+        <script src="assets/js/angular-cookies.min.js"></script>
+        <script src="assets/js/animate.min.js"></script>
+
+        <script src="assets/js/fontawesome.min.js"></script>
+        <script src="assets/js/sweetalert.min.js"></script>
+        <script src="assets/js/swangular.min.js"></script>
+        <script src="assets/js/idle.min.js"></script>
+        <script src="assets/js/passrequirements.js"></script>
+        <script src="assets/js/zxcvbn.min.js"></script>
+        <script src="assets/js/jsencrypt.js"></script>
+        <script src="assets/js/index.js"></script>
+    </body>
+</html>

@@ -1,0 +1,165 @@
+<div ng-show="testSas()">
+    <div class="top-header-offset"></div>
+
+
+    <!--loader-->
+    <div class="etz-loader text-center card-outline-secondary shadows-bottom" ng-show="showLoader">
+        <span>Loading</span>
+        <!--<span class="fa fa-spin"><img src="./static/img/etzlogo.png" alt="ETZ loader" /></span>-->
+        <span class="el-1"></span>
+        <span class="el-2"></span>
+        <span class="el-3"></span>
+        <span class="el-4"></span>
+        <span class="el-5"></span>
+        <span class="el-6"></span>
+    </div>
+    <!--EndofLoader--> 
+    <div class="container-fluid card-outline-secondary">
+        <!--filter query box-->
+        <div class="card font08 filter-box ml-2 card-outline-secondary hiddedn" ng-show="showFilterBox">
+            <div class="card-header text-center">
+                SAS MOBILE MONEY REPORT
+                <span class="float-right text-danger fa fa-window-close cursor-pointer" ng-click="hideFilterBox()" title="close window"></span>
+            </div>
+            <div class="card-block font08">
+                <form ng-submit="getSasTrxns(1);">
+                    <table class="table borderless">
+                        <tr>
+                            <td><label for="start-date">Start Date</label></td>
+                            <td> 
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="startDate" ng-model="startDate" placeholder="Start date" id="start-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="start-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="end-date"> End Date</label></td>
+                            <td>
+                                <div class="input-group input-group-sm">
+                                    <input type="text" class="form-control form-control-sm" name="endDate" ng-model="endDate" placeholder="End date" id="end-date" >
+                                    <span class="input-group-addon fa fa-calendar cursor-pointer" id="end-date-btn"></span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><label for="uniqueTransId">Reference ID:</label></td>
+                            <td><input class="form-control form-control-sm" name="uniqueTransId" ng-model="uniqueTransId" id="uniqueTransId" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="from_source">Mobile Nos:</label></td>
+                            <td><input class="form-control form-control-sm" name="from_source" ng-model="from_source" id="from_source" /></td>
+                        </tr>
+                        <tr>
+                            <td><label for="trans_channel">Product:</label></td>
+                            <td>
+                                <select class="form-control form-control-sm" name="trans_channel" ng-model="trans_channel" id="trans_channel">
+                                    <option value="ALL">ALL</option>
+                                    <option value="MMB:SAS1">FORTUNE</option>
+                                    <option value="MMB:SAS2">EQUITY</option>
+                                    <option value="MMB:SAS3">T-BILLS</option>
+                                </select>       
+                            </td>
+                        </tr>          
+
+                        <tr>
+                            <td><label for="status">Status</label></td>
+                            <td>
+                                <select class="form-control form-control-sm" name="status" ng-model="status" id="status">
+                                    <option value="ALL">ALL</option>
+                                    <option value="SUCCESSFUL">SUCCESSFUL</option>                  
+                                    <option value="FAILED">FAILED</option>                                
+                                </select>    
+                            </td>
+                        </tr>    
+                    </table>
+                    <input type="hidden" name="service" ng-model="service" id="service" value="sas" />
+                    <button type="submit" class="btn btn-secondary btn-block" id="filter-btn">Search</button>
+                </form>
+            </div>
+        </div>
+        <!--actions div-->      
+        <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1">
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to first page" ng-click="getSasTrxns(1, 612)" > First</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to previous page" ng-click="getSasTrxns(pageNumber - 1, 123)"> Prev</span>&nbsp;&nbsp;
+            &nbsp;<span class="badge badge-info py-1"> Page {{pageNumber}}/{{fgRecordsLastPage}}</span>&nbsp;
+            <span class="text-primary cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to next page" ng-click="getSasTrxns(pageNumber + 1, 496)"> Next</span>&nbsp;
+            <span class="text-info cursor-pointer" data-toggle="tooltip" data-placement="right" title="go to last page" ng-click="getSasTrxns(fgRecordsLastPage, 777)"> Last</span>&nbsp;
+            <span class="ml-5 badge badge-info py-1"> Total records found: {{fgRecordsTotalCount}} </span>
+            <span class="ml-5 badge badge-info py-1"> Total Amount: <i>&#8373;</i> {{fgRecordsTotalAmount}} </span>
+
+            <label class="ml-5" for="show-records-select">Show</label>
+            <select class="" ng-change="reloadSasTrxns()" id="show-records-select" ng-model="rowsPerPage">
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="150">150</option>               
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="1000">1000</option>
+                <option value="2000">2000</option>
+            </select>   
+            &nbsp;&nbsp;
+
+            <a href="./Xportal/Report/EXCEL?action=sas" class="cus-ml-1" data-toggle="tooltip" data-placement="bottom" title="Download MS Excel report"><img class="file-download-img" src="./static/img/excelicon.png" alt="download excel" /></a>
+            <!--            &nbsp;<a href="./Xportal/Report/CSV" title="Download CSV report"><img class="file-download-img" src="./static/img/csvicon.png" alt="download csv" /></a>
+                        &nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="Download PDF report" class="hidden"><img class="file-download-img " src="./static/img/pdficon.png" alt="download pdf" /></a>
+                        &nbsp;&nbsp;<a href="javascript:;" data-toggle="tooltip" data-placement="bottom" title="View chart" class="hidden"><img class="file-download-img" src="./static/img/charticon.png" alt="view report diagram" /></a>-->
+
+            <span class="cursor-pointer fa fa-refresh reload ml-5 fa" style="font-size: 1.5em;" data-toggle="tooltip" data-placement="bottom" title="reload" ng-click="reloadSasTrxns()" ></span>
+
+
+            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="Reference or mobile Nos" >
+                <span class="input-group-addon cursor-pointer" ng-click="searchSasTrxn()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+            </div>    
+            <span class="cursor-pointer fa fa-window-restore fa float-right mr-3" data-toggle="tooltip" data-placement="bottom" title="show/hide form" id="filter-card-btn" style="font-size: 1.5em;"  ng-click="toggleFilterBoxView()" ></span>
+        </div>
+        <div class="table-wrapper scrollbar">
+
+            <table class="table row-even table-bordered table-hover tablse-striped table-sm text-center">
+                <thead class="thead-default shadow-bottom font09" style="border-bottom: 3px solid lightgray">
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">REFERENCE</th> 
+                        <th class="text-center">PRODUCT</th> 
+                        <th class="text-center">CHANNEL</th>  
+                        <th class="text-center">MSISDN</th>
+                        <th class="text-center">ACCOUNT</th>  
+                        <th class="text-center">ACCOUNT NAME</th>
+                        <th class="text-center">AMOUNT</th>                           
+                        <th class="text-center">STATUS</th> 
+                        <th class="text-center">TRANS DATE</th>                               
+                    </tr>
+                </thead>
+                <tbody class="font07">
+                    <tr ng-hide="sasTrxs.length">
+                        <td colspan="10" class="text-center text-danger">No data available - Found[0]</td>
+                    </tr> 
+                    <tr ng-hide="sasTrxs.length">
+                        <td colspan="10" class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></td>
+                    </tr> 
+                    <tr ng-repeat="f in sasTrxs" ng-class="sasRowColor(f.trans_status)">
+                        <td>{{((pageNumber - 1) * rowsPerPage) + $index + 1}}</td>
+                        <td class="text-center">{{f.unique_transid}}</td>
+                        <td class="text-center">{{f.product}}</td>
+                        <td>{{f.trans_channel}}</td>
+                        <td>{{f.mobile_no}}</td>  
+                        <td>{{f.acctNumber}}</td>                               
+                        <td class="text-left">{{f.name}}</td>                               
+                        <td class="text-center"><small><i>&#8373;</i></small>{{getAmt(f.amount)}}</td>
+                        <td>{{f.trans_status}}</td>
+                        <td>{{f.response_date}}</td>                                                    
+                    </tr>                      
+                </tbody>
+            </table>
+        </div>
+    </div> 
+</div>
+<div ng-show="!testFGTrx()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+    <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+    <br>
+    <hr>
+    <br>
+    Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+</div>

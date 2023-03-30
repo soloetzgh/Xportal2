@@ -1,0 +1,288 @@
+body {
+    /*padding-top: 60px;*/
+}
+
+.wrapper{
+    padding: 110px 0;
+    background: #192b35 url(https://www.etranzact.com.gh/bg.jpg)/*tpa=http://www.competa.com/images/backgrounds/bg.jpg*/ repeat-x top center !important;  
+}
+
+.form-cont{
+    width: 330px;
+    padding: 15px; 
+    margin: 0 auto;
+}
+.etcard{
+    /*position: relative;*/
+    border-radius: 0.25em;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+    background-color: #FFF;
+    flex-grow: 5;
+}
+form{    
+    padding: 5px 5px 10px 5px;
+}
+#logo{
+    background: #003da6;
+    background: #F2F3F7;
+    padding: 10px;
+    text-align: center;
+}
+.sign_in_title{
+    text-align: center; 
+    font-family: cursive;
+    color:#777;
+    font-style: italic;
+    background: #F2F3F7;
+    padding: 10px;
+}
+.sign_in_title img{
+    /*width: 40px;height: 30px;*/
+}
+
+.input-group{
+    margin: 20px 0;
+    border-radius: 0;
+}
+
+.form-control,.input-group-addon{
+    border-radius: 0;
+}
+.btn{
+    border-radius: 0;  
+}
+.btn-default {
+    color: #333;
+    background-color: #eee;
+    border-color: #ccc;
+}
+.img-loader{
+    width:18px;height: 15px;
+    display: none;
+}
+#form-result{
+    /*    color:white;*/
+    border-radius: 3px;
+    line-height: 1em;
+    /*padding-top: 5px;*/
+}
+
+
+
+/* --------------------- FOOTER --------------------- */
+
+#footer{
+    font-size:0.75em;
+    width:100%;
+    min-height: 250px;
+    background-color: #263345;
+    text-shadow: #000 0 0 0;
+    color: #575d64;
+    padding-top: 20px;
+    /*margin-top: 0;*/
+}
+
+#footer h4{
+    color:#c8cccf;
+    font-size:1.1667em;
+    padding-bottom:0.07143em;
+}
+#footer ul.foot li.last h4{
+    padding-bottom:0.35714em;
+}
+
+#footer a{
+    color:#6d7e88;
+    font-size:0.916em;	
+}
+#footer a:hover{
+    color:#c8cccf;
+}
+
+#footer ul.foot li{
+    float:left;
+    display:inline;
+    width:186px;
+}
+#footer ul.foot li.last{
+    width:156px;
+}
+
+#footer ul.foot li ul{
+    width:156px;
+}
+
+#footer ul.foot li ul li{
+    width:156px;
+    display:block;
+    float:left;
+    padding-top:0.416667em;
+    padding-bottom:0.75em;
+    /*background:url("dotted-line-footer.gif")tpa=http://www.competa.com/images/backgrounds/dotted-line-footer.gif repeat-x bottom left;*/	
+}
+#footer ul.foot li.last ul li{
+    background:none;
+    color:#6d7e88;
+    padding-top:0.416667em;
+    padding-bottom:0.416667em;	
+}
+
+#footer ul.foot li.last ul li a{
+    font-size:1em;	
+}
+#footer ul.foot li.last ul li a.more{
+    /*background-image:url("btn_footer.gif")tpa=http://www.competa.com/images/buttons/btn_footer.gif;*/
+    margin-top:8px;
+}
+
+.foot_box{
+    /*background:#23343e url("foot_box_logo.gif")tpa=http://www.competa.com/images/backgrounds/foot_box_logo.gif no-repeat 20px 12px;*/	
+    /*	-moz-border-radius: 8px;
+            -webkit-border-radius: 8px;
+            border: 1px solid #3c4f5a;*/
+    padding: 16px 17px 21px 20px; 
+    margin-top:30px;
+    text-align:right;
+}
+
+.foot_box li{
+    display:inline;
+    color:#6d7e88;
+    padding-right:2px;
+}
+
+.foot_box li a{
+    padding-right:5px;
+}
+
+/*scrollbar*/
+
+.scrollbar::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    /*border-radius: 10px;*/
+    background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar
+{
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.scrollbar::-webkit-scrollbar-thumb
+{
+    /*border-radius: 10px;*/
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+    background-color: lightgray;
+}
+
+
+.form-inline .form-group{
+    margin-bottom: 20px;
+    float: right;
+}
+.title{
+    text-decoration:underline;
+    padding: 10px 5px;
+}
+.btn-launch,.btn-launch:hover, .btn-launch:active, .btn-launch:focus{
+    background-color: #2ecc71;
+    border: medium none #2ecc71;
+    box-shadow: 0 3px 0 #d35400, 0 5px 2px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 20px 40px;
+    margin-top:10%;
+}
+.bt-login,.bt-login:hover, .bt-login:active, .bt-login:focus {
+    background-color: #ff8627;
+    color: #ffffff;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    transition: background-color 300ms linear 0s;
+}
+
+
+.login-tab {
+    margin: 0 auto;
+    max-width: 380px;
+}
+
+.login-modal-header {
+    background: #27ae60;
+    color: #fff;
+}
+
+.login-modal-header .modal-title {
+    color: #fff;
+}
+
+.login-modal-header .close {
+    color: #fff;
+}
+
+.login-modal i {
+    color: #000;
+}
+
+.login-modal form {
+    max-width: 340px;
+}
+
+.tab-pane form {
+    margin: 0 auto;
+}
+.login-modal-footer{
+    margin-top:15px;
+    margin-bottom:15px;
+}
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #7ac142;
+    fill: none;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+}
+
+.checkmark {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    margin: 10% auto;
+    box-shadow: inset 0px 0px 0px #7ac142;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
+}
+@keyframes fill {
+    100% {
+        box-shadow: inset 0px 0px 0px 30px #7ac142;
+    }
+}

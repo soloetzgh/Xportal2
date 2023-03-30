@@ -1,0 +1,164 @@
+<div ng-show="testVerificationPortal()">
+
+    <div class="top-header-offset"></div>
+    <div style="clear: both; min-height: 400px;" >
+        <div class="container-fluid card-outline-secondary">
+
+            <!--actions div-->      
+            <div class="actions-cont shadow-bottom pb-0 pt-2 px-2 font08 mb-1 mt-4 text-center" style="height: 40px;background: #fff">
+                <span class="bold font12">VERIFICATION PORTAL</span>
+                <!--            <div class="input-group input-group-sm float-right" id="search-trans-cont" >
+                                <input type="text" ng-model="searchTrxnKey" class="form-control form-control-sm" placeholder="ETZ Transaction id" >
+                                <span class="input-group-addon cursor-pointer" ng-click="searchBarUBPTrxn()" id="search-trans-btn"><img src="./static/img/zoom.png" alt="search img" /></span>
+                            </div>               -->
+            </div>
+
+            <div class="repro-cont mt-3">
+                <div class="border-btn mb-2 font09">
+                    <span class="tab-title reptab active pb-2 bold" data-tab="verify">VASGATE</span>
+                    <!--<span class="tab-title reptab pb-2 bold" data-tab="binchecker" >BIN CHECKER</span>-->
+                    <span class="tab-title reptab pb-2 bold" data-tab="mobilelookup">MOBILE NO LOOKUP</span>
+                </div>
+
+                <div class="repro-body mt-5">
+                    <div class="tab-content verify toggle" >
+                        <!--filter query box-->
+                        <div class="card repro-box ml-2 mr-5 card-outline-secondary float-left">
+                            <div class="card-header text-center">
+                                VERIFY ACCOUNT
+                            </div>
+                            <div class="card-block font08">
+                                <form ng-submit="verifyVasgate();">
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td><label for="merchant">Merchant</label></td>
+                                            <td>
+                                                <select class="form-control form-control-sm" name="merchant" ng-model="merchant" id="merchant">
+                                                    <option value="">Select Merchant</option> 
+                                                    <option ng-repeat="option in vasgateMerchantList" ng-value="option.alias">{{option.name}}</option>                   
+                                                </select>    
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td><label for="account">Account Id:</label></td>
+                                            <td><input class="form-control form-control-sm" name="account" ng-model="account" id="account" ng-required="true" /></td>
+                                        </tr>
+
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="verify" />
+                                    <button type="submit" class="btn btn-secondary btn-block cursor-pointer" id="verify-btn">Verify</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!--filter query box-->
+                        <div class="card repro-box ml-2 card-outline-secondary float-left">
+                            <div class="card-header text-center">
+                                VERIFICATION RESPONSE
+                            </div>
+                            <div class="card-block font08">
+                                <div class="mb-2 text-primary" ><span class="bold">Resp:&nbsp;&nbsp;</span> {{vasRsp.otherInfo}}</div>
+                                <div><span class="bold text-info">Resp Code:&nbsp;&nbsp; {{vasRsp.status}}</span> </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--                    <div class="tab-content binchecker toggle">
+                                            filter query box
+                                            <div class="card repro-box ml-2 mr-5 card-outline-secondary float-left">
+                                                <div class="card-header text-center">
+                                                    BIN CHECKER/UPDATER 
+                                                </div>
+                                                <div class="card-block font08">
+                                                    <form ng-submit="BinCheck();">
+                                                        <table class="table borderless">
+                    
+                                                            <tr>
+                                                                <td><label for="binNumber">Bin Number:</label></td>
+                                                                <td><input class="form-control form-control-sm" name="binNumber" ng-model="binNumber" id="binNumber" ng-required="true" /></td>
+                                                            </tr>
+                                                        </table>
+                                                        <input type="hidden" name="service" ng-model="service" id="service" value="bincheck" />
+                                                        <button type="submit" class="btn btn-warning btn-block cursor-pointer" id="binCheck-btn">Check</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                    
+                                            filter query box
+                                            <div class="card repro-box ml-2 card-outline-secondary float-left">
+                                                <div class="card-header text-center">
+                                                    RESPONSE
+                                                </div>
+                                                <div id="binupdateResp" class="text-center white-text" ng-show="binUpdateResultView"></div>
+                                                <div class="card-block font08">
+                                                    <form ng-submit="BinUpdate();">
+                                                        <div class="mb-2 text-primary" ><span class="bold">BIN NUMBER :&nbsp;&nbsp;</span> {{newBinNumber}}</div>
+                                                        <div class="mb-2 text-primary" ><span class="bold">RESPONSE :&nbsp;&nbsp;</span> {{binCheck}}</div>
+                                                        <div><button type="submit" class="btn btn-success btn-block cursor-pointer" id="binUpdate-btn" disabled>Add Bin</button></div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>-->
+                    <div class="tab-content mobilelookup toggle">
+                        <!--filter query box-->
+                        <div class="card repro-box ml-2 mr-5 card-outline-secondary float-left">
+                            <div class="card-header text-center">
+                                MOBILE NUMBER LOOKUP
+                            </div>
+                            <div class="card-block font08">
+                                <form ng-submit="verifyMobileNumber();">
+                                    <table class="table borderless">
+                                        <tr>
+                                            <td><label for="mobile_no">Mobile Number:</label></td>
+                                            <td><input class="form-control form-control-sm" name="mobile_no" ng-model="mobile_no" id="mobile_no" ng-required="true" /></td>
+                                        </tr>
+                                    </table>
+                                    <input type="hidden" name="service" ng-model="service" id="service" value="request" />
+                                    <button type="submit" class="btn btn-success btn-block cursor-pointer" id="verifyPhone-btn">Check</button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!--filter query box-->
+                        <div class="card repro-box ml-2 card-outline-secondary float-left">
+                            <div class="card-header text-center">
+                                REQUEST RESPONSE
+                            </div>
+                            <div class="card-block font08">
+                                <div class="mb-2 text-primary"><span class="bold text-info">Network : &nbsp;&nbsp;</span> {{portedNetwork}}</div>
+                                <div class="mb-2 text-primary"><span class="bold text-info">Ported :&nbsp;&nbsp;</span> {{ported}}</div>
+                                <div ng-if="originalNetwork" class="mb-2 text-primary"><span class="bold text-info">Original Network :&nbsp;&nbsp; </span> {{originalNetwork}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+
+<div ng-show="!testVerificationPortal()" class="text-center text-danger" style = "height: 400px;padding: 50px;">
+    <div class="text-center"><a href="https://etranzact.com.gh/" target="_blank">eTranzact Ghana Ltd.</a></div>
+    <br>
+    <hr>
+    <br>
+    Sorry, Report not ready for your account yet. please use old <a href="https://webpay.etranzactgh.com/XPortal/index.etz">xPortal</a> to access your report.
+</div>
+
+<script>
+    $('.reptab').on('click', function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $(".toggle").css('display', 'none');
+        var c = $(this).attr("data-tab");
+        c = "." + c;
+        $(c).css('display', 'block');
+    });
+    $('.auth-reptab').on('click', function () {
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+        $(".auth-toggle").css('display', 'none');
+        var c = $(this).attr("data-tab");
+        c = "." + c;
+        $(c).css('display', 'block');
+    });</script>
